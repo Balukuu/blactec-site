@@ -16,11 +16,16 @@
   <meta property="og:description" content="East Africa's partner for web hosting, domains, cloud infrastructure and managed IT — built in Kampala for businesses across Uganda and beyond." />
   <meta property="og:url" content="https://blactec.ug/" />
   <meta property="og:locale" content="en_UG" />
+  <meta property="og:image" content="https://blactec.ug/assets/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="BlacTec Technologies — Web Hosting, .UG Domains, Cloud & Managed IT" />
 
   <!-- Twitter -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="BlacTec Technologies | Hosting, .UG Domains, Cloud & Managed IT" />
   <meta name="twitter:description" content="Web hosting, .ug domains, multi-cloud & managed IT — engineered in Kampala. 99.9% uptime, local support, Mobile Money accepted." />
+  <meta name="twitter:image" content="https://blactec.ug/assets/og-image.png" />
 
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%23673de6'/%3E%3Ctext x='16' y='23' font-family='DM Sans,sans-serif' font-size='19' font-weight='1000' fill='white' text-anchor='middle'%3Eb%3C/text%3E%3Ccircle cx='24.5' cy='21' r='2.4' fill='%23ffcd35'/%3E%3C/svg%3E" />
 
@@ -29,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,1000&display=swap" />
 
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=1.1.0" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -113,9 +118,11 @@
   }
   </script>
 
-  <script defer src="dist/main.js"></script>
+  <script defer src="dist/main.js?v=1.1.0"></script>
 </head>
 <body>
+  <a class="skip-link" href="#top">Skip to content</a>
+
   <!-- Scroll progress -->
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
@@ -272,6 +279,7 @@
             </form>
             <div class="domain__result" id="domainResult" aria-live="polite"></div>
             <p class="domain__hint">Popular: <button type="button" class="domain__eg" data-eg="kampala-coffee">.ug</button> from <strong>$35.50/yr</strong> · <button type="button" class="domain__eg" data-eg="mystore">.com</button> from <strong>$14.20/yr</strong></p>
+            <p class="domain__disclaimer">This is a quick indicative check. We confirm live registry availability and lock in your price when we process your request.</p>
           </div>
 
           <div class="hero__proof">
@@ -451,71 +459,71 @@
         <!-- Testimonial switcher: client tabs (left) + quote (right) -->
         <div class="trust reveal">
           <div class="trust__tabs" role="tablist" aria-label="Client testimonials" id="trustTabs">
-            <button class="trust__tab is-active" role="tab" aria-selected="true" id="tt-0" aria-controls="tp-0" data-idx="0">Avenue Insurance Brokers<span class="trust__arrow" aria-hidden="true">›</span></button>
-            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-1" aria-controls="tp-1" data-idx="1">Stallion Insurance Brokers Limited<span class="trust__arrow" aria-hidden="true">›</span></button>
-            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-2" aria-controls="tp-2" data-idx="2">PHS-Africa<span class="trust__arrow" aria-hidden="true">›</span></button>
-            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-3" aria-controls="tp-3" data-idx="3">Reliance Chemicals<span class="trust__arrow" aria-hidden="true">›</span></button>
-            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-4" aria-controls="tp-4" data-idx="4">Golden Marketing<span class="trust__arrow" aria-hidden="true">›</span></button>
-            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-5" aria-controls="tp-5" data-idx="5">Kaniz Apartments<span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab is-active" role="tab" aria-selected="true" id="tt-0" aria-controls="tp-0" data-idx="0"><span class="trust__avatar" style="--bg:#673de6" aria-hidden="true">AI</span><span class="trust__tab-name">Avenue Insurance Brokers</span><span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-1" aria-controls="tp-1" data-idx="1"><span class="trust__avatar" style="--bg:#00b090" aria-hidden="true">SI</span><span class="trust__tab-name">Stallion Insurance Brokers Limited</span><span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-2" aria-controls="tp-2" data-idx="2"><span class="trust__avatar" style="--bg:#fc5185" aria-hidden="true">PA</span><span class="trust__tab-name">PHS-Africa</span><span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-3" aria-controls="tp-3" data-idx="3"><span class="trust__avatar" style="--bg:#5025d1" aria-hidden="true">RC</span><span class="trust__tab-name">Reliance Chemicals</span><span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-4" aria-controls="tp-4" data-idx="4"><span class="trust__avatar" style="--bg:#e8a33d" aria-hidden="true">GM</span><span class="trust__tab-name">Golden Marketing</span><span class="trust__arrow" aria-hidden="true">›</span></button>
+            <button class="trust__tab" role="tab" aria-selected="false" tabindex="-1" id="tt-5" aria-controls="tp-5" data-idx="5"><span class="trust__avatar" style="--bg:#2b8a8f" aria-hidden="true">KA</span><span class="trust__tab-name">Kaniz Apartments</span><span class="trust__arrow" aria-hidden="true">›</span></button>
           </div>
 
           <div class="trust__panels">
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel is-active" role="tabpanel" id="tp-0" aria-labelledby="tt-0">
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">From secure client portals to hardened SSL and DNS, BlacTec handles our infrastructure so we can focus entirely on our clients. Dependable and always responsive.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/avenue-insurance.png" alt="Avenue Insurance Brokers" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/avenue-insurance.png" alt="Avenue Insurance Brokers" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">Management</span><span class="trust__role">Avenue Insurance Brokers</span></span>
               </figcaption>
             </div>
 
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel" role="tabpanel" id="tp-1" aria-labelledby="tt-1" hidden>
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">Reliable, secure and always responsive. BlacTec's engineers keep our digital operations running without a hitch, day in and day out.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/stallion-insurance.png" alt="Stallion Insurance Brokers Limited" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/stallion-insurance.png" alt="Stallion Insurance Brokers Limited" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">Management</span><span class="trust__role">Stallion Insurance Brokers Limited</span></span>
               </figcaption>
             </div>
 
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel" role="tabpanel" id="tp-2" aria-labelledby="tt-2" hidden>
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">They moved our databases to the cloud with zero downtime and set up automated backups we never have to think about. Rock-solid and dependable.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/phs-africa.png" alt="PHS-Africa" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/phs-africa.png" alt="PHS-Africa" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">Operations Team</span><span class="trust__role">PHS-Africa</span></span>
               </figcaption>
             </div>
 
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel" role="tabpanel" id="tp-3" aria-labelledby="tt-3" hidden>
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">Our systems are more resilient than ever. BlacTec's redundant backups and a clean migration gave us complete peace of mind.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/reliance-chemicals.png" alt="Reliance Chemicals" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/reliance-chemicals.png" alt="Reliance Chemicals" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">IT Department</span><span class="trust__role">Reliance Chemicals</span></span>
               </figcaption>
             </div>
 
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel" role="tabpanel" id="tp-4" aria-labelledby="tt-4" hidden>
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">BlacTec delivered a fast, striking website and hosting that simply doesn't go down. Our online presence finally matches the quality of our work.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/golden-marketing.png" alt="Golden Marketing" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/golden-marketing.png" alt="Golden Marketing" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">Marketing Team</span><span class="trust__role">Golden Marketing</span></span>
               </figcaption>
             </div>
 
-            <!-- TODO: replace placeholder quote with a real client testimonial -->
             <div class="trust__panel" role="tabpanel" id="tp-5" aria-labelledby="tt-5" hidden>
+              <span class="trust__badge"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 12.5l2.2 2.2L16 9.5M12 3l7.5 3v5c0 4.6-3.2 8.9-7.5 10-4.3-1.1-7.5-5.4-7.5-10V6L12 3Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Verified client</span>
               <span class="trust__qmark" aria-hidden="true">&ldquo;</span>
               <blockquote class="trust__quote">Prospective tenants find us instantly and the site looks beautiful on every device. BlacTec built and hosts exactly what we needed.</blockquote>
               <figcaption class="trust__by">
-                <img class="trust__logo" src="assets/logos/kaniz-apartments.jpg" alt="Kaniz Apartments" loading="lazy" />
+                <span class="trust__logo-frame"><img class="trust__logo" src="assets/logos/kaniz-apartments.jpg" alt="Kaniz Apartments" loading="lazy" /></span>
                 <span class="trust__by-text"><span class="trust__author">Management</span><span class="trust__role">Kaniz Apartments</span></span>
               </figcaption>
             </div>
@@ -698,10 +706,61 @@
         </div>
       </div>
     </section>
+    <!-- SECTION 11.5 — Quote / lead capture -->
+    <section class="quote" id="contact">
+      <div class="container quote__inner">
+        <div class="quote__copy reveal">
+          <p class="eyebrow">Get a quote</p>
+          <h2 class="section-title section-title--left">Tell us about your project</h2>
+          <p class="quote__lead">Share a few details below and a BlacTec engineer will follow up, usually in under 15 minutes during business hours.</p>
+          <ul class="quote__channels">
+            <li><a href="tel:+256750870755"><span aria-hidden="true">📞</span> +256 750 870755</a></li>
+            <li><a href="mailto:info@blactec.ug"><span aria-hidden="true">✉️</span> info@blactec.ug</a></li>
+            <li><a href="https://wa.me/256750870755?text=Hello%20BlacTec" target="_blank" rel="noopener"><span aria-hidden="true">💬</span> Chat on WhatsApp</a></li>
+          </ul>
+        </div>
+
+        <form class="quote__form reveal" id="quoteForm" novalidate>
+          <div class="quote__row">
+            <label class="quote__field">
+              <span>Name</span>
+              <input type="text" name="name" id="quoteName" required autocomplete="name" />
+            </label>
+            <label class="quote__field">
+              <span>Email</span>
+              <input type="email" name="email" id="quoteEmail" required autocomplete="email" />
+            </label>
+          </div>
+          <div class="quote__row">
+            <label class="quote__field">
+              <span>Phone <em>(optional)</em></span>
+              <input type="tel" name="phone" id="quotePhone" autocomplete="tel" />
+            </label>
+            <label class="quote__field">
+              <span>Service</span>
+              <select name="service" id="quoteService">
+                <option value="Web Hosting">Web Hosting</option>
+                <option value="Domains &amp; Transfers">Domains &amp; Transfers</option>
+                <option value="Website Design &amp; Development">Website Design &amp; Development</option>
+                <option value="Cloud &amp; Migration">Cloud &amp; Migration</option>
+                <option value="Managed IT">Managed IT</option>
+                <option value="Not sure yet">Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <label class="quote__field">
+            <span>Tell us more</span>
+            <textarea name="message" id="quoteMessage" rows="4" placeholder="What are you looking to do?"></textarea>
+          </label>
+          <button class="btn btn--primary btn--block" type="submit">Send request</button>
+          <p class="quote__note">Sending opens your email app with these details addressed to info@blactec.ug — prefer chat? Use WhatsApp instead.</p>
+        </form>
+      </div>
+    </section>
   </main>
 
   <!-- SECTION 12 — Footer -->
-  <footer class="footer" id="contact">
+  <footer class="footer">
     <div class="container footer__grid">
       <div class="footer__col footer__col--brand">
         <a href="#top" class="logo logo--light">
@@ -746,17 +805,17 @@
       <div class="footer__col">
         <h4 class="footer__h">Legal</h4>
         <ul>
-          <li><a href="#">Privacy Policy</a></li>
-          <li><a href="#">Terms of Service</a></li>
-          <li><a href="#">Acceptable Use</a></li>
-          <li><a href="#">Refund Policy</a></li>
+          <li><a href="privacy.html">Privacy Policy</a></li>
+          <li><a href="terms.html">Terms of Service</a></li>
+          <li><a href="acceptable-use.html">Acceptable Use</a></li>
+          <li><a href="refund-policy.html">Refund Policy</a></li>
         </ul>
       </div>
 
       <div class="footer__col">
         <h4 class="footer__h">Support</h4>
         <ul>
-          <li><a href="#">Support Portal</a></li>
+          <li><a href="#contact">Contact Support</a></li>
           <li><a href="https://wa.me/256750870755?text=Hello%20BlacTec" target="_blank" rel="noopener">WhatsApp</a></li>
         </ul>
         <p class="footer__hours">Mon–Fri 8AM–6PM<br>Sat 9AM–2PM EAT</p>
@@ -767,10 +826,10 @@
       <div class="container footer__bar-inner">
         <p>© 2026 BlacTec Technologies Ltd. All rights reserved.</p>
         <div class="footer__social" aria-label="Social links">
-          <a href="#" aria-label="LinkedIn"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H19v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H11z"/></svg></a>
-          <a href="#" aria-label="X"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2h3.3l-7.2 8.2L23.5 22h-6.6l-5.2-6.8L5.7 22H2.4l7.7-8.8L2 2h6.8l4.7 6.2zm-1.2 18h1.8L7.4 3.9H5.5z"/></svg></a>
-          <a href="#" aria-label="Facebook"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 22v-8h2.7l.4-3.1H13V8.9c0-.9.25-1.5 1.5-1.5H16V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H7.1V14H9.8v8z"/></svg></a>
-          <a href="#" aria-label="Instagram"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.25.15 4.6 1.5 4.75 4.75.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.15 3.25-1.5 4.6-4.75 4.75-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.25-.15-4.6-1.5-4.75-4.75C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9C2.42 3.85 3.77 2.5 7.02 2.35 8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 100 13.4 6.7 6.7 0 000-13.4zm0 11a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zM18.4 5a1.6 1.6 0 100 3.1 1.6 1.6 0 000-3.1z"/></svg></a>
+          <a href="https://www.linkedin.com/company/blactec" aria-label="LinkedIn" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 100 5 2.5 2.5 0 000-5zM3 9h4v12H3zM9 9h3.8v1.7h.05c.53-1 1.83-2.05 3.77-2.05 4.03 0 4.78 2.65 4.78 6.1V21H19v-5.4c0-1.29-.02-2.95-1.8-2.95-1.8 0-2.08 1.4-2.08 2.85V21H11z"/></svg></a>
+          <a href="https://x.com/blactec" aria-label="X" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2h3.3l-7.2 8.2L23.5 22h-6.6l-5.2-6.8L5.7 22H2.4l7.7-8.8L2 2h6.8l4.7 6.2zm-1.2 18h1.8L7.4 3.9H5.5z"/></svg></a>
+          <a href="https://www.facebook.com/blactec" aria-label="Facebook" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M13 22v-8h2.7l.4-3.1H13V8.9c0-.9.25-1.5 1.5-1.5H16V4.6c-.3 0-1.2-.1-2.3-.1-2.3 0-3.9 1.4-3.9 4v2.3H7.1V14H9.8v8z"/></svg></a>
+          <a href="https://www.instagram.com/blactec" aria-label="Instagram" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.25.15 4.6 1.5 4.75 4.75.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.15 3.25-1.5 4.6-4.75 4.75-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.25-.15-4.6-1.5-4.75-4.75C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9C2.42 3.85 3.77 2.5 7.02 2.35 8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 100 13.4 6.7 6.7 0 000-13.4zm0 11a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zM18.4 5a1.6 1.6 0 100 3.1 1.6 1.6 0 000-3.1z"/></svg></a>
           <a href="https://wa.me/256750870755" aria-label="WhatsApp" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2a10 10 0 00-8.6 15l-1.3 4.7L7 20.4A10 10 0 1012 2zm0 18a8 8 0 01-4.1-1.1l-.3-.2-2.5.65.67-2.43-.2-.3A8 8 0 1112 20zm4.4-6c-.24-.12-1.42-.7-1.64-.78-.22-.08-.38-.12-.54.12-.16.24-.62.78-.76.94-.14.16-.28.18-.52.06a6.5 6.5 0 01-1.92-1.18 7.2 7.2 0 01-1.33-1.65c-.14-.24 0-.37.1-.49.1-.1.24-.28.36-.42.12-.14.16-.24.24-.4.08-.16.04-.3-.02-.42-.06-.12-.54-1.3-.74-1.78-.2-.47-.4-.4-.54-.41h-.46c-.16 0-.42.06-.64.3-.22.24-.84.82-.84 2s.86 2.32.98 2.48c.12.16 1.7 2.6 4.12 3.64.58.25 1.03.4 1.38.51.58.18 1.1.16 1.52.1.46-.07 1.42-.58 1.62-1.14.2-.56.2-1.04.14-1.14-.06-.1-.22-.16-.46-.28z"/></svg></a>
         </div>
         <div class="footer__pay" aria-label="Accepted payments">

@@ -65,9 +65,15 @@ function formatPrice(value: number): string {
 class Toast {
   private readonly el: HTMLElement;
   private timer: number | undefined;
+  private quoteForm: QuoteForm | null = null;
 
   constructor(el: HTMLElement) {
     this.el = el;
+  }
+
+  /** Wired after QuoteForm exists so lead buttons can prefill it. */
+  public attachQuoteForm(form: QuoteForm): void {
+    this.quoteForm = form;
   }
 
   public show(message: string): void {
@@ -81,13 +87,85 @@ class Toast {
     }, 3200);
   }
 
-  /** Standard conversion cue: toast + smooth scroll to the contact section. */
-  public fireLead(): void {
+  /** Standard conversion cue: toast + prefill + smooth scroll to the quote form. */
+  public fireLead(context?: string): void {
     this.show('Great choice — tell us about your project below 👇');
+    if (this.quoteForm) {
+      this.quoteForm.prefill(context);
+    }
     const contact = document.getElementById('contact');
     if (contact) {
       contact.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
     }
+  }
+}
+
+/* ============================================================
+   Quote form — client-side lead capture, no backend required.
+   Submits via mailto: so requests are never lost; swap `submit()`
+   for a real endpoint (Formspree, serverless function, etc.) once one exists.
+   ============================================================ */
+
+class QuoteForm {
+  private readonly form: HTMLFormElement;
+  private readonly nameInput: HTMLInputElement;
+  private readonly emailInput: HTMLInputElement;
+  private readonly phoneInput: HTMLInputElement;
+  private readonly serviceSelect: HTMLSelectElement;
+  private readonly messageInput: HTMLTextAreaElement;
+  private readonly toast: Toast;
+
+  constructor(form: HTMLFormElement, toast: Toast) {
+    this.form = form;
+    this.toast = toast;
+    this.nameInput = qs<HTMLInputElement>('#quoteName', form) as HTMLInputElement;
+    this.emailInput = qs<HTMLInputElement>('#quoteEmail', form) as HTMLInputElement;
+    this.phoneInput = qs<HTMLInputElement>('#quotePhone', form) as HTMLInputElement;
+    this.serviceSelect = qs<HTMLSelectElement>('#quoteService', form) as HTMLSelectElement;
+    this.messageInput = qs<HTMLTextAreaElement>('#quoteMessage', form) as HTMLTextAreaElement;
+    this.bind();
+  }
+
+  /** Called by lead buttons across the page to pre-fill context before the form comes into view. */
+  public prefill(context?: string): void {
+    if (context && this.messageInput.value.trim().length === 0) {
+      this.messageInput.value = context;
+    }
+    window.setTimeout(() => this.nameInput.focus({ preventScroll: true }), 500);
+  }
+
+  private bind(): void {
+    this.form.addEventListener('submit', (event: SubmitEvent) => {
+      event.preventDefault();
+      this.submit();
+    });
+  }
+
+  private submit(): void {
+    if (!this.form.reportValidity()) {
+      return;
+    }
+    const name = this.nameInput.value.trim();
+    const email = this.emailInput.value.trim();
+    const phone = this.phoneInput.value.trim();
+    const service = this.serviceSelect.value;
+    const message = this.messageInput.value.trim();
+
+    const subject = `Quote request from ${name} — ${service}`;
+    const body = [
+      `Name: ${name}`,
+      `Email: ${email}`,
+      phone.length > 0 ? `Phone: ${phone}` : '',
+      `Service: ${service}`,
+      '',
+      message.length > 0 ? message : '(no additional details provided)',
+    ]
+      .filter((line) => line.length > 0)
+      .join('\n');
+
+    window.location.href = `mailto:info@blactec.ug?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+    this.toast.show('Opening your email app — send it through and we’ll reply shortly 👋');
+    this.form.reset();
   }
 }
 
@@ -196,6 +274,7 @@ class DomainChecker {
   private renderResult(data: DomainResult): void {
     const full = `${data.domain}${data.tld}`;
     if (data.status === 'available') {
+      const context = escapeHtml(`I'd like to register ${full} ($${formatPrice(data.priceUsd)}/yr).`);
       this.result.innerHTML = `
         <div class="result-card result-card--ok">
           <div class="result-card__top">
@@ -204,19 +283,23 @@ class DomainChecker {
           </div>
           <div class="result-card__top">
             <span class="result-card__price">$${formatPrice(data.priceUsd)} <small>/ year</small></span>
-            <button class="btn btn--primary" data-lead type="button">Add to Cart</button>
+            <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Add to Cart</button>
           </div>
         </div>`;
     } else {
+      const transferContext = escapeHtml(`I'd like to transfer ${full} to BlacTec.`);
+      const supportContext = escapeHtml(`I have a question about ${full}.`);
       const alts = data.alternatives
-        .map(
-          (alt) => `
+        .map((alt) => {
+          const altFull = `${data.domain}${alt.tld}`;
+          const altContext = escapeHtml(`I'd like to register ${altFull} ($${formatPrice(alt.priceUsd)}/yr).`);
+          return `
           <div class="alt">
             <span class="alt__name">${escapeHtml(data.domain)}<b>${escapeHtml(alt.tld)}</b></span>
             <span class="alt__price">$${formatPrice(alt.priceUsd)}/yr</span>
-            <button class="alt__add" data-lead type="button">Add</button>
-          </div>`,
-        )
+            <button class="alt__add" data-lead data-lead-context="${altContext}" type="button">Add</button>
+          </div>`;
+        })
         .join('');
       this.result.innerHTML = `
         <div class="result-card result-card--taken">
@@ -226,8 +309,8 @@ class DomainChecker {
           </div>
           <p class="result-card__price" style="font-weight:400;color:var(--ink-500);font-size:.9rem;margin:0">That domain is already registered — transfer it to us or grab an alternative below.</p>
           <div class="result-card__actions">
-            <button class="btn btn--primary" data-lead type="button">Initiate Transfer</button>
-            <button class="btn btn--secondary" data-lead type="button">Contact Support</button>
+            <button class="btn btn--primary" data-lead data-lead-context="${transferContext}" type="button">Initiate Transfer</button>
+            <button class="btn btn--secondary" data-lead data-lead-context="${supportContext}" type="button">Contact Support</button>
           </div>
           <div class="alts">
             <span class="alts__title">Available alternatives</span>
@@ -237,7 +320,7 @@ class DomainChecker {
     }
 
     qsa<HTMLButtonElement>('[data-lead]', this.result).forEach((btn) => {
-      btn.addEventListener('click', () => this.toast.fireLead());
+      btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
     });
   }
 }
@@ -293,6 +376,7 @@ class PricingRenderer {
     const features = plan.features
       .map((feat) => `<li>${CHECK_SVG}<span>${escapeHtml(feat)}</span></li>`)
       .join('');
+    const context = escapeHtml(`I'm interested in the ${plan.name} plan ($${formatPrice(plan.priceUsd)} ${unitLabel}).`);
     return `
       <article class="plan${plan.popular ? ' plan--popular' : ''}">
         ${ribbon}
@@ -303,7 +387,7 @@ class PricingRenderer {
           <span class="plan__unit">${unitLabel}</span>
         </div>
         <ul class="plan__features">${features}</ul>
-        <button class="${btnClass}" data-lead type="button">Choose plan</button>
+        <button class="${btnClass}" data-lead data-lead-context="${context}" type="button">Choose plan</button>
       </article>`;
   }
 }
@@ -329,7 +413,7 @@ class PricingTabs {
   /** Cards are rendered after tabs init, so bind lead buttons across every panel. */
   private bindLeadButtons(): void {
     qsa<HTMLButtonElement>('.tab-panel [data-lead]').forEach((btn) => {
-      btn.addEventListener('click', () => this.toast.fireLead());
+      btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
     });
   }
 
@@ -801,6 +885,11 @@ class MobileMenu {
 function bootstrap(): void {
   const toastEl = document.getElementById('toast');
   const toast = new Toast(toastEl as HTMLElement);
+
+  const quoteForm = qs<HTMLFormElement>('#quoteForm');
+  if (quoteForm) {
+    toast.attachQuoteForm(new QuoteForm(quoteForm, toast));
+  }
 
   // Pricing cards must render before we wire their lead buttons.
   new PricingRenderer().render();
