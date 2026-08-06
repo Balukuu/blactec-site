@@ -442,8 +442,27 @@ input, select, button { font: inherit; }
 .pcard p { color: var(--ink-500); font-size: .96rem; }
 .pcard__tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .2rem; }
 .pcard__tags li { font-size: .76rem; font-weight: 600; color: var(--ink-700); background: rgba(103,61,230,.05); border: 1px solid var(--primary-100); border-radius: 999px; padding: .3rem .7rem; }
+.pcard__tags--center { justify-content: center; }
+.pcard__price { font-weight: 800; color: var(--primary-700); font-size: .95rem; }
 .link-arrow__ico { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s cubic-bezier(.4,0,.2,1); }
 .link-arrow:hover .link-arrow__ico { transform: translateX(4px); }
+
+/* ============================================================
+   Feature highlights (icon grid)
+   ============================================================ */
+.features { background: var(--surface-1); padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem 1.5rem; margin-top: 3rem; }
+.feature { display: flex; align-items: flex-start; gap: 1rem; }
+.feature__title { font-size: 1rem; font-weight: 700; color: var(--ink-900); margin-bottom: .25rem; }
+.feature p { color: var(--ink-500); font-size: .88rem; }
+
+/* ============================================================
+   Platforms & technology badges
+   ============================================================ */
+.platforms { padding: clamp(3.5rem, 8vw, 6rem) 0; }
+.platforms__group { margin-top: 2rem; }
+.platforms__group + .platforms__group { margin-top: 1.6rem; }
+.platforms__label { font-size: .78rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--ink-500); margin-bottom: .8rem; text-align: center; }
 
 /* ============================================================
    Stats band
@@ -461,10 +480,19 @@ input, select, button { font: inherit; }
 .pricing { padding: clamp(3.5rem, 8vw, 6rem) 0; }
 .pricing__reassure { display: flex; flex-wrap: wrap; justify-content: center; gap: .6rem 1.6rem; margin: 1.4rem 0 2.5rem; color: var(--ink-500); font-weight: 500; font-size: .95rem; }
 
-.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; background: var(--surface-1); padding: 6px; border-radius: 999px; width: fit-content; margin: 0 auto 2.5rem; max-width: 100%; }
+.tabs { display: flex; flex-wrap: wrap; justify-content: center; gap: .5rem; background: var(--surface-1); padding: 6px; border-radius: 999px; width: fit-content; margin: 0 auto 1.2rem; max-width: 100%; }
 .tab { padding: .7rem 1.4rem; border-radius: 999px; font-weight: 700; color: var(--ink-500); transition: var(--transition); white-space: nowrap; }
 .tab:hover { color: var(--primary-600); }
 .tab.is-active { background: #fff; color: var(--primary-700); box-shadow: var(--shadow-card); }
+
+.currency-toggle { display: flex; align-items: center; justify-content: center; gap: .6rem; margin: 0 auto 2.5rem; flex-wrap: wrap; }
+.currency-toggle__label { font-size: .85rem; font-weight: 600; color: var(--ink-500); }
+.currency-toggle__btn {
+  padding: .4rem 1.1rem; border-radius: 999px; font-weight: 700; font-size: .88rem;
+  color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); transition: var(--transition);
+}
+.currency-toggle__btn:hover { color: var(--primary-600); }
+.currency-toggle__btn.is-active { background: var(--primary-600); color: #fff; border-color: var(--primary-600); }
 
 .tab-panel { display: none; }
 .tab-panel.is-active { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 1.3rem; align-items: stretch; animation: fadeUp .4s ease; }
@@ -483,8 +511,8 @@ input, select, button { font: inherit; }
 }
 .plan__name { font-size: 1.2rem; font-weight: 700; color: var(--ink-900); }
 .plan__desc { font-size: .86rem; color: var(--ink-500); margin-top: -.5rem; min-height: 2.4em; }
-.plan__price { display: flex; align-items: baseline; gap: .2rem; }
-.plan__amount { font-size: 2.4rem; font-weight: 1000; color: var(--ink-900); letter-spacing: -.02em; }
+.plan__price { display: flex; align-items: baseline; gap: .3rem; flex-wrap: wrap; }
+.plan__amount { font-size: 1.9rem; font-weight: 1000; color: var(--ink-900); letter-spacing: -.02em; word-break: break-word; }
 .plan__unit { font-size: .95rem; font-weight: 400; color: var(--ink-500); }
 .plan__features { display: flex; flex-direction: column; gap: .65rem; flex: 1; }
 .plan__features li { display: flex; gap: .55rem; align-items: flex-start; font-size: .92rem; color: var(--ink-700); }
@@ -802,6 +830,7 @@ input, select, button { font: inherit; }
   .hero__art { max-width: 460px; margin-inline: auto; width: 100%; }
   .pillars__grid { grid-template-columns: repeat(2, 1fr); }
   .pcard--wide { grid-column: span 2; }
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
   .trust { grid-template-columns: 1fr; }
   .trust__tabs { flex-direction: row; min-width: 0; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); padding: 1rem; }
   .trust__tab { white-space: nowrap; flex: none; }
@@ -823,6 +852,7 @@ input, select, button { font: inherit; }
 @media (max-width: 680px) {
   .pillars__grid { grid-template-columns: 1fr; }
   .pcard--wide { grid-column: span 1; }
+  .feature-grid { grid-template-columns: 1fr; }
   .logowall { grid-template-columns: repeat(2, 1fr); }
   .trust__qmark { font-size: 3rem; }
   .footer__grid { grid-template-columns: 1fr 1fr; }

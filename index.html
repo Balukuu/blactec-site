@@ -34,7 +34,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700;9..40,1000&display=swap" />
 
-  <link rel="stylesheet" href="styles.css?v=1.1.0" />
+  <link rel="stylesheet" href="styles.css?v=1.3.0" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -94,7 +94,7 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "What's included in your hosting plans?", "acceptedAnswer": { "@type": "Answer", "text": "Every BlacTec plan runs on ultrafast NVMe storage with unlimited bandwidth, cPanel, free SSL provisioning and 24/7 engineer-led support. Higher tiers add dedicated resources, enhanced security and priority SLA." } },
+      { "@type": "Question", "name": "What's included in your hosting plans?", "acceptedAnswer": { "@type": "Answer", "text": "Every BlacTec plan runs on ultrafast NVMe storage with cPanel, a free SSL certificate and 24/7 engineer-led support. Bandwidth, storage, email accounts and MySQL databases scale with each tier, and our Enterprise plan includes unlimited bandwidth under fair usage." } },
       { "@type": "Question", "name": "Do you register .ug domains?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside global TLDs like .com, .org and .net, and we handle the full DNS lifecycle for you." } },
       { "@type": "Question", "name": "Can you migrate my existing site or email?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. We perform zero-downtime migrations of websites, live databases and legacy email histories from your old host, with automated backups running from day one." } },
       { "@type": "Question", "name": "Which cloud platforms do you support?", "acceptedAnswer": { "@type": "Answer", "text": "We provision, migrate and manage workloads across Google Cloud Platform, Microsoft Azure and AWS, and integrate Google Workspace, Microsoft 365 and Zoho Mail." } },
@@ -118,7 +118,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.1.0"></script>
+  <script defer src="dist/main.js?v=1.3.0"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -168,9 +168,10 @@
                 </div>
                 <div class="mega__col">
                   <p class="mega__eyebrow">Hosting &amp; Cloud</p>
-                  <a class="mega__item" href="#pricing"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/></svg></span><span><strong>NVMe Web Hosting</strong><em>Ultrafast, secure, unlimited</em></span></a>
+                  <a class="mega__item" href="hosting.html"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/></svg></span><span><strong>NVMe Web Hosting</strong><em>Ultrafast, secure, scalable</em></span></a>
+                  <a class="mega__item" href="hosting.html#compare"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5-1.6A4 4 0 0 1 17.5 19h-11Z"/></svg></span><span><strong>VPS &amp; Dedicated Servers</strong><em>Root access, fully managed</em></span></a>
                   <a class="mega__item" href="#pillars"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5-1.6A4 4 0 0 1 17.5 19h-11Z"/></svg></span><span><strong>Multi-Cloud</strong><em>GCP · Azure · AWS</em></span></a>
-                  <a class="mega__item" href="#pricing"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><strong>SSL &amp; Encryption</strong><em>DV, OV &amp; EV certificates</em></span></a>
+                  <a class="mega__item" href="hosting.html#compare"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><strong>SSL &amp; Encryption</strong><em>DV, OV &amp; EV certificates</em></span></a>
                 </div>
                 <div class="mega__col">
                   <p class="mega__eyebrow">Continuity</p>
@@ -188,7 +189,7 @@
           </li>
           <li class="nav__item"><a class="nav__link" href="#managed-it">Managed IT &amp; Support</a></li>
           <li class="nav__item"><a class="nav__link" href="#portfolio">Portfolio</a></li>
-          <li class="nav__item"><a class="nav__link" href="#pricing">Pricing</a></li>
+          <li class="nav__item"><a class="nav__link" href="hosting.html">Hosting Plans</a></li>
         </ul>
       </nav>
 
@@ -217,14 +218,14 @@
         <div class="m-acc__body">
           <a href="#pillars">Website Design &amp; Development</a>
           <a href="#hero-search">Domains &amp; Email</a>
-          <a href="#pricing">Hosting &amp; Cloud</a>
+          <a href="hosting.html">Hosting &amp; Cloud</a>
           <a href="#migration">Migrations &amp; Backup</a>
           <a href="#managed-it">Managed IT</a>
         </div>
       </details>
       <a class="mobile-menu__link" href="#managed-it">Managed IT &amp; Support</a>
       <a class="mobile-menu__link" href="#portfolio">Portfolio</a>
-      <a class="mobile-menu__link" href="#pricing">Pricing</a>
+      <a class="mobile-menu__link" href="hosting.html">Hosting Plans</a>
       <a class="btn btn--primary btn--block" href="#contact">Get a Quote</a>
       <a class="phone-chip phone-chip--mobile" href="tel:+256750870755">📞 +256 750 870755</a>
     </nav>
@@ -442,10 +443,18 @@
           <button class="tab" role="tab" id="tab-security" aria-selected="false" aria-controls="panel-security" data-panel="security" tabindex="-1">Security &amp; SSL</button>
         </div>
 
+        <div class="currency-toggle" role="group" aria-label="Display prices in" id="currencyToggle">
+          <span class="currency-toggle__label">Show prices in</span>
+          <button class="currency-toggle__btn is-active" type="button" data-currency="UGX" aria-pressed="true">UGX</button>
+          <button class="currency-toggle__btn" type="button" data-currency="USD" aria-pressed="false">USD</button>
+        </div>
+
         <div class="tab-panel is-active" role="tabpanel" id="panel-hosting" aria-labelledby="tab-hosting" data-cards="hosting"></div>
         <div class="tab-panel" role="tabpanel" id="panel-workspace" aria-labelledby="tab-workspace" data-cards="workspace" hidden></div>
         <div class="tab-panel" role="tabpanel" id="panel-reseller" aria-labelledby="tab-reseller" data-cards="reseller" hidden></div>
         <div class="tab-panel" role="tabpanel" id="panel-security" aria-labelledby="tab-security" data-cards="security" hidden></div>
+
+        <p style="text-align:center;margin-top:2.5rem;color:var(--ink-500)">Need more power? <a class="link-arrow" style="display:inline-flex" href="hosting.html#compare"><span>Compare VPS &amp; Dedicated Server plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
       </div>
     </section>
 
@@ -665,7 +674,7 @@
         <div class="accordion" id="accordion">
           <div class="acc">
             <button class="acc__q" aria-expanded="false">What's included in your hosting plans?<span class="acc__chev">+</span></button>
-            <div class="acc__a"><p>Every plan runs on ultrafast NVMe storage with unlimited bandwidth, cPanel, free SSL provisioning and 24/7 engineer-led support. Higher tiers add dedicated resources, an enhanced security pack and priority SLA response.</p></div>
+            <div class="acc__a"><p>Every plan runs on ultrafast NVMe storage with cPanel, a free SSL certificate and 24/7 engineer-led support. Storage, bandwidth, email accounts and MySQL databases all scale with your tier, and Enterprise includes unlimited bandwidth under fair usage.</p></div>
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">Do you register .ug domains?<span class="acc__chev">+</span></button>
@@ -784,7 +793,7 @@
         <ul>
           <li><a href="#pillars">Web &amp; App Development</a></li>
           <li><a href="#pillars">Identity &amp; Email</a></li>
-          <li><a href="#pricing">Hosting &amp; Cloud</a></li>
+          <li><a href="hosting.html">Hosting &amp; Cloud</a></li>
           <li><a href="#migration">Continuity &amp; Backup</a></li>
           <li><a href="#managed-it">Managed IT</a></li>
         </ul>
@@ -796,9 +805,10 @@
           <li><a href="#hero-search">Domain Search</a></li>
           <li><a href="#hero-search">.UG Domains</a></li>
           <li><a href="#hero-search">Transfers</a></li>
-          <li><a href="#pricing">Web Hosting</a></li>
-          <li><a href="#pricing">Reseller Hosting</a></li>
-          <li><a href="#pricing">SSL Certificates</a></li>
+          <li><a href="hosting.html#compare">Web Hosting</a></li>
+          <li><a href="hosting.html#compare">VPS &amp; Dedicated Servers</a></li>
+          <li><a href="hosting.html#compare">Reseller Hosting</a></li>
+          <li><a href="hosting.html#compare">SSL Certificates</a></li>
         </ul>
       </div>
 

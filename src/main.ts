@@ -20,18 +20,44 @@ interface DomainResult {
   alternatives: TldOption[];
 }
 
-type PriceUnit = 'year' | 'user/year';
+type PriceUnit = 'year' | 'user/year' | 'month';
+
+type Currency = 'UGX' | 'USD';
 
 interface PricingPlan {
   name: string;
   desc: string;
-  priceUsd: number;
+  currency: Currency;
+  price: number;
   unit: PriceUnit;
   features: string[];
   popular?: boolean;
 }
 
-type PanelKey = 'hosting' | 'workspace' | 'reseller' | 'security';
+type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'reseller' | 'security';
+
+/** Approximate market rate — update as the shilling moves against the dollar. */
+const UGX_PER_USD = 3700;
+
+function formatUgx(value: number): string {
+  return `UGX ${Math.round(value).toLocaleString('en-US')}`;
+}
+
+function formatUsd(value: number): string {
+  return `$${value.toFixed(2)}`;
+}
+
+function formatMoney(value: number, currency: Currency): string {
+  return currency === 'UGX' ? formatUgx(value) : formatUsd(value);
+}
+
+/** Converts a plan's native price into the requested display currency. */
+function convertPrice(plan: Pick<PricingPlan, 'currency' | 'price'>, target: Currency): number {
+  if (plan.currency === target) {
+    return plan.price;
+  }
+  return plan.currency === 'UGX' ? plan.price / UGX_PER_USD : plan.price * UGX_PER_USD;
+}
 
 /* ---------- Tiny DOM helpers (null-narrowing) ---------- */
 
@@ -331,27 +357,94 @@ class DomainChecker {
 
 const PRICING: Record<PanelKey, PricingPlan[]> = {
   hosting: [
-    { name: 'Economy', desc: 'A tidy home for your first website.', priceUsd: 17.75, unit: 'year', features: ['1 GB SSD storage', 'cPanel control panel', 'Unlimited bandwidth', '1 domain'] },
-    { name: 'Deluxe', desc: 'Room to grow with extra protection.', priceUsd: 28.40, unit: 'year', features: ['5 GB SSD storage', 'Enhanced security pack', 'Unlimited bandwidth', '3 domains'] },
-    { name: 'Premium', desc: 'Our best-value performance tier.', priceUsd: 42.60, unit: 'year', popular: true, features: ['10 GB SSD storage', 'Optimized server-side speed', 'Unlimited bandwidth'] },
-    { name: 'Ultra', desc: 'Dedicated resources for busy sites.', priceUsd: 53.25, unit: 'year', features: ['15 GB SSD storage', 'Dedicated resources', 'Maximum performance'] },
-    { name: 'Corporate', desc: 'Elite NVMe with priority support.', priceUsd: 81.60, unit: 'year', features: ['20 GB premium NVMe storage', 'Elite performance configuration', 'Priority SLA support'] },
+    {
+      name: 'Starter Hosting', desc: 'Perfect for personal websites and small businesses.',
+      currency: 'UGX', price: 100000, unit: 'year',
+      features: ['1 GB SSD storage', '10 GB monthly bandwidth', '1 website', '5 email accounts', '1 MySQL database', 'Free SSL certificate', 'cPanel control panel', 'Standard technical support'],
+    },
+    {
+      name: 'Basic Hosting', desc: 'Ideal for growing business websites.',
+      currency: 'UGX', price: 150000, unit: 'year',
+      features: ['5 GB SSD storage', '50 GB monthly bandwidth', '1 website', '20 email accounts', '5 MySQL databases', 'Free SSL certificate', 'cPanel control panel', 'Standard technical support'],
+    },
+    {
+      name: 'Business Hosting', desc: 'Suitable for business websites with higher resource needs.',
+      currency: 'UGX', price: 200000, unit: 'year', popular: true,
+      features: ['10 GB SSD storage', '100 GB monthly bandwidth', '1 website', '50 email accounts', '10 MySQL databases', 'Free SSL certificate', 'cPanel control panel', 'Priority technical support'],
+    },
+    {
+      name: 'Professional Hosting', desc: 'Designed for corporate websites and online platforms.',
+      currency: 'UGX', price: 250000, unit: 'year',
+      features: ['15 GB SSD storage', '200 GB monthly bandwidth', '1 website', '100 email accounts', 'Unlimited MySQL databases', 'Free SSL certificate', 'cPanel control panel', 'Priority technical support'],
+    },
+    {
+      name: 'Enterprise Hosting', desc: 'For organizations requiring more resources and reliability.',
+      currency: 'UGX', price: 350000, unit: 'year',
+      features: ['20 GB SSD storage', 'Unlimited bandwidth (fair usage policy)', '1 website', 'Unlimited email accounts', 'Unlimited MySQL databases', 'Free SSL certificate', 'cPanel control panel', 'Premium technical support'],
+    },
+  ],
+  vps: [
+    {
+      name: 'Starter VPS', desc: 'Entry-level root-access power for small apps and test environments.',
+      currency: 'UGX', price: 360000, unit: 'month',
+      features: ['1 vCPU core', '2 GB RAM', '60 GB NVMe SSD', '100 Mbps unmetered bandwidth', 'Full root access', 'Free dedicated IPv4', 'Choice of Linux OS', 'Weekly snapshot backups'],
+    },
+    {
+      name: 'Business VPS', desc: 'Balanced resources for production sites and growing workloads.',
+      currency: 'UGX', price: 720000, unit: 'month', popular: true,
+      features: ['3 vCPU cores', '4 GB RAM', '100 GB NVMe SSD', '200 Mbps unmetered bandwidth', 'Full root access', 'Free dedicated IPv4', 'Choice of Linux OS', 'Daily snapshot backups'],
+    },
+    {
+      name: 'Professional VPS', desc: 'Serious compute for busy applications and databases.',
+      currency: 'UGX', price: 960000, unit: 'month',
+      features: ['4 vCPU cores', '8 GB RAM', '160 GB NVMe SSD', '300 Mbps unmetered bandwidth', 'Full root access', 'Free dedicated IPv4', 'Choice of Linux OS', 'Daily snapshot backups'],
+    },
+    {
+      name: 'Advanced VPS', desc: 'Maximum VPS resources for demanding, high-traffic platforms.',
+      currency: 'UGX', price: 1680000, unit: 'month',
+      features: ['4 vCPU cores', '16 GB RAM', '240 GB NVMe SSD', '500 Mbps unmetered bandwidth', 'Full root access', 'Free dedicated IPv4', 'Choice of Linux OS', 'Daily snapshot backups'],
+    },
+  ],
+  dedicated: [
+    {
+      name: 'Deploy Xeon E3', desc: 'Reliable entry-level dedicated power, fully managed.',
+      currency: 'UGX', price: 500000, unit: 'month',
+      features: ['Intel Xeon E3-1230 v3 CPU', '16 GB RAM', '64 GB SSD storage', '20 TB bandwidth on a 1 Gbps port', 'Fully managed service', 'DDoS protection included', 'Choice of OS', 'Root / admin access'],
+    },
+    {
+      name: 'Deploy Xeon E3 Plus', desc: 'More storage headroom on the same reliable platform.',
+      currency: 'UGX', price: 700000, unit: 'month',
+      features: ['Intel Xeon E3-1230 v3 CPU', '16 GB RAM', '256 GB SSD storage', '20 TB bandwidth on a 1 Gbps port', 'Fully managed service', 'DDoS protection included', 'Choice of OS', 'Root / admin access'],
+    },
+    {
+      name: 'Xeon E-2136', desc: 'Hexa-core performance for demanding production workloads.',
+      currency: 'UGX', price: 1000000, unit: 'month', popular: true,
+      features: ['3.3 GHz Hexa-Core Xeon E-2136', '48 GB RAM', '240 GB SSD storage', '20 TB bandwidth on a 1 Gbps port', 'Fully managed service', 'DDoS protection included', 'Choice of OS', 'Root / admin access'],
+    },
+    {
+      name: 'Xeon E-2236', desc: 'Our most powerful server, built for heavy enterprise traffic.',
+      currency: 'UGX', price: 1450000, unit: 'month',
+      features: ['3.4 GHz Hexa-Core Xeon E-2236', '48 GB RAM', '480 GB SSD storage', '20 TB bandwidth on a 1 Gbps port', 'Fully managed service', 'DDoS protection included', 'Choice of OS', 'Root / admin access'],
+    },
   ],
   workspace: [
-    { name: 'Business Starter', desc: 'Professional email for your team.', priceUsd: 113.25, unit: 'user/year', features: ['Professional custom business email', '30 GB secure cloud storage per user', 'HD video meetings up to 100 participants'] },
-    { name: 'Business Standard', desc: 'More storage and richer collaboration.', priceUsd: 226.50, unit: 'user/year', popular: true, features: ['Professional custom email', '2 TB cloud storage per user', 'Enhanced video collaboration (150 participants + cloud recording)'] },
-    { name: 'Business Plus', desc: 'Advanced security, vault & compliance.', priceUsd: 356.15, unit: 'user/year', features: ['Advanced email suite + eDiscovery / retention', '5 TB enterprise storage per user', 'Elite security / Vault controls', 'Meetings up to 250 participants with attendance data'] },
+    { name: 'Business Starter', desc: 'Professional email for your team.', currency: 'USD', price: 113.25, unit: 'user/year', features: ['Professional custom business email', '30 GB secure cloud storage per user', 'HD video meetings up to 100 participants'] },
+    { name: 'Business Standard', desc: 'More storage and richer collaboration.', currency: 'USD', price: 226.50, unit: 'user/year', popular: true, features: ['Professional custom email', '2 TB cloud storage per user', 'Enhanced video collaboration (150 participants + cloud recording)'] },
+    { name: 'Business Plus', desc: 'Advanced security, vault & compliance.', currency: 'USD', price: 356.15, unit: 'user/year', features: ['Advanced email suite + eDiscovery / retention', '5 TB enterprise storage per user', 'Elite security / Vault controls', 'Meetings up to 250 participants with attendance data'] },
   ],
   reseller: [
-    { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', priceUsd: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
-    { name: 'Premium Reseller', desc: 'Full toolkit with daily backups.', priceUsd: 354.80, unit: 'year', popular: true, features: ['20 GB SSD allocations', 'Full WordPress optimization toolkit', 'Automated daily cloud backups'] },
-    { name: 'Supreme Reseller', desc: 'Unlimited clients, global reach.', priceUsd: 532.20, unit: 'year', features: ['30 GB SSD allocations', 'Unlimited corporate client accounts', 'Integrated global CDN'] },
+    { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
+    { name: 'Premium Reseller', desc: 'Full toolkit with daily backups.', currency: 'USD', price: 354.80, unit: 'year', popular: true, features: ['20 GB SSD allocations', 'Full WordPress optimization toolkit', 'Automated daily cloud backups'] },
+    { name: 'Supreme Reseller', desc: 'Unlimited clients, global reach.', currency: 'USD', price: 532.20, unit: 'year', features: ['30 GB SSD allocations', 'Unlimited corporate client accounts', 'Integrated global CDN'] },
   ],
   security: [
-    { name: 'DV SSL Certificate', desc: 'Domain Validation encryption.', priceUsd: 17.75, unit: 'year', features: ['Domain-validated HTTPS', 'Fast automated issuance', 'Browser padlock trust'] },
-    { name: 'OV SSL Certificate', desc: 'Organization Validation trust.', priceUsd: 88.70, unit: 'year', features: ['Verified organization identity', 'Stronger customer assurance', 'Ideal for business sites'] },
-    { name: 'EV SSL Certificate', desc: 'Extended Validation — green trust bar.', priceUsd: 177.40, unit: 'year', features: ['Highest level of validation', 'Green trust bar treatment', 'Maximum buyer confidence'] },
-    { name: 'Automated Cloud Backup', desc: 'Acronis-powered backup pipeline.', priceUsd: 42.60, unit: 'year', features: ['25 GB Acronis sandbox', 'Automated backup pipeline', 'Rapid restore & recovery'] },
+    { name: 'DV SSL Certificate', desc: 'Domain Validation encryption.', currency: 'USD', price: 17.75, unit: 'year', features: ['Domain-validated HTTPS', 'Fast automated issuance', 'Browser padlock trust'] },
+    { name: 'OV SSL Certificate', desc: 'Organization Validation trust.', currency: 'USD', price: 88.70, unit: 'year', features: ['Verified organization identity', 'Stronger customer assurance', 'Ideal for business sites'] },
+    { name: 'EV SSL Certificate', desc: 'Extended Validation — green trust bar.', currency: 'USD', price: 177.40, unit: 'year', features: ['Highest level of validation', 'Green trust bar treatment', 'Maximum buyer confidence'] },
+    { name: 'Automated Cloud Backup', desc: 'Acronis-powered backup pipeline.', currency: 'USD', price: 42.60, unit: 'year', features: ['25 GB Acronis sandbox', 'Automated backup pipeline', 'Rapid restore & recovery'] },
+    { name: 'Website Security Basic', desc: 'Daily malware scanning for a single small site.', currency: 'UGX', price: 50000, unit: 'month', features: ['Scans up to 25 pages daily', 'Malware & blacklist monitoring', 'Automated alert emails'] },
+    { name: 'Website Security Professional', desc: 'Deeper scanning with automatic malware removal.', currency: 'UGX', price: 80000, unit: 'month', popular: true, features: ['Scans up to 100 pages daily', 'Automatic malware removal', 'SQLi & XSS vulnerability scans'] },
+    { name: 'Website Security Premium', desc: 'Full protection with a website firewall for high-traffic sites.', currency: 'UGX', price: 120000, unit: 'month', features: ['Scans up to 500 pages daily', 'Web application firewall', 'DDoS mitigation for your website'] },
   ],
 };
 
@@ -359,6 +452,25 @@ const CHECK_SVG =
   '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="rgba(0,176,144,.14)"/><path d="M7 12.5l3.2 3.2L17 9" stroke="var(--success)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 class PricingRenderer {
+  private readonly toast: Toast;
+  private currency: Currency = 'UGX';
+
+  constructor(toast: Toast) {
+    this.toast = toast;
+  }
+
+  public getCurrency(): Currency {
+    return this.currency;
+  }
+
+  public setCurrency(currency: Currency): void {
+    if (this.currency === currency) {
+      return;
+    }
+    this.currency = currency;
+    this.render();
+  }
+
   public render(): void {
     (Object.keys(PRICING) as PanelKey[]).forEach((key) => {
       const container = qs<HTMLElement>(`[data-cards="${key}"]`);
@@ -367,23 +479,33 @@ class PricingRenderer {
       }
       container.innerHTML = PRICING[key].map((plan) => this.cardHtml(plan)).join('');
     });
+    this.bindLeadButtons();
+  }
+
+  /** Cards are re-rendered on every currency switch, so lead buttons must be rebound each time. */
+  private bindLeadButtons(): void {
+    qsa<HTMLButtonElement>('.tab-panel [data-lead]').forEach((btn) => {
+      btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
+    });
   }
 
   private cardHtml(plan: PricingPlan): string {
-    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : '/ year';
+    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'month' ? '/ month' : '/ year';
     const ribbon = plan.popular ? '<span class="plan__ribbon">★ Most popular</span>' : '';
     const btnClass = plan.popular ? 'btn btn--secondary' : 'btn btn--primary';
     const features = plan.features
       .map((feat) => `<li>${CHECK_SVG}<span>${escapeHtml(feat)}</span></li>`)
       .join('');
-    const context = escapeHtml(`I'm interested in the ${plan.name} plan ($${formatPrice(plan.priceUsd)} ${unitLabel}).`);
+    const amount = convertPrice(plan, this.currency);
+    const priceLabel = formatMoney(amount, this.currency);
+    const context = escapeHtml(`I'm interested in the ${plan.name} plan (${priceLabel} ${unitLabel}).`);
     return `
       <article class="plan${plan.popular ? ' plan--popular' : ''}">
         ${ribbon}
         <h3 class="plan__name">${escapeHtml(plan.name)}</h3>
         <p class="plan__desc">${escapeHtml(plan.desc)}</p>
         <div class="plan__price">
-          <span class="plan__amount">$${formatPrice(plan.priceUsd)}</span>
+          <span class="plan__amount">${priceLabel}</span>
           <span class="plan__unit">${unitLabel}</span>
         </div>
         <ul class="plan__features">${features}</ul>
@@ -392,28 +514,48 @@ class PricingRenderer {
   }
 }
 
+class CurrencyToggle {
+  private readonly buttons: HTMLButtonElement[];
+  private readonly renderer: PricingRenderer;
+
+  constructor(root: HTMLElement, renderer: PricingRenderer) {
+    this.renderer = renderer;
+    this.buttons = qsa<HTMLButtonElement>('.currency-toggle__btn', root);
+    this.bind();
+    this.sync(renderer.getCurrency());
+  }
+
+  private bind(): void {
+    this.buttons.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const currency = btn.dataset['currency'] === 'USD' ? 'USD' : 'UGX';
+        this.renderer.setCurrency(currency);
+        this.sync(currency);
+      });
+    });
+  }
+
+  private sync(active: Currency): void {
+    this.buttons.forEach((btn) => {
+      const selected = btn.dataset['currency'] === active;
+      btn.classList.toggle('is-active', selected);
+      btn.setAttribute('aria-pressed', String(selected));
+    });
+  }
+}
+
 class PricingTabs {
   private readonly tabs: HTMLButtonElement[];
-  private readonly toast: Toast;
 
-  constructor(tablist: HTMLElement, toast: Toast) {
-    this.toast = toast;
+  constructor(tablist: HTMLElement) {
     this.tabs = qsa<HTMLButtonElement>('.tab', tablist);
     this.bind();
-    this.bindLeadButtons();
   }
 
   private bind(): void {
     this.tabs.forEach((tab, index) => {
       tab.addEventListener('click', () => this.activate(index));
       tab.addEventListener('keydown', (event: KeyboardEvent) => this.onKey(event, index));
-    });
-  }
-
-  /** Cards are rendered after tabs init, so bind lead buttons across every panel. */
-  private bindLeadButtons(): void {
-    qsa<HTMLButtonElement>('.tab-panel [data-lead]').forEach((btn) => {
-      btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
     });
   }
 
@@ -892,7 +1034,8 @@ function bootstrap(): void {
   }
 
   // Pricing cards must render before we wire their lead buttons.
-  new PricingRenderer().render();
+  const pricingRenderer = new PricingRenderer(toast);
+  pricingRenderer.render();
 
   const domainForm = qs<HTMLFormElement>('#domainForm');
   if (domainForm) {
@@ -901,7 +1044,12 @@ function bootstrap(): void {
 
   const tablist = document.getElementById('pricingTabs');
   if (tablist) {
-    new PricingTabs(tablist, toast);
+    new PricingTabs(tablist);
+  }
+
+  const currencyToggle = document.getElementById('currencyToggle');
+  if (currencyToggle) {
+    new CurrencyToggle(currencyToggle, pricingRenderer);
   }
 
   const trustTabs = document.getElementById('trustTabs');
