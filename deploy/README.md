@@ -93,6 +93,16 @@ Certbot edits the Nginx config in place to add the HTTPS server block and the
 HTTP→HTTPS redirect, and sets up auto-renewal via a systemd timer — nothing
 further to do for TLS after this.
 
+### Clean URLs
+
+`blactec.conf` serves every page at its extension-less path — `/hosting`
+rather than `/hosting.html` — by falling back to `<uri>.html` on disk when
+`<uri>` alone doesn't exist as a file. Every internal link, canonical tag, and
+`sitemap.xml` entry in this repo already points at the clean form. Visiting
+the old `*.html` URL directly (or `/index.html`) gets a 301 redirect to the
+clean one, so there's a single canonical URL per page — nothing extra to set
+up, this is just how the shipped config behaves once it's live.
+
 ## Redeploying after future changes
 
 1. Edit `src/main.ts`, hand-mirror the change into `dist/main.js` (no local

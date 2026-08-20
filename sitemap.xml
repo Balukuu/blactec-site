@@ -6,22 +6,22 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://blactec.ug/privacy.html</loc>
+    <loc>https://blactec.ug/privacy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://blactec.ug/terms.html</loc>
+    <loc>https://blactec.ug/terms</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://blactec.ug/acceptable-use.html</loc>
+    <loc>https://blactec.ug/acceptable-use</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://blactec.ug/refund-policy.html</loc>
+    <loc>https://blactec.ug/refund-policy</loc>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
