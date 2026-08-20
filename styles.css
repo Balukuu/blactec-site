@@ -151,7 +151,7 @@ input, select, button { font: inherit; }
   width: min(100% - 2.4rem, var(--container)); margin-inline: auto;
 }
 
-.logo { display: flex; align-items: center; gap: .55rem; font-weight: 1000; }
+.logo { display: flex; align-items: center; gap: .55rem; font-weight: 300; }
 .logo__mark { flex: none; border-radius: 8px; }
 .logo__word { font-size: 1.45rem; letter-spacing: -.02em; }
 .logo__blac { color: var(--ink-900); }
@@ -1263,11 +1263,7 @@ input, select, button { font: inherit; }
 .footer { background: var(--ink-900); color: rgba(255,255,255,.7); padding-top: clamp(3rem, 6vw, 4.5rem); }
 .footer__grid { display: grid; grid-template-columns: 1.6fr 1fr 1fr 1fr; gap: 2rem; padding-bottom: 3rem; }
 .footer__logo { display: inline-flex; }
-.footer__logo-frame {
-  display: inline-flex; align-items: center; justify-content: center; background: #fff;
-  border-radius: 12px; padding: .6rem 1.1rem; box-shadow: 0 10px 24px rgba(0,0,0,.25);
-}
-.footer__logo-frame img { height: 20px; width: auto; object-fit: contain; display: block; }
+.footer__logo .logo__blac, .footer__logo .logo__tec { color: #fff; }
 .footer__blurb { margin: 1.1rem 0; max-width: 34ch; font-size: .92rem; }
 .footer__h { color: #fff; font-size: .95rem; font-weight: 700; margin-bottom: 1rem; text-transform: uppercase; letter-spacing: .05em; }
 .footer__col ul { display: flex; flex-direction: column; gap: .6rem; }
