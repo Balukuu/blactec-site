@@ -1,0 +1,6 @@
+name = "blactec-ug-whois"
+main = "whois-proxy.js"
+compatibility_date = "2026-01-01"
+
+# Free plan is sufficient — this Worker gets one request per .ug domain search,
+# well under the free tier's daily request allowance.

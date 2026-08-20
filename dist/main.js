@@ -135,8 +135,40 @@ class QuoteForm {
     }
 }
 /* ============================================================
-   Domain Checker (simulated, deterministic)
-   ============================================================ */
+   Domain availability — live lookups
+   ============================================================
+   .com / .org / .net (and any other gTLD) run RDAP over HTTP, so we can query
+   the public rdap.org bootstrap directly from the browser — it responds with
+   CORS enabled. Uganda's registry has no public API reachable from a browser,
+   so .ug/.co.ug/.org.ug/.ac.ug go through a small Cloudflare Worker that relays
+   the registrar portal's own domain-search endpoint server-side.
+   See cloudflare-worker/README.md for how it works. */
+const UG_TLDS = ['.ug', '.co.ug', '.org.ug', '.ac.ug'];
+const UG_WHOIS_PROXY_URL = 'https://blactec-ug-whois.blactec.workers.dev';
+async function checkGtldAvailability(fullDomain) {
+    const res = await fetch(`https://rdap.org/domain/${encodeURIComponent(fullDomain)}`, {
+        headers: { Accept: 'application/rdap+json' },
+    });
+    if (res.status === 404) {
+        return true;
+    }
+    if (res.ok) {
+        return false;
+    }
+    throw new Error(`rdap_http_${res.status}`);
+}
+async function checkUgAvailability(domain, tld) {
+    const url = `${UG_WHOIS_PROXY_URL}/?domain=${encodeURIComponent(domain)}&tld=${encodeURIComponent(tld)}`;
+    const res = await fetch(url);
+    const data = (await res.json().catch(() => null));
+    if (!res.ok || !data || typeof data.available !== 'boolean') {
+        throw new Error((data && data.error) || `whois_proxy_http_${res.status}`);
+    }
+    return data.available;
+}
+function checkAvailability(domain, tld) {
+    return UG_TLDS.includes(tld) ? checkUgAvailability(domain, tld) : checkGtldAvailability(domain + tld);
+}
 class DomainChecker {
     constructor(form, toast) {
         this.form = form;
@@ -171,26 +203,28 @@ class DomainChecker {
     sanitize(raw) {
         return raw.trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
     }
-    /** Deterministic status from a char-code sum hash. */
-    resolveStatus(key) {
-        let sum = 0;
-        for (let i = 0; i < key.length; i += 1) {
-            sum += key.charCodeAt(i);
-        }
-        return sum % 3 === 0 ? 'taken' : 'available';
-    }
     priceFor(tld) {
         const match = this.tlds.find((t) => t.tld === tld);
         return match ? match.priceUsd : 0;
     }
-    buildResult(domain, tld) {
-        const status = this.resolveStatus(domain + tld);
-        const alternatives = this.tlds
-            .filter((t) => t.tld !== tld && this.resolveStatus(domain + t.tld) === 'available')
-            .slice(0, 3);
-        return { domain, tld, status, priceUsd: this.priceFor(tld), alternatives };
+    /** Checks the other listed TLDs in parallel and keeps up to 3 that came back available. */
+    async findAvailableAlternatives(domain, excludeTld) {
+        const candidates = this.tlds.filter((t) => t.tld !== excludeTld);
+        const settled = await Promise.allSettled(candidates.map(async (t) => ({ t, available: await checkAvailability(domain, t.tld) })));
+        const available = [];
+        for (const outcome of settled) {
+            if (outcome.status === 'fulfilled' && outcome.value.available) {
+                available.push(outcome.value.t);
+            }
+        }
+        return available.slice(0, 3);
     }
-    run() {
+    async buildResult(domain, tld) {
+        const isAvailable = await checkAvailability(domain, tld);
+        const alternatives = isAvailable ? [] : await this.findAvailableAlternatives(domain, tld);
+        return { domain, tld, status: isAvailable ? 'available' : 'taken', priceUsd: this.priceFor(tld), alternatives };
+    }
+    async run() {
         const domain = this.sanitize(this.input.value);
         if (domain.length === 0) {
             this.input.focus();
@@ -200,13 +234,35 @@ class DomainChecker {
         this.input.value = domain;
         const tld = this.select.value;
         this.renderLoading();
-        window.setTimeout(() => {
-            const data = this.buildResult(domain, tld);
+        try {
+            const data = await this.buildResult(domain, tld);
             this.renderResult(data);
-        }, 900);
+        }
+        catch (err) {
+            this.renderCheckError(domain + tld, err);
+        }
     }
     renderError(message) {
         this.result.innerHTML = `<div class="result-card result-card--taken"><p class="result-card__name">${escapeHtml(message)}</p></div>`;
+    }
+    /** The lookup itself failed (network, proxy down, unconfigured) — distinct from a real "taken" result. */
+    renderCheckError(full, err) {
+        console.error('Domain availability check failed:', err);
+        const context = escapeHtml(`I searched for ${full} but the checker couldn't confirm it — please check availability and get back to me.`);
+        this.result.innerHTML = `
+      <div class="result-card result-card--taken">
+        <div class="result-card__top">
+          <span class="result-card__name">${escapeHtml(full)}</span>
+          <span class="result-card__status" style="background:var(--ink-500)">Couldn't verify</span>
+        </div>
+        <p class="result-card__price" style="font-weight:400;color:var(--ink-500);font-size:.9rem;margin:0">We couldn't reach the registry just now. Try again in a moment, or let us confirm it for you.</p>
+        <div class="result-card__actions">
+          <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Ask us to confirm</button>
+        </div>
+      </div>`;
+        qsa('[data-lead]', this.result).forEach((btn) => {
+            btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
+        });
     }
     renderLoading() {
         this.result.innerHTML = `

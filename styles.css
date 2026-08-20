@@ -251,14 +251,13 @@ input, select, button { font: inherit; }
    Hero
    ============================================================ */
 .hero {
-  position: relative; overflow: hidden; color: #fff;
+  position: relative; overflow: hidden; color: var(--ink-900);
   margin-top: calc(-1 * var(--header-h));
   padding: calc(var(--header-h) + clamp(2.5rem, 6vw, 5rem)) 0 clamp(3rem, 7vw, 5.5rem);
   background:
-    radial-gradient(85% 60% at 82% -6%, rgba(14, 15, 19,.42), rgba(14, 15, 19,0) 60%),
-    radial-gradient(46% 40% at 12% 96%, rgba(255,205,53,.08), transparent 68%),
-    radial-gradient(60% 55% at 6% 6%, rgba(7, 8, 10,.26), transparent 55%),
-    #0d0e12;
+    radial-gradient(40% 46% at 90% 4%, rgba(51, 115, 224,.12), transparent 70%),
+    radial-gradient(34% 38% at 4% 96%, rgba(244,130,31,.09), transparent 70%),
+    #ffffff;
 }
 .hero::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 0;
@@ -276,7 +275,7 @@ input, select, button { font: inherit; }
 }
 .hero__grid-bg {
   position: absolute; inset: 0; pointer-events: none; opacity: .6;
-  background-image: radial-gradient(rgba(255,255,255,.09) 1px, transparent 1px);
+  background-image: radial-gradient(rgba(14, 15, 19,.08) 1px, transparent 1px);
   background-size: 26px 26px;
   -webkit-mask-image: radial-gradient(ellipse 78% 68% at 50% 22%, #000 28%, transparent 78%);
           mask-image: radial-gradient(ellipse 78% 68% at 50% 22%, #000 28%, transparent 78%);
@@ -284,8 +283,8 @@ input, select, button { font: inherit; }
 .hero__deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
 .hero__ic {
   position: absolute; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 15px;
-  color: var(--blue-500); background: linear-gradient(150deg, rgba(51, 115, 224,.24), rgba(51, 115, 224,.05));
-  border: 1px solid rgba(255,255,255,.1); box-shadow: 0 12px 30px rgba(0,0,0,.35);
+  color: var(--blue-700); background: linear-gradient(150deg, rgba(51, 115, 224,.16), rgba(51, 115, 224,.04));
+  border: 1px solid var(--blue-100); box-shadow: var(--shadow-card);
 }
 .hero__ic svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .hero__ic--1 { top: 15%; left: 1%; animation: floaty 6s ease-in-out infinite; }
@@ -297,10 +296,9 @@ input, select, button { font: inherit; }
 .hero__badge {
   display: inline-flex; align-items: center; gap: .6rem;
   padding: .45rem 1rem .45rem .8rem; border-radius: 999px;
-  background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.16);
-  color: rgba(255,255,255,.9); font-weight: 600; font-size: .82rem; letter-spacing: .01em;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.08), 0 8px 22px rgba(0,0,0,.3);
-  -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+  background: var(--surface-1); border: 1px solid var(--border);
+  color: var(--ink-700); font-weight: 600; font-size: .82rem; letter-spacing: .01em;
+  box-shadow: var(--shadow-card);
 }
 .hero__badge-dot {
   width: 8px; height: 8px; border-radius: 50%; background: var(--success); flex: none;
@@ -313,21 +311,21 @@ input, select, button { font: inherit; }
 }
 .hero__title {
   font-size: clamp(2.7rem, 6.2vw, 4.4rem); font-weight: 1000; letter-spacing: -.025em;
-  line-height: 1.04; color: #fff; margin: 1.1rem 0 1.15rem;
+  line-height: 1.04; color: var(--ink-900); margin: 1.1rem 0 1.15rem;
 }
 .hero__accent {
   position: relative; display: inline-block;
-  background: linear-gradient(95deg, #fff 0%, var(--blue-100) 45%, var(--blue-500) 100%);
+  background: linear-gradient(95deg, var(--ink-900) 0%, var(--blue-700) 55%, var(--blue-500) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(51, 115, 224,.35));
+  filter: drop-shadow(0 0 20px rgba(51, 115, 224,.18));
 }
-.hero__sub { font-size: 1.18rem; color: rgba(255,255,255,.74); max-width: 46ch; line-height: 1.55; }
+.hero__sub { font-size: 1.18rem; color: var(--ink-500); max-width: 46ch; line-height: 1.55; }
 .hero__trust { display: flex; flex-wrap: wrap; gap: .6rem .7rem; margin: 1.7rem 0 0; }
 .hero__trust li {
-  display: inline-flex; align-items: center; gap: .55rem; font-weight: 500; font-size: .88rem; color: rgba(255,255,255,.86);
+  display: inline-flex; align-items: center; gap: .55rem; font-weight: 500; font-size: .88rem; color: var(--ink-700);
   padding: .45rem .9rem .45rem .55rem; border-radius: 999px;
-  background: rgba(255,255,255,.045); border: 1px solid rgba(255,255,255,.1);
+  background: var(--surface-1); border: 1px solid var(--border);
 }
 .hero__check { display: grid; place-items: center; width: 20px; height: 20px; flex: none; border-radius: 50%; background: rgba(34, 165, 94,.18); color: var(--success); }
 .hero__check svg { width: 12px; height: 12px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round; }
@@ -338,13 +336,13 @@ input, select, button { font: inherit; }
 .hero__avatar {
   width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
   font-size: .72rem; font-weight: 700; color: #fff; background: var(--bg, var(--primary-600));
-  border: 2px solid #14131c; margin-left: -10px; box-shadow: 0 4px 10px rgba(0,0,0,.35), 0 0 0 1px rgba(255,255,255,.08);
+  border: 2px solid #fff; margin-left: -10px; box-shadow: 0 4px 10px rgba(14, 15, 19,.18);
 }
 .hero__avatar:first-child { margin-left: 0; }
-.hero__proof-text { font-size: .9rem; color: rgba(255,255,255,.75); line-height: 1.35; }
-.hero__proof-text strong { color: #fff; font-weight: 700; }
+.hero__proof-text { font-size: .9rem; color: var(--ink-500); line-height: 1.35; }
+.hero__proof-text strong { color: var(--ink-900); font-weight: 700; }
 .hero__stars { display: inline-flex; align-items: center; gap: .3rem; margin-left: .55rem; color: var(--warning); letter-spacing: .02em; white-space: nowrap; }
-.hero__stars em { font-style: normal; color: rgba(255,255,255,.85); font-weight: 700; }
+.hero__stars em { font-style: normal; color: var(--ink-900); font-weight: 700; }
 
 /* Domain checker — result rendering (populated by DomainChecker into .domainbar__result) */
 .result-card {
