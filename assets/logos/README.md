@@ -18,8 +18,10 @@ Save each client logo here using the **exact filename** below. Prefer a transpar
 | `reliance-chemicals.png`     | Reliance Chemicals                  |
 | `golden-marketing.png`       | Golden Marketing                    |
 | `kaniz-apartments.png`       | Kaniz Apartments                    |
+| `genbionex-consulting.png`   | GenBionex Consulting Company Ltd.   |
+| `normah-agro-farm.png`       | Normah Agro Farm                    |
 
-These six clients also appear in the testimonial switcher above the logo wall.
+The first six clients also appear in the testimonial switcher above the logo wall.
 
 ## Using a different format (SVG / WEBP)
 

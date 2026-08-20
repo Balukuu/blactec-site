@@ -20,7 +20,7 @@ interface DomainResult {
   alternatives: TldOption[];
 }
 
-type PriceUnit = 'year' | 'user/year' | 'month';
+type PriceUnit = 'year' | 'user/year' | 'month' | 'user/month';
 
 type Currency = 'UGX' | 'USD';
 
@@ -34,7 +34,7 @@ interface PricingPlan {
   popular?: boolean;
 }
 
-type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'reseller' | 'security';
+type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'microsoft365' | 'zoho' | 'reseller' | 'security';
 
 /** Approximate market rate — update as the shilling moves against the dollar. */
 const UGX_PER_USD = 3700;
@@ -49,6 +49,13 @@ function formatUsd(value: number): string {
 
 function formatMoney(value: number, currency: Currency): string {
   return currency === 'UGX' ? formatUgx(value) : formatUsd(value);
+}
+
+/** Splits a price into currency label + amount so premium price displays can style each part. */
+function formatMoneyParts(value: number, currency: Currency): { prefix: string; amount: string; isSymbol: boolean } {
+  return currency === 'UGX'
+    ? { prefix: 'UGX', amount: Math.round(value).toLocaleString('en-US'), isSymbol: false }
+    : { prefix: '$', amount: value.toFixed(2), isSymbol: true };
 }
 
 /** Converts a plan's native price into the requested display currency. */
@@ -231,7 +238,7 @@ class DomainChecker {
     qsa<HTMLButtonElement>('.domain__eg').forEach((btn) => {
       btn.addEventListener('click', () => {
         const example = btn.dataset['eg'] ?? '';
-        const tld = (btn.textContent ?? '').trim();
+        const tld = btn.dataset['tld'] ?? (btn.textContent ?? '').trim();
         this.input.value = example;
         if (this.tlds.some((t) => t.tld === tld)) {
           this.select.value = tld;
@@ -352,6 +359,104 @@ class DomainChecker {
 }
 
 /* ============================================================
+   Hero carousel — auto-rotating slides + dot navigation
+   ============================================================ */
+
+class Carousel {
+  private readonly root: HTMLElement;
+  private readonly slides: HTMLElement[];
+  private readonly dots: HTMLButtonElement[];
+  private index = 0;
+  private timer: number | undefined;
+  private readonly intervalMs = 6500;
+  private readonly reduceMotion: boolean;
+
+  constructor(root: HTMLElement) {
+    this.root = root;
+    this.slides = qsa<HTMLElement>('.herox__slide', root);
+    this.dots = qsa<HTMLButtonElement>('.herox__dot', root);
+    this.reduceMotion = prefersReducedMotion();
+    this.bind();
+    if (!this.reduceMotion) {
+      this.play();
+    }
+  }
+
+  private bind(): void {
+    this.dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => this.activate(i, true));
+      dot.addEventListener('keydown', (event: KeyboardEvent) => this.onKey(event, i));
+    });
+    this.root.addEventListener('mouseenter', () => this.pause());
+    this.root.addEventListener('mouseleave', () => {
+      if (!this.reduceMotion) {
+        this.play();
+      }
+    });
+    this.root.addEventListener('focusin', () => this.pause());
+    this.root.addEventListener('focusout', () => {
+      if (!this.reduceMotion) {
+        this.play();
+      }
+    });
+  }
+
+  private onKey(event: KeyboardEvent, index: number): void {
+    let next = index;
+    if (event.key === 'ArrowRight') {
+      next = (index + 1) % this.dots.length;
+    } else if (event.key === 'ArrowLeft') {
+      next = (index - 1 + this.dots.length) % this.dots.length;
+    } else if (event.key === 'Home') {
+      next = 0;
+    } else if (event.key === 'End') {
+      next = this.dots.length - 1;
+    } else {
+      return;
+    }
+    event.preventDefault();
+    this.activate(next, true);
+    this.dots[next].focus();
+  }
+
+  private play(): void {
+    this.pause();
+    this.timer = window.setInterval(() => {
+      this.activate((this.index + 1) % this.slides.length, false);
+    }, this.intervalMs);
+  }
+
+  private pause(): void {
+    if (this.timer !== undefined) {
+      window.clearInterval(this.timer);
+      this.timer = undefined;
+    }
+  }
+
+  private activate(index: number, userTriggered: boolean): void {
+    this.index = index;
+    this.slides.forEach((slide, i) => {
+      const selected = i === index;
+      slide.classList.toggle('is-active', selected);
+      if (selected) {
+        slide.removeAttribute('hidden');
+      } else {
+        slide.setAttribute('hidden', '');
+      }
+    });
+    this.dots.forEach((dot, i) => {
+      const selected = i === index;
+      dot.classList.toggle('is-active', selected);
+      dot.setAttribute('aria-selected', String(selected));
+      dot.tabIndex = selected ? 0 : -1;
+    });
+    if (userTriggered && !this.reduceMotion) {
+      this.play();
+    }
+  }
+}
+
+/* ============================================================
    Pricing — data-driven cards + accessible tabs
    ============================================================ */
 
@@ -380,7 +485,7 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     {
       name: 'Enterprise Hosting', desc: 'For organizations requiring more resources and reliability.',
       currency: 'UGX', price: 350000, unit: 'year',
-      features: ['20 GB SSD storage', 'Unlimited bandwidth (fair usage policy)', '1 website', 'Unlimited email accounts', 'Unlimited MySQL databases', 'Free SSL certificate', 'cPanel control panel', 'Premium technical support'],
+      features: ['20 GB SSD storage', 'Unlimited bandwidth (fair usage policy)', '1 website', 'Unlimited email accounts', 'Unlimited MySQL databases', 'Free .ug domain (first year)', 'Free SSL certificate', 'cPanel control panel', 'Premium technical support'],
     },
   ],
   vps: [
@@ -428,9 +533,19 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     },
   ],
   workspace: [
-    { name: 'Business Starter', desc: 'Professional email for your team.', currency: 'USD', price: 113.25, unit: 'user/year', features: ['Professional custom business email', '30 GB secure cloud storage per user', 'HD video meetings up to 100 participants'] },
-    { name: 'Business Standard', desc: 'More storage and richer collaboration.', currency: 'USD', price: 226.50, unit: 'user/year', popular: true, features: ['Professional custom email', '2 TB cloud storage per user', 'Enhanced video collaboration (150 participants + cloud recording)'] },
-    { name: 'Business Plus', desc: 'Advanced security, vault & compliance.', currency: 'USD', price: 356.15, unit: 'user/year', features: ['Advanced email suite + eDiscovery / retention', '5 TB enterprise storage per user', 'Elite security / Vault controls', 'Meetings up to 250 participants with attendance data'] },
+    { name: 'Starter Google Workspace', desc: 'Custom business email with core Google tools.', currency: 'USD', price: 6.99, unit: 'user/month', features: ['30 GB storage per mailbox', 'Video meetings up to 100 participants', 'Security controls', 'Standard support'] },
+    { name: 'Standard Google Workspace', desc: 'More storage and richer collaboration.', currency: 'USD', price: 13.99, unit: 'user/month', popular: true, features: ['2 TB storage per mailbox', 'Meetings up to 150 participants with recording', 'Appointment booking & email layouts', 'Standard support'] },
+    { name: 'Plus Google Workspace', desc: 'Advanced security, Vault & compliance.', currency: 'USD', price: 21.99, unit: 'user/month', features: ['5 TB storage per mailbox', 'Meetings up to 500 participants with recording', 'Enhanced security & Vault controls', 'Advanced endpoint management'] },
+  ],
+  microsoft365: [
+    { name: 'Business Basic', desc: 'Web & mobile Office apps with Exchange email.', currency: 'USD', price: 6.00, unit: 'user/month', features: ['50 GB Exchange mailbox', '1 TB OneDrive storage', 'Teams chat & meetings', 'Standard security'] },
+    { name: 'Business Standard', desc: 'Desktop apps with advanced collaboration.', currency: 'USD', price: 12.50, unit: 'user/month', popular: true, features: ['Everything in Basic', 'Desktop Word, Excel & Outlook', 'Teams webinars & registration', 'Microsoft Loop workspaces'] },
+    { name: 'Business Premium', desc: 'Enterprise-grade security & device management.', currency: 'USD', price: 22.00, unit: 'user/month', features: ['Everything in Standard', 'Advanced cyber threat protection', 'Device management', 'Microsoft Defender for Business'] },
+  ],
+  zoho: [
+    { name: 'Mail Lite', desc: 'Essential custom email.', currency: 'USD', price: 1.00, unit: 'user/month', features: ['5–10 GB mail storage', 'Shared calendars & contacts', 'Mobile & desktop apps', 'Aliases & group routing'] },
+    { name: 'Workplace Standard', desc: 'Complete collaboration suite.', currency: 'USD', price: 3.00, unit: 'user/month', popular: true, features: ['30 GB mail storage', '100 GB shared WorkDrive', 'Zoho Cliq team chat', 'Writer, Sheet & Show + Meetings'] },
+    { name: 'Mail Premium', desc: 'Advanced email archiving.', currency: 'USD', price: 4.00, unit: 'user/month', features: ['50 GB mail storage', 'Email retention & eDiscovery', 'S/MIME & encryption', 'Account backup & recovery'] },
   ],
   reseller: [
     { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
@@ -449,7 +564,7 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
 };
 
 const CHECK_SVG =
-  '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="rgba(0,176,144,.14)"/><path d="M7 12.5l3.2 3.2L17 9" stroke="var(--success)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="rgba(34,165,94,.14)"/><path d="M7 12.5l3.2 3.2L17 9" stroke="var(--success)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 
 class PricingRenderer {
   private readonly toast: Toast;
@@ -490,27 +605,36 @@ class PricingRenderer {
   }
 
   private cardHtml(plan: PricingPlan): string {
-    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'month' ? '/ month' : '/ year';
+    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'user/month' ? '/ user / month' : plan.unit === 'month' ? '/ month' : '/ year';
     const ribbon = plan.popular ? '<span class="plan__ribbon">★ Most popular</span>' : '';
     const btnClass = plan.popular ? 'btn btn--secondary' : 'btn btn--primary';
     const features = plan.features
       .map((feat) => `<li>${CHECK_SVG}<span>${escapeHtml(feat)}</span></li>`)
       .join('');
-    const amount = convertPrice(plan, this.currency);
-    const priceLabel = formatMoney(amount, this.currency);
+    const amountValue = convertPrice(plan, this.currency);
+    const priceLabel = formatMoney(amountValue, this.currency);
+    const { prefix, amount, isSymbol } = formatMoneyParts(amountValue, this.currency);
     const context = escapeHtml(`I'm interested in the ${plan.name} plan (${priceLabel} ${unitLabel}).`);
     return `
+      <div class="plan-slot">
+      ${ribbon}
       <article class="plan${plan.popular ? ' plan--popular' : ''}">
-        ${ribbon}
         <h3 class="plan__name">${escapeHtml(plan.name)}</h3>
         <p class="plan__desc">${escapeHtml(plan.desc)}</p>
         <div class="plan__price">
-          <span class="plan__amount">${priceLabel}</span>
+          <span class="plan__price-row">
+            <span class="plan__currency${isSymbol ? ' plan__currency--symbol' : ''}">${prefix}</span>
+            <span class="plan__amount">${amount}</span>
+          </span>
           <span class="plan__unit">${unitLabel}</span>
         </div>
         <ul class="plan__features">${features}</ul>
-        <button class="${btnClass}" data-lead data-lead-context="${context}" type="button">Choose plan</button>
-      </article>`;
+        <button class="${btnClass}" data-lead data-lead-context="${context}" type="button">
+          <span>Choose plan</span>
+          <svg class="plan__cta-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </article>
+      </div>`;
   }
 }
 
@@ -694,6 +818,62 @@ class LogoWall {
     span.className = 'logowall__fallback';
     span.textContent = name;
     img.replaceWith(span);
+  }
+}
+
+/* ============================================================
+   Scroll carousel — prev/next buttons that page a scroll-snap track
+   ============================================================ */
+
+class ScrollCarousel {
+  private readonly track: HTMLElement;
+  private readonly loop: boolean;
+
+  constructor(track: HTMLElement, prevBtn: HTMLButtonElement | null, nextBtn: HTMLButtonElement | null, loop = false) {
+    this.track = track;
+    this.loop = loop;
+    prevBtn?.addEventListener('click', () => this.page(-1));
+    nextBtn?.addEventListener('click', () => this.page(1));
+  }
+
+  private page(direction: 1 | -1): void {
+    const card = this.track.firstElementChild as HTMLElement | null;
+    const gap = Number.parseFloat(getComputedStyle(this.track).columnGap || '0');
+    const step = card ? card.getBoundingClientRect().width + gap : this.track.clientWidth;
+    const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
+
+    if (this.loop) {
+      const maxScroll = this.track.scrollWidth - this.track.clientWidth;
+      if (direction === 1 && this.track.scrollLeft >= maxScroll - 2) {
+        this.track.scrollTo({ left: 0, behavior });
+        return;
+      }
+      if (direction === -1 && this.track.scrollLeft <= 2) {
+        this.track.scrollTo({ left: maxScroll, behavior });
+        return;
+      }
+    }
+
+    this.track.scrollBy({ left: direction * step, behavior });
+  }
+}
+
+/** Same paging behaviour as ScrollCarousel, but resolves the active pricing tab-panel on every click since the track swaps with the selected category. */
+class PricingCarousel {
+  constructor(prevBtn: HTMLButtonElement | null, nextBtn: HTMLButtonElement | null) {
+    prevBtn?.addEventListener('click', () => this.page(-1));
+    nextBtn?.addEventListener('click', () => this.page(1));
+  }
+
+  private page(direction: 1 | -1): void {
+    const track = qs<HTMLElement>('.tab-panel.is-active');
+    if (!track) {
+      return;
+    }
+    const card = track.firstElementChild as HTMLElement | null;
+    const gap = Number.parseFloat(getComputedStyle(track).columnGap || '0');
+    const step = card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+    track.scrollBy({ left: direction * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
   }
 }
 
@@ -1042,9 +1222,19 @@ function bootstrap(): void {
     new DomainChecker(domainForm, toast);
   }
 
+  const heroCarousel = document.getElementById('heroCarousel');
+  if (heroCarousel) {
+    new Carousel(heroCarousel);
+  }
+
   const tablist = document.getElementById('pricingTabs');
   if (tablist) {
     new PricingTabs(tablist);
+  }
+
+  const serviceTabs = document.getElementById('serviceTabs');
+  if (serviceTabs) {
+    new PricingTabs(serviceTabs);
   }
 
   const currencyToggle = document.getElementById('currencyToggle');
@@ -1060,6 +1250,31 @@ function bootstrap(): void {
   const logoWall = document.getElementById('logoWall');
   if (logoWall) {
     new LogoWall(logoWall);
+  }
+
+  const solutionsTrack = document.getElementById('solutionsTrack');
+  if (solutionsTrack) {
+    new ScrollCarousel(
+      solutionsTrack,
+      qs<HTMLButtonElement>('#solutionsPrev'),
+      qs<HTMLButtonElement>('#solutionsNext'),
+    );
+  }
+
+  const showcaseTrack = document.getElementById('showcaseTrack');
+  if (showcaseTrack) {
+    new ScrollCarousel(
+      showcaseTrack,
+      qs<HTMLButtonElement>('#showcasePrev'),
+      qs<HTMLButtonElement>('#showcaseNext'),
+      true,
+    );
+  }
+
+  const pricingPrev = qs<HTMLButtonElement>('#pricingPrev');
+  const pricingNext = qs<HTMLButtonElement>('#pricingNext');
+  if (pricingPrev || pricingNext) {
+    new PricingCarousel(pricingPrev, pricingNext);
   }
 
   new RevealOnScroll();
