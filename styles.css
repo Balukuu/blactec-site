@@ -267,7 +267,7 @@ input, select, button { font: inherit; }
 }
 .hero__glow {
   position: absolute; top: 4%; right: 2%; width: 46vw; height: 46vw; max-width: 560px; max-height: 560px;
-  background: radial-gradient(circle, rgba(58, 61, 68,.30) 0%, rgba(58, 61, 68,0) 66%);
+  background: radial-gradient(circle, rgba(51, 115, 224,.28) 0%, rgba(51, 115, 224,0) 66%);
   pointer-events: none; will-change: transform; animation: heroGlow 14s ease-in-out infinite;
 }
 @keyframes heroGlow {
@@ -284,7 +284,7 @@ input, select, button { font: inherit; }
 .hero__deco { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
 .hero__ic {
   position: absolute; width: 54px; height: 54px; display: grid; place-items: center; border-radius: 15px;
-  color: #8fe6d4; background: linear-gradient(150deg, rgba(58, 61, 68,.24), rgba(58, 61, 68,.05));
+  color: var(--blue-500); background: linear-gradient(150deg, rgba(51, 115, 224,.24), rgba(51, 115, 224,.05));
   border: 1px solid rgba(255,255,255,.1); box-shadow: 0 12px 30px rgba(0,0,0,.35);
 }
 .hero__ic svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
@@ -293,7 +293,7 @@ input, select, button { font: inherit; }
 .hero__ic--3 { top: 32%; right: 1%; animation: floaty 6.5s ease-in-out infinite 1s; }
 @media (max-width: 1360px) { .hero__deco { display: none; } }
 .hero__inner { position: relative; z-index: 1; display: grid; grid-template-columns: 1.1fr .9fr; gap: 3rem; align-items: center; }
-.hero .eyebrow { color: #8fe6d4; }
+.hero .eyebrow { color: var(--blue-500); }
 .hero__badge {
   display: inline-flex; align-items: center; gap: .6rem;
   padding: .45rem 1rem .45rem .8rem; border-radius: 999px;
@@ -317,10 +317,10 @@ input, select, button { font: inherit; }
 }
 .hero__accent {
   position: relative; display: inline-block;
-  background: linear-gradient(95deg, #fff 0%, #bdeee2 45%, #8fe6d4 100%);
+  background: linear-gradient(95deg, #fff 0%, var(--blue-100) 45%, var(--blue-500) 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 0 30px rgba(58, 61, 68,.35));
+  filter: drop-shadow(0 0 30px rgba(51, 115, 224,.35));
 }
 .hero__sub { font-size: 1.18rem; color: rgba(255,255,255,.74); max-width: 46ch; line-height: 1.55; }
 .hero__trust { display: flex; flex-wrap: wrap; gap: .6rem .7rem; margin: 1.7rem 0 0; }
@@ -431,6 +431,10 @@ input, select, button { font: inherit; }
 .chip--a { top: 8%; left: -6%; animation: floaty 5s ease-in-out infinite; }
 .chip--b { bottom: 22%; left: -4%; background: var(--primary-600); color: #fff; animation: floaty 5.5s ease-in-out infinite .4s; }
 .chip--c { top: 14%; right: -4%; animation: floaty 6.5s ease-in-out infinite .8s; }
+.domainmock ~ .chip--a { top: auto; bottom: 20%; left: -7%; }
+.domainmock ~ .chip--c { top: auto; bottom: 8%; right: -3%; }
+.sitemock ~ .chip--a { top: auto; bottom: -4%; left: -4%; }
+.sitemock ~ .chip--c { top: auto; bottom: -4%; right: -2%; }
 @keyframes floaty { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
@@ -442,8 +446,16 @@ input, select, button { font: inherit; }
 .herox__blobs {
   position: absolute; inset: 0; pointer-events: none; z-index: 0;
   background:
-    radial-gradient(38% 42% at 88% 8%, rgba(14, 15, 19,.10), transparent 70%),
-    radial-gradient(34% 38% at 4% 86%, rgba(244,130,31,.09), transparent 70%);
+    radial-gradient(40% 46% at 90% 4%, rgba(51, 115, 224,.12), transparent 70%),
+    radial-gradient(34% 38% at 4% 86%, rgba(244,130,31,.10), transparent 70%),
+    radial-gradient(28% 30% at 40% 100%, rgba(14, 15, 19,.05), transparent 70%);
+}
+.herox__blobs::after {
+  content: ""; position: absolute; inset: 0; opacity: .5;
+  background-image: radial-gradient(rgba(14, 15, 19,.07) 1px, transparent 1px);
+  background-size: 24px 24px;
+  -webkit-mask-image: radial-gradient(ellipse 70% 60% at 62% 30%, #000 30%, transparent 78%);
+          mask-image: radial-gradient(ellipse 70% 60% at 62% 30%, #000 30%, transparent 78%);
 }
 
 /* Vertical social rail */
@@ -508,18 +520,23 @@ input, select, button { font: inherit; }
 }
 .herox__backcard {
   position: absolute; inset: 20px -14px -14px 20px; z-index: 0; border-radius: 18px;
-  background: linear-gradient(155deg, var(--primary-100), var(--primary-050));
-  border: 1px solid var(--primary-100); transform: rotate(3deg);
+  background: linear-gradient(155deg, var(--blue-100), var(--blue-050));
+  border: 1px solid var(--blue-100); transform: rotate(3deg);
 }
 .herox__backcard--b { background: linear-gradient(155deg, #fdece0, #fff8f0); border-color: #fbdcc0; }
-.herox__backcard--c { background: linear-gradient(155deg, var(--primary-100), #fdece0); border-color: var(--primary-100); }
-.herox__backcard--d { background: linear-gradient(155deg, var(--blue-100), var(--blue-050)); border-color: var(--blue-100); }
+.herox__backcard--c { background: linear-gradient(155deg, #f1e9fa, #faf7fd); border-color: #e6d6f2; }
+.herox__backcard--d { background: linear-gradient(155deg, #e6f7ee, #f6fdf9); border-color: #cbead9; }
 
 /* Slide 2 — domain mock */
 .domainmock {
   position: relative; z-index: 1; background: #fff; border: 1px solid var(--border); border-radius: 18px;
-  padding: 2rem 1.6rem; box-shadow: 0 30px 70px rgba(7, 8, 10,.16); text-align: center;
+  overflow: hidden; box-shadow: 0 30px 70px rgba(7, 8, 10,.16); text-align: center;
 }
+.domainmock__bar { display: flex; align-items: center; gap: .35rem; padding: .8rem 1rem; background: var(--surface-1); border-bottom: 1px solid var(--border); }
+.domainmock__dot { width: 9px; height: 9px; border-radius: 50%; background: #d7d5e6; }
+.domainmock__dot:nth-child(1) { background: #ff6058; } .domainmock__dot:nth-child(2) { background: #ffbd2e; } .domainmock__dot:nth-child(3) { background: #28c840; }
+.domainmock__barurl { margin-left: .5rem; font-size: .78rem; color: var(--ink-500); font-weight: 500; }
+.domainmock__body { padding: 2rem 1.6rem; }
 .domainmock__ic { width: 46px; height: 46px; margin: 0 auto 1rem; display: grid; place-items: center; border-radius: 12px; background: var(--primary-050); color: var(--primary-600); }
 .domainmock__ic svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .domainmock__row { display: flex; align-items: baseline; justify-content: center; gap: .15rem; flex-wrap: wrap; font-size: clamp(1.3rem, 2.6vw, 1.7rem); font-weight: 800; color: var(--primary-700); margin-bottom: 1.4rem; }
@@ -531,20 +548,26 @@ input, select, button { font: inherit; }
 
 /* Slide 3 — orbit illustration */
 .orbit { position: relative; z-index: 1; width: 100%; max-width: 360px; aspect-ratio: 1; margin: 0 auto; }
-.orbit__ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed var(--border); }
-.orbit__ring--2 { inset: 14%; border-color: var(--primary-100); }
+.orbit::before {
+  content: ""; position: absolute; inset: 6%; border-radius: 50%;
+  background: radial-gradient(circle, rgba(51, 115, 224,.16), rgba(51, 115, 224,0) 68%);
+  filter: blur(2px);
+}
+.orbit__ring { position: absolute; inset: 0; border-radius: 50%; border: 1.5px dashed rgba(14, 15, 19,.16); animation: orbitSpin 44s linear infinite; }
+.orbit__ring--2 { inset: 14%; border-color: rgba(51, 115, 224,.3); animation: orbitSpin 32s linear infinite reverse; }
+@keyframes orbitSpin { to { transform: rotate(360deg); } }
 .orbit__core {
   position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
-  width: 78px; height: 78px; border-radius: 50%; display: grid; place-items: center;
+  width: 84px; height: 84px; border-radius: 50%; display: grid; place-items: center;
   background: linear-gradient(150deg, var(--primary-500), var(--primary-700)); color: #fff;
-  box-shadow: 0 20px 40px rgba(7, 8, 10,.3);
+  box-shadow: 0 24px 50px rgba(7, 8, 10,.35), 0 0 0 10px rgba(51, 115, 224,.10);
 }
-.orbit__core svg { width: 34px; height: 34px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.orbit__node { position: absolute; width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: #fff; color: var(--primary-600); box-shadow: var(--shadow-card); border: 1px solid var(--border); }
+.orbit__core svg { width: 36px; height: 36px; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.orbit__node { position: absolute; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center; background: #fff; box-shadow: 0 16px 34px rgba(14, 15, 19,.16); border: 1px solid var(--border); }
 .orbit__node svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .orbit__node--a { top: 2%; right: 8%; animation: floaty 6s ease-in-out infinite; color: var(--warning); }
-.orbit__node--b { bottom: 6%; left: 2%; animation: floaty 6.5s ease-in-out infinite .4s; }
-.orbit__node--c { bottom: 2%; right: 18%; animation: floaty 5.5s ease-in-out infinite .8s; }
+.orbit__node--b { bottom: 6%; left: 2%; animation: floaty 6.5s ease-in-out infinite .4s; color: var(--blue-700); }
+.orbit__node--c { bottom: 2%; right: 18%; animation: floaty 5.5s ease-in-out infinite .8s; color: var(--success); }
 
 /* Slide 4 — website design mock */
 .sitemock {
