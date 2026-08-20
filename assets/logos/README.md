@@ -17,7 +17,7 @@ Save each client logo here using the **exact filename** below. Prefer a transpar
 | `phs-africa.png`             | PHS-Africa                          |
 | `reliance-chemicals.png`     | Reliance Chemicals                  |
 | `golden-marketing.png`       | Golden Marketing                    |
-| `kaniz-apartments.png`       | Kaniz Apartments                    |
+| `kaniz-apartments.jpg`       | Kaniz Apartments                    |
 | `genbionex-consulting.png`   | GenBionex Consulting Company Ltd.   |
 | `normah-agro-farm.png`       | Normah Agro Farm                    |
 
