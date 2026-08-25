@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    if (location.pathname.endsWith('.html')) {
+      var clean = location.pathname === '/index.html' ? '/' : location.pathname.slice(0, -5);
+      location.replace(clean + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Privacy Policy | BlacTec Technologies</title>
   <meta name="description" content="How BlacTec Technologies Ltd. handles information you share with us — what we collect, how the quote form works, and how to reach us about your data." />

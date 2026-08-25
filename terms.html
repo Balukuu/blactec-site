@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    if (location.pathname.endsWith('.html')) {
+      var clean = location.pathname === '/index.html' ? '/' : location.pathname.slice(0, -5);
+      location.replace(clean + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Terms of Service | BlacTec Technologies</title>
   <meta name="description" content="The terms that govern your use of blactec.ug and how BlacTec Technologies Ltd. engages hosting, domain, cloud and managed IT clients." />

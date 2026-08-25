@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>
+    if (location.pathname.endsWith('.html')) {
+      var clean = location.pathname === '/index.html' ? '/' : location.pathname.slice(0, -5);
+      location.replace(clean + location.search + location.hash);
+    }
+  </script>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>BlacTec Technologies | Web Hosting, .UG Domains, Cloud & Managed IT — Kampala, Uganda</title>
   <meta name="description" content="BlacTec Technologies Ltd. — Kampala-based web hosting, .ug domains, multi-cloud infrastructure and managed IT. 99.9% uptime, real local engineers, Mobile Money accepted." />
