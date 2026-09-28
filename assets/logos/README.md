@@ -20,6 +20,7 @@ Save each client logo here using the **exact filename** below. Prefer a transpar
 | `kaniz-apartments.jpg`       | Kaniz Apartments                    |
 | `genbionex-consulting.png`   | GenBionex Consulting Company Ltd.   |
 | `normah-agro-farm.png`       | Normah Agro Farm                    |
+| `phirez-international.svg`   | Phirez International Limited        |
 
 The first six clients also appear in the testimonial switcher above the logo wall.
 
