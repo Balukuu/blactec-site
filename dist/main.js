@@ -1203,6 +1203,10 @@ function bootstrap() {
     if (solutionsTrack) {
         new ScrollCarousel(solutionsTrack, qs('#solutionsPrev'), qs('#solutionsNext'));
     }
+    const pillarsTrack = document.getElementById('pillarsTrack');
+    if (pillarsTrack) {
+        new ScrollCarousel(pillarsTrack, qs('#pillarsPrev'), qs('#pillarsNext'));
+    }
     const showcaseTrack = document.getElementById('showcaseTrack');
     if (showcaseTrack) {
         new ScrollCarousel(showcaseTrack, qs('#showcasePrev'), qs('#showcaseNext'), true);

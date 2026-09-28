@@ -720,6 +720,26 @@ input, select, button { font: inherit; }
 .link-arrow__ico { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s cubic-bezier(.4,0,.2,1); }
 .link-arrow:hover .link-arrow__ico { transform: translateX(4px); }
 
+/* Pillars carousel — a scrollable variant of .pillars__grid for pages with 4+ cards */
+.pillars__carousel { position: relative; margin-top: 3rem; }
+.pillars__track {
+  display: flex; gap: 1.5rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1px; padding: .4rem .1rem 1rem; margin: -.4rem -.1rem -1rem;
+  -ms-overflow-style: none; scrollbar-width: none;
+}
+.pillars__track::-webkit-scrollbar { display: none; }
+.pillars__track .pcard { flex: 0 0 calc((100% - 3rem) / 3); scroll-snap-align: start; min-width: 260px; }
+.pillars__nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 2;
+  width: 46px; height: 46px; border-radius: 50%; display: grid; place-items: center;
+  background: #fff; border: 1px solid var(--border); color: var(--primary-700);
+  box-shadow: var(--shadow-hover); transition: var(--transition);
+}
+.pillars__nav:hover { background: var(--primary-600); color: #fff; border-color: var(--primary-600); }
+.pillars__nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
+.pillars__nav--prev { left: -23px; }
+.pillars__nav--next { right: -23px; }
+
 /* ============================================================
    Solutions carousel ("What we do")
    ============================================================ */
@@ -1359,6 +1379,7 @@ input, select, button { font: inherit; }
   .svccards { grid-template-columns: repeat(2, 1fr); }
   .solcard { flex-basis: calc((100% - 1.5rem) / 2); }
   .pillars__grid { grid-template-columns: repeat(2, 1fr); }
+  .pillars__track .pcard { flex-basis: calc((100% - 1.5rem) / 2); }
   .feature-grid { grid-template-columns: repeat(2, 1fr); }
   .trust { grid-template-columns: 1fr; }
   .trust__tabs { flex-direction: row; min-width: 0; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); padding: 1rem; }
@@ -1390,6 +1411,9 @@ input, select, button { font: inherit; }
   .solcard { flex-basis: 82%; min-width: 0; padding: 1.8rem; }
   .solutions__nav--prev { left: 4px; }
   .solutions__nav--next { right: 4px; }
+  .pillars__track .pcard { flex-basis: 82%; min-width: 0; }
+  .pillars__nav--prev { left: 4px; }
+  .pillars__nav--next { right: 4px; }
   .plan-slot { flex-basis: 84%; }
   .pricing__nav--prev { left: 4px; }
   .pricing__nav--next { right: 4px; }

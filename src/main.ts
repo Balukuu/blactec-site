@@ -1419,6 +1419,15 @@ function bootstrap(): void {
     );
   }
 
+  const pillarsTrack = document.getElementById('pillarsTrack');
+  if (pillarsTrack) {
+    new ScrollCarousel(
+      pillarsTrack,
+      qs<HTMLButtonElement>('#pillarsPrev'),
+      qs<HTMLButtonElement>('#pillarsNext'),
+    );
+  }
+
   const showcaseTrack = document.getElementById('showcaseTrack');
   if (showcaseTrack) {
     new ScrollCarousel(
