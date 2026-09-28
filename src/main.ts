@@ -677,9 +677,9 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
       features: ['Up to 5 pages', 'Custom mobile-responsive design', 'Contact & inquiry form', 'Basic on-page SEO setup', 'Free SSL certificate', '1 round of revisions', 'Delivered in 10–14 days'],
     },
     {
-      name: 'Business Website', desc: 'Our most-booked package — a growth-ready site your team can update without calling us.',
+      name: 'Business Website', desc: 'Our most-booked package — a growth-ready site with fast, free monthly updates handled for you.',
       currency: 'UGX', price: 2500000, unit: 'one-time', popular: true,
-      features: ['Up to 12 pages', 'Fully custom design, no templates', 'Easy self-edit CMS', 'Blog / news section', 'WhatsApp click-to-chat', 'Google Analytics & Search Console setup', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
+      features: ['Up to 12 pages', 'Fully custom design, no templates', 'Free monthly content updates', 'Blog / news section', 'WhatsApp click-to-chat', 'Google Analytics & Search Console setup', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
     },
     {
       name: 'Premium / E-commerce', desc: 'A full online store or advanced platform, built to convert and built to scale.',
@@ -694,9 +694,9 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
       features: ['Up to 5 pages restyled', 'Keep your existing content & structure', 'Mobile responsiveness fixes', 'Speed & Core Web Vitals tuning', 'Basic SEO clean-up', '1 round of revisions', 'Delivered in 7–10 days'],
     },
     {
-      name: 'Full Redesign', desc: 'A ground-up rebuild — new design, new CMS, your content migrated for you.',
+      name: 'Full Redesign', desc: 'A ground-up rebuild — new design, new build, your content migrated for you.',
       currency: 'UGX', price: 2000000, unit: 'one-time', popular: true,
-      features: ['Up to 12 pages rebuilt', 'Brand-new custom design', 'Content migrated from your old site', 'Easy self-edit CMS', 'On-page SEO improvements', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
+      features: ['Up to 12 pages rebuilt', 'Brand-new custom design', 'Content migrated from your old site', 'Free monthly content updates', 'On-page SEO improvements', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
     },
     {
       name: 'Platform Migration & Redesign', desc: 'Move off an outdated platform entirely — redesigned, rebuilt and relaunched with zero data loss.',
