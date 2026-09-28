@@ -20,7 +20,7 @@ interface DomainResult {
   alternatives: TldOption[];
 }
 
-type PriceUnit = 'year' | 'user/year' | 'month' | 'user/month';
+type PriceUnit = 'year' | 'user/year' | 'month' | 'user/month' | 'one-time';
 
 type Currency = 'UGX' | 'USD';
 
@@ -34,7 +34,7 @@ interface PricingPlan {
   popular?: boolean;
 }
 
-type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'microsoft365' | 'zoho' | 'reseller' | 'security';
+type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'microsoft365' | 'zoho' | 'reseller' | 'security' | 'webdesign' | 'webredesign';
 
 /** Approximate market rate — update as the shilling moves against the dollar. */
 const UGX_PER_USD = 3700;
@@ -670,6 +670,40 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     { name: 'Website Security Professional', desc: 'Deeper scanning with automatic malware removal.', currency: 'UGX', price: 80000, unit: 'month', popular: true, features: ['Scans up to 100 pages daily', 'Automatic malware removal', 'SQLi & XSS vulnerability scans'] },
     { name: 'Website Security Premium', desc: 'Full protection with a website firewall for high-traffic sites.', currency: 'UGX', price: 120000, unit: 'month', features: ['Scans up to 500 pages daily', 'Web application firewall', 'DDoS mitigation for your website'] },
   ],
+  webdesign: [
+    {
+      name: 'Starter Website', desc: 'A clean, professional online presence for small businesses and personal brands.',
+      currency: 'UGX', price: 1200000, unit: 'one-time',
+      features: ['Up to 5 pages', 'Custom mobile-responsive design', 'Contact & inquiry form', 'Basic on-page SEO setup', 'Free SSL certificate', '1 round of revisions', 'Delivered in 10–14 days'],
+    },
+    {
+      name: 'Business Website', desc: 'Our most-booked package — a growth-ready site your team can update without calling us.',
+      currency: 'UGX', price: 2500000, unit: 'one-time', popular: true,
+      features: ['Up to 12 pages', 'Fully custom design, no templates', 'Easy self-edit CMS', 'Blog / news section', 'WhatsApp click-to-chat', 'Google Analytics & Search Console setup', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
+    },
+    {
+      name: 'Premium / E-commerce', desc: 'A full online store or advanced platform, built to convert and built to scale.',
+      currency: 'UGX', price: 4800000, unit: 'one-time',
+      features: ['Unlimited pages & products', 'Online store with Mobile Money & card checkout', 'Inventory & order management', 'Advanced SEO & speed optimisation', 'Staff accounts & admin dashboard', '3 rounds of revisions', 'Delivered in 5–7 weeks'],
+    },
+  ],
+  webredesign: [
+    {
+      name: 'Refresh', desc: 'A visual and performance refresh for a site that just needs modernising, not rebuilding.',
+      currency: 'UGX', price: 1000000, unit: 'one-time',
+      features: ['Up to 5 pages restyled', 'Keep your existing content & structure', 'Mobile responsiveness fixes', 'Speed & Core Web Vitals tuning', 'Basic SEO clean-up', '1 round of revisions', 'Delivered in 7–10 days'],
+    },
+    {
+      name: 'Full Redesign', desc: 'A ground-up rebuild — new design, new CMS, your content migrated for you.',
+      currency: 'UGX', price: 2000000, unit: 'one-time', popular: true,
+      features: ['Up to 12 pages rebuilt', 'Brand-new custom design', 'Content migrated from your old site', 'Easy self-edit CMS', 'On-page SEO improvements', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
+    },
+    {
+      name: 'Platform Migration & Redesign', desc: 'Move off an outdated platform entirely — redesigned, rebuilt and relaunched with zero data loss.',
+      currency: 'UGX', price: 3500000, unit: 'one-time',
+      features: ['Full rebuild on a modern stack', 'E-commerce & database migration', '301 redirects to protect your search rankings', 'Staging preview before go-live', 'Zero-downtime launch', '3 rounds of revisions', 'Delivered in 5–7 weeks'],
+    },
+  ],
 };
 
 const CHECK_SVG =
@@ -714,7 +748,7 @@ class PricingRenderer {
   }
 
   private cardHtml(plan: PricingPlan): string {
-    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'user/month' ? '/ user / month' : plan.unit === 'month' ? '/ month' : '/ year';
+    const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'user/month' ? '/ user / month' : plan.unit === 'month' ? '/ month' : plan.unit === 'one-time' ? 'one-time' : '/ year';
     const ribbon = plan.popular ? '<span class="plan__ribbon">★ Most popular</span>' : '';
     const btnClass = plan.popular ? 'btn btn--secondary' : 'btn btn--primary';
     const features = plan.features
