@@ -3,25 +3,6 @@
    BlacTec Technologies Ltd. — Front-end interaction layer
    Strict TypeScript · no runtime libraries · compiled to dist/main.js
    ============================================================ */
-/* ---------- Tiny DOM helpers (null-narrowing) ---------- */
-function qs(selector, root = document) {
-    return root.querySelector(selector);
-}
-function qsa(selector, root = document) {
-    return Array.from(root.querySelectorAll(selector));
-}
-function prefersReducedMotion() {
-    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-}
-function escapeHtml(value) {
-    return value
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
-}
-function formatPrice(value) {
-    return value.toFixed(2);
-}
 /** Approximate market rate — update as the shilling moves against the dollar. */
 const UGX_PER_USD = 3700;
 function formatUgx(value) {
@@ -45,6 +26,25 @@ function convertPrice(plan, target) {
         return plan.price;
     }
     return plan.currency === 'UGX' ? plan.price / UGX_PER_USD : plan.price * UGX_PER_USD;
+}
+/* ---------- Tiny DOM helpers (null-narrowing) ---------- */
+function qs(selector, root = document) {
+    return root.querySelector(selector);
+}
+function qsa(selector, root = document) {
+    return Array.from(root.querySelectorAll(selector));
+}
+function prefersReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+function escapeHtml(value) {
+    return value
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+}
+function formatPrice(value) {
+    return value.toFixed(2);
 }
 /* ============================================================
    Toast — shared notifier + scroll-to-contact
@@ -354,6 +354,49 @@ class Carousel {
         });
         this.root.addEventListener('focusin', () => this.pause());
         this.root.addEventListener('focusout', () => {
+            if (!this.reduceMotion) {
+                this.play();
+            }
+        });
+        this.bindSwipe();
+    }
+    /** Touch/pen swipe — the hero reads as a swipeable card (dots + a bordered visual), so it
+     *  should behave like one. Threshold-gated rather than 1:1 finger-tracking since slides
+     *  crossfade rather than translate with the pointer; the horizontal-vs-vertical check
+     *  keeps page scroll untouched when the gesture turns out to be a vertical scroll. */
+    bindSwipe() {
+        let startX = 0;
+        let startY = 0;
+        let tracking = false;
+        const threshold = 40;
+        this.root.addEventListener('pointerdown', (event) => {
+            if (event.pointerType === 'mouse') {
+                return;
+            }
+            tracking = true;
+            startX = event.clientX;
+            startY = event.clientY;
+            this.pause();
+        });
+        this.root.addEventListener('pointerup', (event) => {
+            if (!tracking) {
+                return;
+            }
+            tracking = false;
+            const dx = event.clientX - startX;
+            const dy = event.clientY - startY;
+            if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
+                const next = dx < 0
+                    ? (this.index + 1) % this.slides.length
+                    : (this.index - 1 + this.slides.length) % this.slides.length;
+                this.activate(next, true);
+            }
+            else if (!this.reduceMotion) {
+                this.play();
+            }
+        });
+        this.root.addEventListener('pointercancel', () => {
+            tracking = false;
             if (!this.reduceMotion) {
                 this.play();
             }
@@ -973,22 +1016,36 @@ class MegaMenu {
         this.mega = qs('.mega', item);
         this.bind();
     }
+    /** Single source of truth for open/closed — CSS no longer opens on :hover on its own,
+     *  so a click can never be fighting a hover state that's still active underneath it. */
+    open() {
+        this.mega.classList.add('is-open');
+        this.trigger.setAttribute('aria-expanded', 'true');
+    }
+    close() {
+        this.mega.classList.remove('is-open');
+        this.trigger.setAttribute('aria-expanded', 'false');
+    }
     bind() {
         this.trigger.addEventListener('click', (event) => {
             event.preventDefault();
-            const open = this.mega.classList.toggle('is-open');
-            this.trigger.setAttribute('aria-expanded', String(open));
+            if (this.mega.classList.contains('is-open')) {
+                this.close();
+            }
+            else {
+                this.open();
+            }
         });
+        this.item.addEventListener('mouseenter', () => this.open());
+        this.item.addEventListener('mouseleave', () => this.close());
         document.addEventListener('click', (event) => {
             if (!this.item.contains(event.target)) {
-                this.mega.classList.remove('is-open');
-                this.trigger.setAttribute('aria-expanded', 'false');
+                this.close();
             }
         });
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape') {
-                this.mega.classList.remove('is-open');
-                this.trigger.setAttribute('aria-expanded', 'false');
+                this.close();
             }
         });
     }

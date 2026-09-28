@@ -462,6 +462,52 @@ class Carousel {
         this.play();
       }
     });
+    this.bindSwipe();
+  }
+
+  /** Touch/pen swipe — the hero reads as a swipeable card (dots + a bordered visual), so it
+   *  should behave like one. Threshold-gated rather than 1:1 finger-tracking since slides
+   *  crossfade rather than translate with the pointer; the horizontal-vs-vertical check
+   *  keeps page scroll untouched when the gesture turns out to be a vertical scroll. */
+  private bindSwipe(): void {
+    let startX = 0;
+    let startY = 0;
+    let tracking = false;
+    const threshold = 40;
+
+    this.root.addEventListener('pointerdown', (event: PointerEvent) => {
+      if (event.pointerType === 'mouse') {
+        return;
+      }
+      tracking = true;
+      startX = event.clientX;
+      startY = event.clientY;
+      this.pause();
+    });
+
+    this.root.addEventListener('pointerup', (event: PointerEvent) => {
+      if (!tracking) {
+        return;
+      }
+      tracking = false;
+      const dx = event.clientX - startX;
+      const dy = event.clientY - startY;
+      if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
+        const next = dx < 0
+          ? (this.index + 1) % this.slides.length
+          : (this.index - 1 + this.slides.length) % this.slides.length;
+        this.activate(next, true);
+      } else if (!this.reduceMotion) {
+        this.play();
+      }
+    });
+
+    this.root.addEventListener('pointercancel', () => {
+      tracking = false;
+      if (!this.reduceMotion) {
+        this.play();
+      }
+    });
   }
 
   private onKey(event: KeyboardEvent, index: number): void {
@@ -1158,22 +1204,37 @@ class MegaMenu {
     this.bind();
   }
 
+  /** Single source of truth for open/closed — CSS no longer opens on :hover on its own,
+   *  so a click can never be fighting a hover state that's still active underneath it. */
+  private open(): void {
+    this.mega.classList.add('is-open');
+    this.trigger.setAttribute('aria-expanded', 'true');
+  }
+
+  private close(): void {
+    this.mega.classList.remove('is-open');
+    this.trigger.setAttribute('aria-expanded', 'false');
+  }
+
   private bind(): void {
     this.trigger.addEventListener('click', (event) => {
       event.preventDefault();
-      const open = this.mega.classList.toggle('is-open');
-      this.trigger.setAttribute('aria-expanded', String(open));
+      if (this.mega.classList.contains('is-open')) {
+        this.close();
+      } else {
+        this.open();
+      }
     });
+    this.item.addEventListener('mouseenter', () => this.open());
+    this.item.addEventListener('mouseleave', () => this.close());
     document.addEventListener('click', (event) => {
       if (!this.item.contains(event.target as Node)) {
-        this.mega.classList.remove('is-open');
-        this.trigger.setAttribute('aria-expanded', 'false');
+        this.close();
       }
     });
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        this.mega.classList.remove('is-open');
-        this.trigger.setAttribute('aria-expanded', 'false');
+        this.close();
       }
     });
   }
