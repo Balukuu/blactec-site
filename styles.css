@@ -472,16 +472,10 @@ input, select, button { font: inherit; }
 
 /* Hero — product carousel (Hosting / Google Workspace / Zoho Mail / Microsoft 365) */
 .hero__stack-card {
-  position: relative; z-index: 1; max-width: 400px; margin: 0 auto; background: #fff; border: 1px solid var(--border);
-  border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 1.7rem 1.7rem 1.9rem;
+  position: relative; z-index: 1; max-width: 400px; margin: 0 auto;
 }
-.hero__stack-slide { display: none; flex-direction: column; align-items: center; text-align: center; gap: 1.1rem; }
+.hero__stack-slide { display: none; flex-direction: column; align-items: center; text-align: center; gap: 1.2rem; }
 .hero__stack-slide.is-active { display: flex; animation: fadeUp .45s ease; }
-.hero__stack-badge {
-  padding: .45rem 1.05rem; border-radius: 999px; font-weight: 800; font-size: .8rem;
-  background: var(--primary-100); color: var(--primary-600); white-space: nowrap;
-}
-.hero__stack-badge--email { background: var(--blue-100); color: var(--blue-700); }
 .hero__stack-price { display: inline-flex; align-items: baseline; gap: .35rem; }
 .hero__stack-price small { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-500); }
 .hero__stack-price strong { font-size: 1.4rem; font-weight: 1000; color: var(--ink-900); }
@@ -490,11 +484,16 @@ input, select, button { font: inherit; }
 .hero__stack-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--border); padding: 0; text-indent: -999px; overflow: hidden; transition: var(--transition); }
 .hero__stack-dot.is-active { width: 24px; background: var(--primary-600); }
 
+/* Shared browser-chrome dots for the hero mock bars */
+.mockbar__dots { display: flex; gap: .28rem; flex: none; }
+.mockbar__dots i { width: 8px; height: 8px; border-radius: 50%; background: #d7d5e6; }
+.mockbar__dots i:nth-child(1) { background: #ff6058; } .mockbar__dots i:nth-child(2) { background: #ffbd2e; } .mockbar__dots i:nth-child(3) { background: #28c840; }
+
 /* App grid mock — Google Workspace / Zoho / Microsoft 365 */
 .appgrid { position: relative; z-index: 1; width: 100%; max-width: 380px; margin: 0 auto; background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.4), 0 0 0 1px rgba(58, 61, 68,.1); }
-.appgrid__bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .8rem 1rem; background: #fff; border-bottom: 1px solid var(--border); }
-.appgrid__label { font-weight: 800; font-size: .84rem; color: var(--ink-900); }
-.appgrid__badge { font-size: .68rem; font-weight: 600; color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
+.appgrid__bar { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; background: #fff; border-bottom: 1px solid var(--border); }
+.appgrid__label { font-weight: 800; font-size: .84rem; color: var(--ink-900); margin-left: .3rem; }
+.appgrid__badge { margin-left: auto; font-size: .68rem; font-weight: 600; color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
 .appgrid__body { padding: 1.2rem; }
 .appgrid__apps { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
 .appgrid__app { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: .9rem .5rem; border-radius: 12px; background: #fff; border: 1px solid var(--border); }
@@ -506,7 +505,11 @@ input, select, button { font: inherit; }
 .appgrid--animated .appgrid__app:nth-child(4) { animation-delay: .75s; }
 
 /* Server rack mock — Hosting / VPS / Dedicated */
-.rackmock { position: relative; z-index: 1; width: 100%; max-width: 380px; margin: 0 auto; background: linear-gradient(160deg, #1d1e20, #0e0f13); border-radius: 14px; padding: 1.1rem; box-shadow: 0 30px 70px rgba(0,0,0,.4), 0 0 0 1px rgba(58, 61, 68,.1); }
+.rackmock { position: relative; z-index: 1; width: 100%; max-width: 380px; margin: 0 auto; background: linear-gradient(160deg, #1d1e20, #0e0f13); border-radius: 14px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.4), 0 0 0 1px rgba(58, 61, 68,.1); }
+.rackmock__bar { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; background: rgba(255,255,255,.04); border-bottom: 1px solid rgba(255,255,255,.08); }
+.rackmock__bar-label { font-weight: 800; font-size: .84rem; color: #fff; margin-left: .3rem; }
+.rackmock__bar-badge { margin-left: auto; font-size: .68rem; font-weight: 600; color: rgba(255,255,255,.6); background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.12); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
+.rackmock__body { padding: 1.1rem; }
 .rackmock__unit { display: flex; align-items: center; gap: .65rem; padding: .7rem .85rem; border-radius: 9px; background: rgba(255,255,255,.06); margin-bottom: .5rem; }
 .rackmock__unit:last-of-type { margin-bottom: 0; }
 .rackmock__lights { display: flex; gap: .28rem; flex: none; }
@@ -521,9 +524,9 @@ input, select, button { font: inherit; }
 
 /* Screenshot loop mock — cycles through real product screenshots (Google Workspace) */
 .wsmock { position: relative; z-index: 1; width: 100%; max-width: 360px; margin: 0 auto; background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; box-shadow: 0 30px 70px rgba(0,0,0,.4), 0 0 0 1px rgba(58, 61, 68,.1); }
-.wsmock__bar { display: flex; align-items: center; justify-content: space-between; gap: .6rem; padding: .8rem 1rem; background: #fff; border-bottom: 1px solid var(--border); }
-.wsmock__label { font-weight: 800; font-size: .84rem; color: var(--ink-900); }
-.wsmock__badge { font-size: .68rem; font-weight: 600; color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
+.wsmock__bar { display: flex; align-items: center; gap: .6rem; padding: .8rem 1rem; background: #fff; border-bottom: 1px solid var(--border); }
+.wsmock__label { font-weight: 800; font-size: .84rem; color: var(--ink-900); margin-left: .3rem; }
+.wsmock__badge { margin-left: auto; font-size: .68rem; font-weight: 600; color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
 .wsmock__frame { position: relative; width: 100%; aspect-ratio: 640 / 515; background: #fff; }
 .wsmock__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; opacity: 0; transition: opacity .7s ease; }
 .wsmock__img.is-active { opacity: 1; }
