@@ -714,7 +714,8 @@ input, select, button { font: inherit; }
 .pcard__title { font-size: 1.25rem; font-weight: 700; color: var(--ink-900); letter-spacing: -.01em; }
 .pcard p { color: var(--ink-500); font-size: .96rem; }
 .pcard__tags { display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .2rem; }
-.pcard__tags li { font-size: .76rem; font-weight: 600; color: var(--ink-700); background: rgba(14, 15, 19,.05); border: 1px solid var(--primary-100); border-radius: 999px; padding: .3rem .7rem; }
+.pcard__tags li { display: inline-flex; align-items: center; gap: .4rem; font-size: .76rem; font-weight: 600; color: var(--ink-700); background: rgba(14, 15, 19,.05); border: 1px solid var(--primary-100); border-radius: 999px; padding: .3rem .7rem; }
+.pcard__tags li img { height: 18px; width: 18px; border-radius: 4px; flex: none; object-fit: contain; }
 .pcard__tags--center { justify-content: center; }
 .pcard__price { font-weight: 800; color: var(--primary-700); font-size: .95rem; }
 .link-arrow__ico { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s cubic-bezier(.4,0,.2,1); }
