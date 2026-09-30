@@ -278,65 +278,81 @@
           </div>
         </div>
 
-        <!-- Right column illustration -->
-        <div class="hero__art reveal" aria-hidden="true">
-          <div class="dash">
-            <div class="dash__bar">
-              <span class="dash__dot"></span><span class="dash__dot"></span><span class="dash__dot"></span>
-              <span class="dash__url"><svg class="dash__lock" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>blactec.ug</span>
-              <span class="dash__live" aria-hidden="true"><i></i>Live</span>
-            </div>
-            <div class="dash__body">
-              <div class="dash__row">
-                <div class="dash__stat"><span class="dash__k">Uptime</span><span class="dash__v">99.98%</span></div>
-                <div class="dash__stat"><span class="dash__k">Response</span><span class="dash__v">42<em>ms</em></span></div>
+        <!-- Right column: product carousel -->
+        <div class="hero__art reveal">
+          <div class="hero__stack-card" id="heroStack">
+            <!-- Slide 1: Hosting -->
+            <div class="hero__stack-slide is-active" data-index="0">
+              <span class="hero__stack-badge">Web &amp; Server Hosting</span>
+              <div class="rackmock" aria-hidden="true">
+                <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Shared &amp; Reseller Hosting</span></div>
+                <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Root-Access VPS</span></div>
+                <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Dedicated Servers</span></div>
+                <div class="rackmock__stats">
+                  <span class="rackmock__stat"><strong>99.9%</strong><small>Uptime</small></span>
+                  <span class="rackmock__stat"><strong>NVMe</strong><small>Storage</small></span>
+                </div>
               </div>
-              <svg class="dash__chart" viewBox="0 0 320 90" preserveAspectRatio="none" aria-hidden="true">
-                <defs>
-                  <linearGradient id="gArea2" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0" stop-color="var(--blue-500)" stop-opacity=".28"/>
-                    <stop offset="1" stop-color="var(--blue-500)" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <path class="dash__area" d="M0,70 L26,58 L52,64 L78,44 L104,50 L130,32 L156,40 L182,24 L208,34 L234,18 L260,26 L286,12 L320,20 L320,90 L0,90 Z" fill="url(#gArea2)"/>
-                <path class="dash__line" d="M0,70 L26,58 L52,64 L78,44 L104,50 L130,32 L156,40 L182,24 L208,34 L234,18 L260,26 L286,12 L320,20" fill="none" stroke="var(--blue-700)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              <div class="dash__storage">
-                <span class="dash__k">NVMe storage</span>
-                <div class="dash__track"><div class="dash__fill"></div></div>
-                <span class="dash__pct">6.4 / 20 GB</span>
-              </div>
+              <span class="hero__stack-price"><small>Starting at</small><strong>UGX 100,000</strong><span>/ year</span></span>
             </div>
-          </div>
-          <span class="chip chip--float chip--a"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>SSL Secured</span>
-          <span class="chip chip--float chip--b">Root access</span>
-          <span class="chip chip--float chip--c"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>NVMe</span>
-        </div>
-      </div>
 
-      <div class="container hero__stack reveal">
-        <span class="hero__stack-label">Two kinds of hosting, both handled</span>
-        <div class="hero__stack-card" id="heroStack">
-          <div class="hero__stack-slide is-active" data-index="0">
-            <span class="hero__stack-badge">Web Hosting</span>
-            <ul class="hero__stack-logos">
-              <li><img src="assets/brand/cpanel.svg" alt="cPanel" loading="lazy" /><span>cPanel</span></li>
-              <li><img src="assets/brand/wordpress.svg" alt="WordPress" loading="lazy" /><span>WordPress</span></li>
-            </ul>
-            <span class="hero__stack-note">Shared · VPS · Dedicated servers</span>
-          </div>
-          <div class="hero__stack-slide" data-index="1" hidden>
-            <span class="hero__stack-badge hero__stack-badge--email">Email Hosting</span>
-            <ul class="hero__stack-logos">
-              <li><img src="assets/brand/google-workspace.svg" alt="Google Workspace" loading="lazy" /><span>Google Workspace</span></li>
-              <li><img src="assets/brand/microsoft-365.svg" alt="Microsoft 365" loading="lazy" /><span>Microsoft 365</span></li>
-              <li><img src="assets/brand/zoho.svg" alt="Zoho Mail" loading="lazy" /><span>Zoho Mail</span></li>
-            </ul>
-            <span class="hero__stack-note">Custom @yourdomain business email</span>
-          </div>
-          <div class="hero__stack-dots" role="tablist" aria-label="Hosting solution categories">
-            <button class="hero__stack-dot is-active" type="button" data-dot="0" aria-selected="true">Web Hosting</button>
-            <button class="hero__stack-dot" type="button" data-dot="1" aria-selected="false">Email Hosting</button>
+            <!-- Slide 2: Google Workspace -->
+            <div class="hero__stack-slide" data-index="1" hidden>
+              <span class="hero__stack-badge hero__stack-badge--email">Google Workspace</span>
+              <div class="appgrid appgrid--animated" aria-hidden="true">
+                <div class="appgrid__bar"><span class="appgrid__label">Google Workspace</span><span class="appgrid__badge">yourbusiness.ug</span></div>
+                <div class="appgrid__body">
+                  <div class="appgrid__apps">
+                    <span class="appgrid__app"><img src="assets/brand/gmail.svg" alt="" loading="lazy" /><em>Gmail</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/google-drive.svg" alt="" loading="lazy" /><em>Drive</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/google-docs.svg" alt="" loading="lazy" /><em>Docs</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/google-meet.svg" alt="" loading="lazy" /><em>Meet</em></span>
+                  </div>
+                </div>
+              </div>
+              <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
+            </div>
+
+            <!-- Slide 3: Zoho Mail -->
+            <div class="hero__stack-slide" data-index="2" hidden>
+              <span class="hero__stack-badge hero__stack-badge--email">Zoho Mail</span>
+              <div class="appgrid" aria-hidden="true">
+                <div class="appgrid__bar"><span class="appgrid__label">Zoho Workplace</span><span class="appgrid__badge">yourbusiness.ug</span></div>
+                <div class="appgrid__body">
+                  <div class="appgrid__apps">
+                    <span class="appgrid__app"><img src="assets/brand/zoho.svg" alt="" loading="lazy" /><em>Mail</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/zoho-writer.svg" alt="" loading="lazy" /><em>Writer</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/zoho-sheet.svg" alt="" loading="lazy" /><em>Sheet</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/zoho-show.svg" alt="" loading="lazy" /><em>Show</em></span>
+                  </div>
+                </div>
+              </div>
+              <span class="hero__stack-price"><small>Starting at</small><strong>$1</strong><span>/ user / month</span></span>
+            </div>
+
+            <!-- Slide 4: Microsoft 365 -->
+            <div class="hero__stack-slide" data-index="3" hidden>
+              <span class="hero__stack-badge hero__stack-badge--email">Microsoft 365</span>
+              <div class="appgrid" aria-hidden="true">
+                <div class="appgrid__bar"><span class="appgrid__label">Microsoft 365</span><span class="appgrid__badge">yourbusiness.ug</span></div>
+                <div class="appgrid__body">
+                  <div class="appgrid__apps">
+                    <span class="appgrid__app"><img src="assets/brand/ms-word.svg" alt="" loading="lazy" /><em>Word</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/ms-excel.svg" alt="" loading="lazy" /><em>Excel</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/ms-outlook.svg" alt="" loading="lazy" /><em>Outlook</em></span>
+                    <span class="appgrid__app"><img src="assets/brand/ms-teams.svg" alt="" loading="lazy" /><em>Teams</em></span>
+                  </div>
+                </div>
+              </div>
+              <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
+            </div>
+
+            <div class="hero__stack-dots" role="tablist" aria-label="Hosting product categories">
+              <button class="hero__stack-dot is-active" type="button" data-dot="0" aria-selected="true">Web &amp; Server Hosting</button>
+              <button class="hero__stack-dot" type="button" data-dot="1" aria-selected="false">Google Workspace</button>
+              <button class="hero__stack-dot" type="button" data-dot="2" aria-selected="false">Zoho Mail</button>
+              <button class="hero__stack-dot" type="button" data-dot="3" aria-selected="false">Microsoft 365</button>
+            </div>
           </div>
         </div>
       </div>
