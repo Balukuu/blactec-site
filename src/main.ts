@@ -646,6 +646,26 @@ class HeroStack {
 }
 
 /* ============================================================
+   Image loop — cycles a stack of real product screenshots
+   (used for the Google Workspace card's rotating screenshots)
+   ============================================================ */
+
+class ImageLoop {
+  constructor(root: HTMLElement, intervalMs = 2600) {
+    const imgs = qsa<HTMLElement>('.wsmock__img', root);
+    if (imgs.length < 2 || prefersReducedMotion()) {
+      return;
+    }
+    let index = 0;
+    window.setInterval(() => {
+      imgs[index].classList.remove('is-active');
+      index = (index + 1) % imgs.length;
+      imgs[index].classList.add('is-active');
+    }, intervalMs);
+  }
+}
+
+/* ============================================================
    Pricing — data-driven cards + accessible tabs
    ============================================================ */
 
@@ -1472,6 +1492,8 @@ function bootstrap(): void {
   if (heroStack) {
     new HeroStack(heroStack);
   }
+
+  qsa<HTMLElement>('.wsmock').forEach((el) => new ImageLoop(el));
 
   const tablist = document.getElementById('pricingTabs');
   if (tablist) {
