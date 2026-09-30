@@ -37,7 +37,7 @@ interface PricingPlan {
 type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'microsoft365' | 'zoho' | 'reseller' | 'security' | 'webdesign' | 'webredesign';
 
 /** Approximate market rate — update as the shilling moves against the dollar. */
-const UGX_PER_USD = 3700;
+const UGX_PER_USD = 3900;
 
 function formatUgx(value: number): string {
   return `UGX ${Math.round(value).toLocaleString('en-US')}`;
@@ -642,13 +642,13 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     },
   ],
   workspace: [
-    { name: 'Starter Google Workspace', desc: 'Custom business email with core Google tools.', currency: 'USD', price: 6.99, unit: 'user/month', features: ['30 GB storage per mailbox', 'Video meetings up to 100 participants', 'Security controls', 'Standard support'] },
-    { name: 'Standard Google Workspace', desc: 'More storage and richer collaboration.', currency: 'USD', price: 13.99, unit: 'user/month', popular: true, features: ['2 TB storage per mailbox', 'Meetings up to 150 participants with recording', 'Appointment booking & email layouts', 'Standard support'] },
-    { name: 'Plus Google Workspace', desc: 'Advanced security, Vault & compliance.', currency: 'USD', price: 21.99, unit: 'user/month', features: ['5 TB storage per mailbox', 'Meetings up to 500 participants with recording', 'Enhanced security & Vault controls', 'Advanced endpoint management'] },
+    { name: 'Starter Google Workspace', desc: 'Custom business email with core Google tools.', currency: 'USD', price: 7.00, unit: 'user/month', features: ['30 GB pooled storage per user', 'Video meetings up to 100 participants', 'Security controls', 'Standard support'] },
+    { name: 'Standard Google Workspace', desc: 'More storage and richer collaboration.', currency: 'USD', price: 14.00, unit: 'user/month', popular: true, features: ['2 TB pooled storage per user', 'Meetings up to 150 participants with recording', 'Appointment booking & email layouts', 'Standard support'] },
+    { name: 'Plus Google Workspace', desc: 'Advanced security, Vault & compliance.', currency: 'USD', price: 22.00, unit: 'user/month', features: ['5 TB pooled storage per user', 'Meetings up to 500 participants with recording', 'Enhanced security & Vault controls', 'Advanced endpoint management'] },
   ],
   microsoft365: [
-    { name: 'Business Basic', desc: 'Web & mobile Office apps with Exchange email.', currency: 'USD', price: 6.00, unit: 'user/month', features: ['50 GB Exchange mailbox', '1 TB OneDrive storage', 'Teams chat & meetings', 'Standard security'] },
-    { name: 'Business Standard', desc: 'Desktop apps with advanced collaboration.', currency: 'USD', price: 12.50, unit: 'user/month', popular: true, features: ['Everything in Basic', 'Desktop Word, Excel & Outlook', 'Teams webinars & registration', 'Microsoft Loop workspaces'] },
+    { name: 'Business Basic', desc: 'Web & mobile Office apps with Exchange email.', currency: 'USD', price: 7.00, unit: 'user/month', features: ['50 GB Exchange mailbox', '1 TB OneDrive storage', 'Teams chat & meetings', 'Standard security'] },
+    { name: 'Business Standard', desc: 'Desktop apps with advanced collaboration.', currency: 'USD', price: 14.00, unit: 'user/month', popular: true, features: ['Everything in Basic', 'Desktop Word, Excel & Outlook', 'Teams webinars & registration', 'Microsoft Loop workspaces'] },
     { name: 'Business Premium', desc: 'Enterprise-grade security & device management.', currency: 'USD', price: 22.00, unit: 'user/month', features: ['Everything in Standard', 'Advanced cyber threat protection', 'Device management', 'Microsoft Defender for Business'] },
   ],
   zoho: [
