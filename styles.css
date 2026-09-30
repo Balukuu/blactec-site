@@ -496,9 +496,9 @@ input, select, button { font: inherit; }
 .appgrid__badge { margin-left: auto; font-size: .68rem; font-weight: 600; color: var(--ink-500); background: var(--surface-1); border: 1px solid var(--border); padding: .22rem .55rem; border-radius: 999px; white-space: nowrap; }
 .appgrid__body { padding: 1.2rem; }
 .appgrid__apps { display: grid; grid-template-columns: repeat(2, 1fr); gap: .8rem; }
-.appgrid__app { display: flex; flex-direction: column; align-items: center; gap: .5rem; padding: .9rem .5rem; border-radius: 12px; background: #fff; border: 1px solid var(--border); }
-.appgrid__app img { width: 30px; height: 30px; object-fit: contain; }
-.appgrid__app em { font-style: normal; font-size: .76rem; font-weight: 700; color: var(--ink-700); }
+.appgrid__app { display: flex; flex-direction: column; align-items: center; gap: .6rem; padding: 1.1rem .5rem; border-radius: 12px; background: #fff; border: 1px solid var(--border); }
+.appgrid__app img { width: 42px; height: 42px; object-fit: contain; }
+.appgrid__app em { font-style: normal; font-size: .8rem; font-weight: 700; color: var(--ink-700); }
 .appgrid--animated .appgrid__app { animation: floaty 4.5s ease-in-out infinite; }
 .appgrid--animated .appgrid__app:nth-child(2) { animation-delay: .25s; }
 .appgrid--animated .appgrid__app:nth-child(3) { animation-delay: .5s; }
