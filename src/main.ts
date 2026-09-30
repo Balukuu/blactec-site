@@ -752,9 +752,10 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     { name: 'Business Premium', desc: 'Enterprise-grade security & device management.', currency: 'USD', price: 22.00, unit: 'user/month', features: ['Everything in Standard', 'Advanced cyber threat protection', 'Device management', 'Microsoft Defender for Business'] },
   ],
   zoho: [
-    { name: 'Mail Lite', desc: 'Essential custom email.', currency: 'USD', price: 1.00, unit: 'user/month', features: ['5–10 GB mail storage', 'Shared calendars & contacts', 'Mobile & desktop apps', 'Aliases & group routing'] },
-    { name: 'Workplace Standard', desc: 'Complete collaboration suite.', currency: 'USD', price: 3.00, unit: 'user/month', popular: true, features: ['30 GB mail storage', '100 GB shared WorkDrive', 'Zoho Cliq team chat', 'Writer, Sheet & Show + Meetings'] },
-    { name: 'Mail Premium', desc: 'Advanced email archiving.', currency: 'USD', price: 4.00, unit: 'user/month', features: ['50 GB mail storage', 'Email retention & eDiscovery', 'S/MIME & encryption', 'Account backup & recovery'] },
+    { name: 'Mail Lite', desc: 'Essential custom email.', currency: 'USD', price: 1.10, unit: 'user/month', features: ['5–10 GB mail storage', 'AI assistant (Zia)', 'Mobile & desktop apps', 'Bulk transactional emails'] },
+    { name: 'Workplace Standard', desc: 'Complete collaboration suite — best value.', currency: 'USD', price: 3.30, unit: 'user/month', popular: true, features: ['30 GB mail storage', '100 GB shared WorkDrive', 'Unified communication suite', 'Writer, Sheet & Show + Meetings'] },
+    { name: 'Mail Premium', desc: 'Advanced email archiving.', currency: 'USD', price: 4.40, unit: 'user/month', features: ['50 GB mail + 50 GB retention storage', 'Email retention & eDiscovery', 'S/MIME encryption', 'Mobile access management'] },
+    { name: 'Workplace Professional', desc: 'Enhanced retention with intranet & social tools.', currency: 'USD', price: 6.60, unit: 'user/month', features: ['100 GB mail + 100 GB retention storage', '1 TB shared WorkDrive', 'Intranet capabilities', 'Zoho Connect enterprise social network'] },
   ],
   reseller: [
     { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
