@@ -630,11 +630,12 @@ const PRICING = {
         { name: 'Business Standard', desc: 'Desktop apps with advanced collaboration.', currency: 'USD', price: 14.00, unit: 'user/month', popular: true, features: ['Everything in Basic', 'Desktop Word, Excel & Outlook', 'Teams webinars & registration', 'Microsoft Loop workspaces'] },
         { name: 'Business Premium', desc: 'Enterprise-grade security & device management.', currency: 'USD', price: 22.00, unit: 'user/month', features: ['Everything in Standard', 'Advanced cyber threat protection', 'Device management', 'Microsoft Defender for Business'] },
     ],
+    // Zoho Workplace — Zoho list price (annual billing, per user/month) + 10% BlacTec markup.
     zoho: [
-        { name: 'Mail Lite', desc: 'Essential custom email.', currency: 'USD', price: 1.10, unit: 'user/month', features: ['5–10 GB mail storage', 'AI assistant (Zia)', 'Mobile & desktop apps', 'Bulk transactional emails'] },
-        { name: 'Workplace Standard', desc: 'Complete collaboration suite — best value.', currency: 'USD', price: 3.30, unit: 'user/month', popular: true, features: ['30 GB mail storage', '100 GB shared WorkDrive', 'Unified communication suite', 'Writer, Sheet & Show + Meetings'] },
-        { name: 'Mail Premium', desc: 'Advanced email archiving.', currency: 'USD', price: 4.40, unit: 'user/month', features: ['50 GB mail + 50 GB retention storage', 'Email retention & eDiscovery', 'S/MIME encryption', 'Mobile access management'] },
-        { name: 'Workplace Professional', desc: 'Enhanced retention with intranet & social tools.', currency: 'USD', price: 6.60, unit: 'user/month', features: ['100 GB mail + 100 GB retention storage', '1 TB shared WorkDrive', 'Intranet capabilities', 'Zoho Connect enterprise social network'] },
+        { name: 'Mail Lite', desc: 'Essential custom email for your domain.', currency: 'USD', price: 1.10, unit: 'user/month', features: ['5–10 GB mail storage per user', 'AI assistant (Zia)', 'Mail, Calendar, ToDo & Directory', 'Billed annually'] },
+        { name: 'Workplace Standard', desc: 'Complete collaboration suite — best value.', currency: 'USD', price: 3.30, unit: 'user/month', popular: true, features: ['30 GB mail + 100 GB team storage', 'WorkDrive, Writer, Sheet & Show', 'Cliq chat, Meeting & Vault', 'AI assistant (Zia) & Trident desktop app'] },
+        { name: 'Mail Premium', desc: 'Email with retention and eDiscovery.', currency: 'USD', price: 4.40, unit: 'user/month', features: ['50 GB mail + 50 GB retention storage', 'Email retention & eDiscovery', 'eProtect email security', 'Billed annually'] },
+        { name: 'Workplace Professional', desc: 'Maximum storage with intranet tools.', currency: 'USD', price: 6.60, unit: 'user/month', features: ['100 GB mail + 100 GB retention storage', '1 TB team storage', 'Email retention, eProtect & eDiscovery', 'Zoho Connect intranet'] },
     ],
     reseller: [
         { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
