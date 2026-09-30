@@ -459,6 +459,75 @@ class Carousel {
     }
 }
 /* ============================================================
+   Hero solutions stack — small auto-rotating slideshow that shows
+   web hosting (cPanel/WordPress) and email hosting (Workspace/365/Zoho)
+   as independent slides.
+   ============================================================ */
+class HeroStack {
+    constructor(root) {
+        this.index = 0;
+        this.intervalMs = 4200;
+        this.root = root;
+        this.slides = qsa('.hero__stack-slide', root);
+        this.dots = qsa('.hero__stack-dot', root);
+        this.reduceMotion = prefersReducedMotion();
+        this.bind();
+        if (!this.reduceMotion) {
+            this.play();
+        }
+    }
+    bind() {
+        this.dots.forEach((dot, i) => {
+            dot.addEventListener('click', () => this.activate(i, true));
+        });
+        this.root.addEventListener('mouseenter', () => this.pause());
+        this.root.addEventListener('mouseleave', () => {
+            if (!this.reduceMotion) {
+                this.play();
+            }
+        });
+        this.root.addEventListener('focusin', () => this.pause());
+        this.root.addEventListener('focusout', () => {
+            if (!this.reduceMotion) {
+                this.play();
+            }
+        });
+    }
+    play() {
+        this.pause();
+        this.timer = window.setInterval(() => {
+            this.activate((this.index + 1) % this.slides.length, false);
+        }, this.intervalMs);
+    }
+    pause() {
+        if (this.timer !== undefined) {
+            window.clearInterval(this.timer);
+            this.timer = undefined;
+        }
+    }
+    activate(index, userTriggered) {
+        this.index = index;
+        this.slides.forEach((slide, i) => {
+            const selected = i === index;
+            slide.classList.toggle('is-active', selected);
+            if (selected) {
+                slide.removeAttribute('hidden');
+            }
+            else {
+                slide.setAttribute('hidden', '');
+            }
+        });
+        this.dots.forEach((dot, i) => {
+            const selected = i === index;
+            dot.classList.toggle('is-active', selected);
+            dot.setAttribute('aria-selected', String(selected));
+        });
+        if (userTriggered && !this.reduceMotion) {
+            this.play();
+        }
+    }
+}
+/* ============================================================
    Pricing — data-driven cards + accessible tabs
    ============================================================ */
 const PRICING = {
@@ -865,11 +934,12 @@ class ScrollCarousel {
 /** Same paging behaviour as ScrollCarousel, but resolves the active pricing tab-panel on every click since the track swaps with the selected category. */
 class PricingCarousel {
     constructor(prevBtn, nextBtn) {
+        this.scope = prevBtn?.closest('.pricing__carousel') ?? nextBtn?.closest('.pricing__carousel') ?? document;
         prevBtn?.addEventListener('click', () => this.page(-1));
         nextBtn?.addEventListener('click', () => this.page(1));
     }
     page(direction) {
-        const track = qs('.tab-panel.is-active');
+        const track = qs('.tab-panel.is-active', this.scope);
         if (!track) {
             return;
         }
@@ -1179,9 +1249,21 @@ function bootstrap() {
     if (heroCarousel) {
         new Carousel(heroCarousel);
     }
+    const heroStack = document.getElementById('heroStack');
+    if (heroStack) {
+        new HeroStack(heroStack);
+    }
     const tablist = document.getElementById('pricingTabs');
     if (tablist) {
         new PricingTabs(tablist);
+    }
+    const hostingTabs = document.getElementById('pricingTabsHosting');
+    if (hostingTabs) {
+        new PricingTabs(hostingTabs);
+    }
+    const emailTabs = document.getElementById('pricingTabsEmail');
+    if (emailTabs) {
+        new PricingTabs(emailTabs);
     }
     const serviceTabs = document.getElementById('serviceTabs');
     if (serviceTabs) {
@@ -1215,6 +1297,16 @@ function bootstrap() {
     const pricingNext = qs('#pricingNext');
     if (pricingPrev || pricingNext) {
         new PricingCarousel(pricingPrev, pricingNext);
+    }
+    const pricingPrevHosting = qs('#pricingPrevHosting');
+    const pricingNextHosting = qs('#pricingNextHosting');
+    if (pricingPrevHosting || pricingNextHosting) {
+        new PricingCarousel(pricingPrevHosting, pricingNextHosting);
+    }
+    const pricingPrevEmail = qs('#pricingPrevEmail');
+    const pricingNextEmail = qs('#pricingNextEmail');
+    if (pricingPrevEmail || pricingNextEmail) {
+        new PricingCarousel(pricingPrevEmail, pricingNextEmail);
     }
     new RevealOnScroll();
     new StatsCounter();

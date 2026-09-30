@@ -566,6 +566,86 @@ class Carousel {
 }
 
 /* ============================================================
+   Hero solutions stack — small auto-rotating slideshow that shows
+   web hosting (cPanel/WordPress) and email hosting (Workspace/365/Zoho)
+   as independent slides.
+   ============================================================ */
+
+class HeroStack {
+  private readonly root: HTMLElement;
+  private readonly slides: HTMLElement[];
+  private readonly dots: HTMLButtonElement[];
+  private index = 0;
+  private timer: number | undefined;
+  private readonly intervalMs = 4200;
+  private readonly reduceMotion: boolean;
+
+  constructor(root: HTMLElement) {
+    this.root = root;
+    this.slides = qsa<HTMLElement>('.hero__stack-slide', root);
+    this.dots = qsa<HTMLButtonElement>('.hero__stack-dot', root);
+    this.reduceMotion = prefersReducedMotion();
+    this.bind();
+    if (!this.reduceMotion) {
+      this.play();
+    }
+  }
+
+  private bind(): void {
+    this.dots.forEach((dot, i) => {
+      dot.addEventListener('click', () => this.activate(i, true));
+    });
+    this.root.addEventListener('mouseenter', () => this.pause());
+    this.root.addEventListener('mouseleave', () => {
+      if (!this.reduceMotion) {
+        this.play();
+      }
+    });
+    this.root.addEventListener('focusin', () => this.pause());
+    this.root.addEventListener('focusout', () => {
+      if (!this.reduceMotion) {
+        this.play();
+      }
+    });
+  }
+
+  private play(): void {
+    this.pause();
+    this.timer = window.setInterval(() => {
+      this.activate((this.index + 1) % this.slides.length, false);
+    }, this.intervalMs);
+  }
+
+  private pause(): void {
+    if (this.timer !== undefined) {
+      window.clearInterval(this.timer);
+      this.timer = undefined;
+    }
+  }
+
+  private activate(index: number, userTriggered: boolean): void {
+    this.index = index;
+    this.slides.forEach((slide, i) => {
+      const selected = i === index;
+      slide.classList.toggle('is-active', selected);
+      if (selected) {
+        slide.removeAttribute('hidden');
+      } else {
+        slide.setAttribute('hidden', '');
+      }
+    });
+    this.dots.forEach((dot, i) => {
+      const selected = i === index;
+      dot.classList.toggle('is-active', selected);
+      dot.setAttribute('aria-selected', String(selected));
+    });
+    if (userTriggered && !this.reduceMotion) {
+      this.play();
+    }
+  }
+}
+
+/* ============================================================
    Pricing — data-driven cards + accessible tabs
    ============================================================ */
 
@@ -1003,13 +1083,16 @@ class ScrollCarousel {
 
 /** Same paging behaviour as ScrollCarousel, but resolves the active pricing tab-panel on every click since the track swaps with the selected category. */
 class PricingCarousel {
+  private readonly scope: ParentNode;
+
   constructor(prevBtn: HTMLButtonElement | null, nextBtn: HTMLButtonElement | null) {
+    this.scope = prevBtn?.closest('.pricing__carousel') ?? nextBtn?.closest('.pricing__carousel') ?? document;
     prevBtn?.addEventListener('click', () => this.page(-1));
     nextBtn?.addEventListener('click', () => this.page(1));
   }
 
   private page(direction: 1 | -1): void {
-    const track = qs<HTMLElement>('.tab-panel.is-active');
+    const track = qs<HTMLElement>('.tab-panel.is-active', this.scope);
     if (!track) {
       return;
     }
@@ -1385,9 +1468,24 @@ function bootstrap(): void {
     new Carousel(heroCarousel);
   }
 
+  const heroStack = document.getElementById('heroStack');
+  if (heroStack) {
+    new HeroStack(heroStack);
+  }
+
   const tablist = document.getElementById('pricingTabs');
   if (tablist) {
     new PricingTabs(tablist);
+  }
+
+  const hostingTabs = document.getElementById('pricingTabsHosting');
+  if (hostingTabs) {
+    new PricingTabs(hostingTabs);
+  }
+
+  const emailTabs = document.getElementById('pricingTabsEmail');
+  if (emailTabs) {
+    new PricingTabs(emailTabs);
   }
 
   const serviceTabs = document.getElementById('serviceTabs');
@@ -1442,6 +1540,18 @@ function bootstrap(): void {
   const pricingNext = qs<HTMLButtonElement>('#pricingNext');
   if (pricingPrev || pricingNext) {
     new PricingCarousel(pricingPrev, pricingNext);
+  }
+
+  const pricingPrevHosting = qs<HTMLButtonElement>('#pricingPrevHosting');
+  const pricingNextHosting = qs<HTMLButtonElement>('#pricingNextHosting');
+  if (pricingPrevHosting || pricingNextHosting) {
+    new PricingCarousel(pricingPrevHosting, pricingNextHosting);
+  }
+
+  const pricingPrevEmail = qs<HTMLButtonElement>('#pricingPrevEmail');
+  const pricingNextEmail = qs<HTMLButtonElement>('#pricingNextEmail');
+  if (pricingPrevEmail || pricingNextEmail) {
+    new PricingCarousel(pricingPrevEmail, pricingNextEmail);
   }
 
   new RevealOnScroll();

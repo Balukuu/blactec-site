@@ -42,7 +42,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,1000&display=swap" />
 
-  <link rel="stylesheet" href="styles.css?v=1.11.3" />
+  <link rel="stylesheet" href="styles.css?v=1.11.4" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -99,7 +99,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.11.3"></script>
+  <script defer src="dist/main.js?v=1.11.4"></script>
 </head>
 <body>
   <div class="splash" id="splash" aria-hidden="true">
@@ -313,6 +313,33 @@
           <span class="chip chip--float chip--c"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>NVMe</span>
         </div>
       </div>
+
+      <div class="container hero__stack reveal">
+        <span class="hero__stack-label">Two kinds of hosting, both handled</span>
+        <div class="hero__stack-card" id="heroStack">
+          <div class="hero__stack-slide is-active" data-index="0">
+            <span class="hero__stack-badge">Web Hosting</span>
+            <ul class="hero__stack-logos">
+              <li><img src="assets/brand/cpanel.svg" alt="cPanel" loading="lazy" /><span>cPanel</span></li>
+              <li><img src="assets/brand/wordpress.svg" alt="WordPress" loading="lazy" /><span>WordPress</span></li>
+            </ul>
+            <span class="hero__stack-note">Shared · VPS · Dedicated servers</span>
+          </div>
+          <div class="hero__stack-slide" data-index="1" hidden>
+            <span class="hero__stack-badge hero__stack-badge--email">Email Hosting</span>
+            <ul class="hero__stack-logos">
+              <li><img src="assets/brand/google-workspace.svg" alt="Google Workspace" loading="lazy" /><span>Google Workspace</span></li>
+              <li><img src="assets/brand/microsoft-365.svg" alt="Microsoft 365" loading="lazy" /><span>Microsoft 365</span></li>
+              <li><img src="assets/brand/zoho.svg" alt="Zoho Mail" loading="lazy" /><span>Zoho Mail</span></li>
+            </ul>
+            <span class="hero__stack-note">Custom @yourdomain business email</span>
+          </div>
+          <div class="hero__stack-dots" role="tablist" aria-label="Hosting solution categories">
+            <button class="hero__stack-dot is-active" type="button" data-dot="0" aria-selected="true">Web Hosting</button>
+            <button class="hero__stack-dot" type="button" data-dot="1" aria-selected="false">Email Hosting</button>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Which hosting type fits you? -->
@@ -399,41 +426,76 @@
           <li><span class="pricing__tick">✓</span>Mobile Money &amp; card payments</li>
         </ul>
 
-        <div class="tabs" role="tablist" aria-label="Pricing categories" id="pricingTabs">
-          <button class="tab is-active" role="tab" id="tab-hosting" aria-selected="true" aria-controls="panel-hosting" data-panel="hosting">Shared Hosting</button>
-          <button class="tab" role="tab" id="tab-vps" aria-selected="false" aria-controls="panel-vps" data-panel="vps" tabindex="-1">VPS Hosting</button>
-          <button class="tab" role="tab" id="tab-dedicated" aria-selected="false" aria-controls="panel-dedicated" data-panel="dedicated" tabindex="-1">Dedicated Servers</button>
-          <button class="tab" role="tab" id="tab-reseller" aria-selected="false" aria-controls="panel-reseller" data-panel="reseller" tabindex="-1">Reseller Hosting</button>
-          <button class="tab" role="tab" id="tab-workspace" aria-selected="false" aria-controls="panel-workspace" data-panel="workspace" tabindex="-1">Google Workspace</button>
-          <button class="tab" role="tab" id="tab-microsoft365" aria-selected="false" aria-controls="panel-microsoft365" data-panel="microsoft365" tabindex="-1">Microsoft 365</button>
-          <button class="tab" role="tab" id="tab-zoho" aria-selected="false" aria-controls="panel-zoho" data-panel="zoho" tabindex="-1">Zoho Mail</button>
-          <button class="tab" role="tab" id="tab-security" aria-selected="false" aria-controls="panel-security" data-panel="security" tabindex="-1">Security &amp; Backup</button>
-        </div>
-        <p class="pricing__note">Prefer simple webmail? Free cPanel Webmail is included with every hosting plan — no extra sign-up needed.</p>
-
         <div class="currency-toggle" role="group" aria-label="Display prices in" id="currencyToggle">
           <span class="currency-toggle__label">Show prices in</span>
           <button class="currency-toggle__btn is-active" type="button" data-currency="UGX" aria-pressed="true">UGX</button>
           <button class="currency-toggle__btn" type="button" data-currency="USD" aria-pressed="false">USD</button>
         </div>
 
-        <div class="pricing__carousel">
-          <button class="pricing__nav pricing__nav--prev" id="pricingPrev" type="button" aria-label="Scroll plans left">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-          </button>
+        <!-- Group: Web & server hosting -->
+        <div class="pricing__group">
+          <div class="pricing__group-head">
+            <p class="pricing__group-title">Web &amp; Server Hosting</p>
+            <p class="pricing__group-sub">Shared hosting, VPS, dedicated servers, reseller and security — the infrastructure that runs your site.</p>
+          </div>
 
-          <div class="tab-panel is-active" role="tabpanel" id="panel-hosting" aria-labelledby="tab-hosting" data-cards="hosting"></div>
-          <div class="tab-panel" role="tabpanel" id="panel-vps" aria-labelledby="tab-vps" data-cards="vps" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-dedicated" aria-labelledby="tab-dedicated" data-cards="dedicated" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-reseller" aria-labelledby="tab-reseller" data-cards="reseller" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-workspace" aria-labelledby="tab-workspace" data-cards="workspace" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-microsoft365" aria-labelledby="tab-microsoft365" data-cards="microsoft365" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-zoho" aria-labelledby="tab-zoho" data-cards="zoho" hidden></div>
-          <div class="tab-panel" role="tabpanel" id="panel-security" aria-labelledby="tab-security" data-cards="security" hidden></div>
+          <div class="tabs" role="tablist" aria-label="Hosting categories" id="pricingTabsHosting">
+            <button class="tab is-active" role="tab" id="tab-hosting" aria-selected="true" aria-controls="panel-hosting" data-panel="hosting">Shared Hosting</button>
+            <button class="tab" role="tab" id="tab-vps" aria-selected="false" aria-controls="panel-vps" data-panel="vps" tabindex="-1">VPS Hosting</button>
+            <button class="tab" role="tab" id="tab-dedicated" aria-selected="false" aria-controls="panel-dedicated" data-panel="dedicated" tabindex="-1">Dedicated Servers</button>
+            <button class="tab" role="tab" id="tab-reseller" aria-selected="false" aria-controls="panel-reseller" data-panel="reseller" tabindex="-1">Reseller Hosting</button>
+            <button class="tab" role="tab" id="tab-security" aria-selected="false" aria-controls="panel-security" data-panel="security" tabindex="-1">Security &amp; Backup</button>
+          </div>
+          <p class="pricing__note">Prefer simple webmail? Free cPanel Webmail is included with every hosting plan — no extra sign-up needed.</p>
 
-          <button class="pricing__nav pricing__nav--next" id="pricingNext" type="button" aria-label="Scroll plans right">
-            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
+          <div class="pricing__carousel">
+            <button class="pricing__nav pricing__nav--prev" id="pricingPrevHosting" type="button" aria-label="Scroll hosting plans left">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+
+            <div class="tab-panel is-active" role="tabpanel" id="panel-hosting" aria-labelledby="tab-hosting" data-cards="hosting"></div>
+            <div class="tab-panel" role="tabpanel" id="panel-vps" aria-labelledby="tab-vps" data-cards="vps" hidden></div>
+            <div class="tab-panel" role="tabpanel" id="panel-dedicated" aria-labelledby="tab-dedicated" data-cards="dedicated" hidden></div>
+            <div class="tab-panel" role="tabpanel" id="panel-reseller" aria-labelledby="tab-reseller" data-cards="reseller" hidden></div>
+            <div class="tab-panel" role="tabpanel" id="panel-security" aria-labelledby="tab-security" data-cards="security" hidden></div>
+
+            <button class="pricing__nav pricing__nav--next" id="pricingNextHosting" type="button" aria-label="Scroll hosting plans right">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Group: Email hosting -->
+        <div class="pricing__group pricing__group--email">
+          <div class="pricing__group-head">
+            <span class="pricing__group-icons" aria-hidden="true">
+              <img src="assets/brand/google-workspace.svg" alt="" loading="lazy" />
+              <img src="assets/brand/microsoft-365.svg" alt="" loading="lazy" />
+              <img src="assets/brand/zoho.svg" alt="" loading="lazy" />
+            </span>
+            <p class="pricing__group-title">Email Hosting</p>
+            <p class="pricing__group-sub">Custom @yourdomain business email, calendars and cloud docs — separate from your web hosting plan, so you can mix and match.</p>
+          </div>
+
+          <div class="tabs" role="tablist" aria-label="Email hosting categories" id="pricingTabsEmail">
+            <button class="tab is-active" role="tab" id="tab-workspace" aria-selected="true" aria-controls="panel-workspace" data-panel="workspace">Google Workspace</button>
+            <button class="tab" role="tab" id="tab-microsoft365" aria-selected="false" aria-controls="panel-microsoft365" data-panel="microsoft365" tabindex="-1">Microsoft 365</button>
+            <button class="tab" role="tab" id="tab-zoho" aria-selected="false" aria-controls="panel-zoho" data-panel="zoho" tabindex="-1">Zoho Mail</button>
+          </div>
+
+          <div class="pricing__carousel">
+            <button class="pricing__nav pricing__nav--prev" id="pricingPrevEmail" type="button" aria-label="Scroll email plans left">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
+            </button>
+
+            <div class="tab-panel is-active" role="tabpanel" id="panel-workspace" aria-labelledby="tab-workspace" data-cards="workspace"></div>
+            <div class="tab-panel" role="tabpanel" id="panel-microsoft365" aria-labelledby="tab-microsoft365" data-cards="microsoft365" hidden></div>
+            <div class="tab-panel" role="tabpanel" id="panel-zoho" aria-labelledby="tab-zoho" data-cards="zoho" hidden></div>
+
+            <button class="pricing__nav pricing__nav--next" id="pricingNextEmail" type="button" aria-label="Scroll email plans right">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+            </button>
+          </div>
         </div>
       </div>
     </section>
