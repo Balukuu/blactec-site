@@ -1053,6 +1053,7 @@ input, select, button { font: inherit; }
   background: linear-gradient(90deg, var(--primary-600), var(--warning) 55%, var(--primary-600));
 }
 .trust__tabs { display: flex; flex-direction: column; gap: .3rem; padding: 1.4rem; border-right: 1px solid var(--border); background: linear-gradient(180deg, var(--surface-1), #fff 60%); }
+.trust__tabs--scroll { max-height: 440px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
 .trust__tab {
   display: flex; align-items: center; gap: .8rem;
   text-align: left; padding: .8rem 1rem; border-radius: 10px; font-weight: 700;
@@ -1478,6 +1479,7 @@ input, select, button { font: inherit; }
   .feature-grid { grid-template-columns: repeat(2, 1fr); }
   .trust { grid-template-columns: 1fr; }
   .trust__tabs { flex-direction: row; min-width: 0; overflow-x: auto; border-right: 0; border-bottom: 1px solid var(--border); padding: 1rem; }
+  .trust__tabs--scroll { max-height: none; overflow-y: visible; }
   .trust__tab { white-space: nowrap; flex: none; }
   .faq__inner { grid-template-columns: 1fr; gap: 2rem; }
   .managed__inner, .migration__inner { grid-template-columns: 1fr; }
