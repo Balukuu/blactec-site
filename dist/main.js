@@ -2,9 +2,16 @@
 /* ============================================================
    BlacTec Technologies Ltd. — Front-end interaction layer
    Strict TypeScript · no runtime libraries · compiled to dist/main.js
+
+   Principles this file follows (Apple "fluid interfaces"):
+   - respond on press, never wait for release
+   - animate from the live (presentation) value, never from the target
+   - gestures are tracked 1:1, released with their own velocity
+   - springs for anything a finger can grab; critically damped by default
+   - nothing is locked out while it moves
    ============================================================ */
-/** Approximate market rate — update as the shilling moves against the dollar. */
-const UGX_PER_USD = 3900;
+/** Approximate market rate — one number for the whole site (the static USD figures in the HTML are derived from it). */
+const UGX_PER_USD = 3700;
 function formatUgx(value) {
     return `UGX ${Math.round(value).toLocaleString('en-US')}`;
 }
@@ -27,6 +34,9 @@ function convertPrice(plan, target) {
     }
     return plan.currency === 'UGX' ? plan.price / UGX_PER_USD : plan.price * UGX_PER_USD;
 }
+function usdTo(value, target) {
+    return target === 'USD' ? value : value * UGX_PER_USD;
+}
 /* ---------- Tiny DOM helpers (null-narrowing) ---------- */
 function qs(selector, root = document) {
     return root.querySelector(selector);
@@ -37,15 +47,100 @@ function qsa(selector, root = document) {
 function prefersReducedMotion() {
     return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
+function scrollBehavior() {
+    return prefersReducedMotion() ? 'auto' : 'smooth';
+}
 function escapeHtml(value) {
     return value
         .replace(/&/g, '&amp;')
         .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;');
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
 }
 function formatPrice(value) {
     return value.toFixed(2);
 }
+/**
+ * Critically damped spring (damping ratio 1.0 — no overshoot) from `from` to `to`, starting at `velocity` px/s.
+ * Closed-form, so it is exact at any frame rate and can be re-targeted from the live value + live velocity.
+ */
+function springTo(from, to, velocity, response, onUpdate, onDone) {
+    const w = (2 * Math.PI) / response;
+    const a = from - to;
+    const b = velocity + w * a;
+    const start = performance.now();
+    let raf = 0;
+    let cancelled = false;
+    const tick = (now) => {
+        if (cancelled) {
+            return;
+        }
+        const t = (now - start) / 1000;
+        const decay = Math.exp(-w * t);
+        const x = to + (a + b * t) * decay;
+        const v = (b - w * (a + b * t)) * decay;
+        if (Math.abs(x - to) < 0.4 && Math.abs(v) < 12) {
+            onUpdate(to, 0);
+            onDone();
+            return;
+        }
+        onUpdate(x, v);
+        raf = window.requestAnimationFrame(tick);
+    };
+    raf = window.requestAnimationFrame(tick);
+    return {
+        cancel() {
+            cancelled = true;
+            window.cancelAnimationFrame(raf);
+        },
+    };
+}
+/** Where a gesture released at `velocity` px/s would come to rest (scroll-deceleration model). */
+function project(velocity, decelerationRate = 0.998) {
+    return ((velocity / 1000) * decelerationRate) / (1 - decelerationRate);
+}
+/** Progressive resistance past a boundary — things slow down before they stop. */
+function rubberband(overshoot, dimension, constant = 0.55) {
+    return (overshoot * dimension * constant) / (dimension + constant * Math.abs(overshoot));
+}
+/* ============================================================
+   Currency — one shared preference for the whole page
+   ============================================================ */
+class CurrencyStore {
+    constructor() {
+        this.current = 'UGX';
+        this.listeners = [];
+        try {
+            const saved = window.localStorage.getItem('blactecCurrency');
+            if (saved === 'UGX' || saved === 'USD') {
+                this.current = saved;
+            }
+        }
+        catch {
+            /* storage unavailable (private mode) — default is fine */
+        }
+    }
+    get value() {
+        return this.current;
+    }
+    set(currency) {
+        if (currency === this.current) {
+            return;
+        }
+        this.current = currency;
+        try {
+            window.localStorage.setItem('blactecCurrency', currency);
+        }
+        catch {
+            /* ignore */
+        }
+        this.listeners.forEach((listener) => listener(currency));
+    }
+    subscribe(listener) {
+        this.listeners.push(listener);
+    }
+}
+const currencyStore = new CurrencyStore();
 /* ============================================================
    Toast — shared notifier + scroll-to-contact
    ============================================================ */
@@ -66,27 +161,30 @@ class Toast {
         }
         this.timer = window.setTimeout(() => {
             this.el.classList.remove('is-visible');
-        }, 3200);
+        }, 4200);
     }
     /** Standard conversion cue: toast + prefill + smooth scroll to the quote form. */
     fireLead(context) {
-        this.show('Great choice — tell us about your project below 👇');
+        this.show('Great choice — tell us a little about your project below.');
         if (this.quoteForm) {
             this.quoteForm.prefill(context);
         }
         const contact = document.getElementById('contact');
         if (contact) {
-            contact.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' });
+            contact.scrollIntoView({ behavior: scrollBehavior(), block: 'start' });
         }
     }
 }
 /* ============================================================
    Quote form — client-side lead capture, no backend required.
-   Submits via mailto: so requests are never lost; swap `submit()`
-   for a real endpoint (Formspree, serverless function, etc.) once one exists.
+   Submitting opens the visitor's mail app (mailto:). Because that can silently
+   do nothing (no mail client configured), we NEVER clear what they typed and
+   always offer two other ways to send the same request.
    ============================================================ */
+const WHATSAPP_NUMBER = '256750870755';
 class QuoteForm {
     constructor(form, toast) {
+        this.fallback = null;
         this.form = form;
         this.toast = toast;
         this.nameInput = qs('#quoteName', form);
@@ -108,11 +206,16 @@ class QuoteForm {
             event.preventDefault();
             this.submit();
         });
+        // Validate inline: clear the error state the moment the field is valid again.
+        [this.nameInput, this.emailInput].forEach((input) => {
+            input.addEventListener('input', () => {
+                if (input.validity.valid) {
+                    input.removeAttribute('aria-invalid');
+                }
+            });
+        });
     }
-    submit() {
-        if (!this.form.reportValidity()) {
-            return;
-        }
+    compose() {
         const name = this.nameInput.value.trim();
         const email = this.emailInput.value.trim();
         const phone = this.phoneInput.value.trim();
@@ -127,11 +230,82 @@ class QuoteForm {
             '',
             message.length > 0 ? message : '(no additional details provided)',
         ]
-            .filter((line) => line.length > 0)
+            .filter((line, index) => line.length > 0 || index === 4)
             .join('\n');
+        return { subject, body };
+    }
+    submit() {
+        [this.nameInput, this.emailInput].forEach((input) => {
+            if (input.validity.valid) {
+                input.removeAttribute('aria-invalid');
+            }
+            else {
+                input.setAttribute('aria-invalid', 'true');
+            }
+        });
+        if (!this.form.reportValidity()) {
+            return;
+        }
+        const { subject, body } = this.compose();
+        this.showFallback(subject, body);
+        this.toast.show('Opening your email app — if nothing happens, use the options below the form.');
         window.location.href = `mailto:info@blactec.ug?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        this.toast.show('Opening your email app — send it through and we’ll reply shortly 👋');
-        this.form.reset();
+    }
+    showFallback(subject, body) {
+        if (!this.fallback) {
+            const box = document.createElement('div');
+            box.className = 'quote__fallback';
+            box.setAttribute('role', 'status');
+            const note = qs('.quote__note', this.form);
+            if (note) {
+                note.after(box);
+            }
+            else {
+                this.form.append(box);
+            }
+            this.fallback = box;
+        }
+        const text = `${subject}\n\n${body}`;
+        this.fallback.hidden = false;
+        this.fallback.innerHTML = `
+      <p><strong>Didn’t your email app open?</strong> Your details are still here — send the same request another way:</p>
+      <div class="quote__fallback-actions">
+        <a class="btn btn--primary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Send on WhatsApp</a>
+        <button class="btn btn--secondary" type="button" data-copy>Copy details</button>
+      </div>`;
+        const copyBtn = qs('[data-copy]', this.fallback);
+        if (copyBtn) {
+            copyBtn.addEventListener('click', () => {
+                void this.copy(text, copyBtn);
+            });
+        }
+    }
+    async copy(text, button) {
+        let ok = false;
+        try {
+            await navigator.clipboard.writeText(text);
+            ok = true;
+        }
+        catch {
+            const area = document.createElement('textarea');
+            area.value = text;
+            area.setAttribute('readonly', '');
+            area.style.position = 'fixed';
+            area.style.opacity = '0';
+            document.body.append(area);
+            area.select();
+            try {
+                ok = document.execCommand('copy');
+            }
+            catch {
+                ok = false;
+            }
+            area.remove();
+        }
+        button.textContent = ok ? 'Copied ✓' : 'Press Ctrl/⌘+C to copy';
+        window.setTimeout(() => {
+            button.textContent = 'Copy details';
+        }, 2400);
     }
 }
 /* ============================================================
@@ -145,10 +319,26 @@ class QuoteForm {
    See cloudflare-worker/README.md for how it works. */
 const UG_TLDS = ['.ug', '.co.ug', '.org.ug', '.ac.ug'];
 const UG_WHOIS_PROXY_URL = 'https://blactec-ug-whois.blactec.workers.dev';
-async function checkGtldAvailability(fullDomain) {
-    const res = await fetch(`https://rdap.org/domain/${encodeURIComponent(fullDomain)}`, {
-        headers: { Accept: 'application/rdap+json' },
+/** A lookup that can never hang the UI: it has its own deadline and honours a parent abort. */
+function timedFetch(url, init, ms, parent) {
+    const controller = new AbortController();
+    const timer = window.setTimeout(() => controller.abort(), ms);
+    const onParentAbort = () => controller.abort();
+    if (parent) {
+        if (parent.aborted) {
+            controller.abort();
+        }
+        else {
+            parent.addEventListener('abort', onParentAbort, { once: true });
+        }
+    }
+    return fetch(url, { ...init, signal: controller.signal }).finally(() => {
+        window.clearTimeout(timer);
+        parent?.removeEventListener('abort', onParentAbort);
     });
+}
+async function checkGtldAvailability(fullDomain, signal) {
+    const res = await timedFetch(`https://rdap.org/domain/${encodeURIComponent(fullDomain)}`, { headers: { Accept: 'application/rdap+json' } }, 8000, signal);
     if (res.status === 404) {
         return true;
     }
@@ -157,22 +347,23 @@ async function checkGtldAvailability(fullDomain) {
     }
     throw new Error(`rdap_http_${res.status}`);
 }
-async function checkUgAvailability(domain, tld) {
+async function checkUgAvailability(domain, tld, signal) {
     const url = `${UG_WHOIS_PROXY_URL}/?domain=${encodeURIComponent(domain)}&tld=${encodeURIComponent(tld)}`;
-    const res = await fetch(url);
+    const res = await timedFetch(url, {}, 8000, signal);
     const data = (await res.json().catch(() => null));
     if (!res.ok || !data || typeof data.available !== 'boolean') {
         throw new Error((data && data.error) || `whois_proxy_http_${res.status}`);
     }
     return data.available;
 }
-function checkAvailability(domain, tld) {
-    return UG_TLDS.includes(tld) ? checkUgAvailability(domain, tld) : checkGtldAvailability(domain + tld);
+function checkAvailability(domain, tld, signal) {
+    return UG_TLDS.includes(tld) ? checkUgAvailability(domain, tld, signal) : checkGtldAvailability(domain + tld, signal);
 }
 class DomainChecker {
-    constructor(form, toast) {
+    constructor(form) {
+        this.runId = 0;
+        this.controller = null;
         this.form = form;
-        this.toast = toast;
         this.input = qs('#domainInput', form);
         this.select = qs('#tldSelect', form);
         this.result = document.getElementById('domainResult');
@@ -180,24 +371,36 @@ class DomainChecker {
             tld: opt.value,
             priceUsd: Number(opt.dataset['price'] ?? '0'),
         }));
+        this.tldButtons = qsa('.domain__eg');
         this.bind();
+        this.syncTldButtons();
     }
     bind() {
         this.form.addEventListener('submit', (event) => {
             event.preventDefault();
-            this.run();
+            void this.run();
         });
-        // "Popular example" quick fills
-        qsa('.domain__eg').forEach((btn) => {
+        this.select.addEventListener('change', () => this.syncTldButtons());
+        // Price chips choose an extension. They never overwrite what the visitor typed.
+        this.tldButtons.forEach((btn) => {
             btn.addEventListener('click', () => {
-                const example = btn.dataset['eg'] ?? '';
-                const tld = btn.dataset['tld'] ?? (btn.textContent ?? '').trim();
-                this.input.value = example;
+                const tld = btn.dataset['tld'] ?? '';
                 if (this.tlds.some((t) => t.tld === tld)) {
                     this.select.value = tld;
+                    this.syncTldButtons();
                 }
-                this.run();
+                if (this.sanitize(this.input.value).length > 0) {
+                    void this.run();
+                }
+                else {
+                    this.input.focus();
+                }
             });
+        });
+    }
+    syncTldButtons() {
+        this.tldButtons.forEach((btn) => {
+            btn.setAttribute('aria-pressed', String(btn.dataset['tld'] === this.select.value));
         });
     }
     sanitize(raw) {
@@ -207,10 +410,13 @@ class DomainChecker {
         const match = this.tlds.find((t) => t.tld === tld);
         return match ? match.priceUsd : 0;
     }
+    money(priceUsd) {
+        return formatMoney(usdTo(priceUsd, currencyStore.value), currencyStore.value);
+    }
     /** Checks the other listed TLDs in parallel and keeps up to 3 that came back available. */
-    async findAvailableAlternatives(domain, excludeTld) {
+    async findAvailableAlternatives(domain, excludeTld, signal) {
         const candidates = this.tlds.filter((t) => t.tld !== excludeTld);
-        const settled = await Promise.allSettled(candidates.map(async (t) => ({ t, available: await checkAvailability(domain, t.tld) })));
+        const settled = await Promise.allSettled(candidates.map(async (t) => ({ t, available: await checkAvailability(domain, t.tld, signal) })));
         const available = [];
         for (const outcome of settled) {
             if (outcome.status === 'fulfilled' && outcome.value.available) {
@@ -219,33 +425,49 @@ class DomainChecker {
         }
         return available.slice(0, 3);
     }
-    async buildResult(domain, tld) {
-        const isAvailable = await checkAvailability(domain, tld);
-        const alternatives = isAvailable ? [] : await this.findAvailableAlternatives(domain, tld);
-        return { domain, tld, status: isAvailable ? 'available' : 'taken', priceUsd: this.priceFor(tld), alternatives };
-    }
     async run() {
         const domain = this.sanitize(this.input.value);
         if (domain.length === 0) {
             this.input.focus();
-            this.renderError('Please enter a domain name to search.');
+            this.renderError('Type a name to search — your business name works well.');
             return;
         }
         this.input.value = domain;
         const tld = this.select.value;
+        // A newer search supersedes this one: abort in-flight lookups and ignore late answers.
+        const id = ++this.runId;
+        if (this.controller) {
+            this.controller.abort();
+        }
+        const controller = new AbortController();
+        this.controller = controller;
         this.renderLoading();
         try {
-            const data = await this.buildResult(domain, tld);
-            this.renderResult(data);
+            const available = await checkAvailability(domain, tld, controller.signal);
+            if (id !== this.runId) {
+                return;
+            }
+            // Show the answer the moment we have it; alternatives stream in afterwards.
+            this.renderResult({ domain, tld, status: available ? 'available' : 'taken', priceUsd: this.priceFor(tld) });
+            if (!available) {
+                const alternatives = await this.findAvailableAlternatives(domain, tld, controller.signal);
+                if (id !== this.runId) {
+                    return;
+                }
+                this.renderAlternatives(domain, alternatives);
+            }
         }
         catch (err) {
+            if (id !== this.runId) {
+                return;
+            }
             this.renderCheckError(domain + tld, err);
         }
     }
     renderError(message) {
         this.result.innerHTML = `<div class="result-card result-card--taken"><p class="result-card__name">${escapeHtml(message)}</p></div>`;
     }
-    /** The lookup itself failed (network, proxy down, unconfigured) — distinct from a real "taken" result. */
+    /** The lookup itself failed (network, proxy down, timeout) — distinct from a real "taken" result. */
     renderCheckError(full, err) {
         console.error('Domain availability check failed:', err);
         const context = escapeHtml(`I searched for ${full} but the checker couldn't confirm it — please check availability and get back to me.`);
@@ -253,20 +475,17 @@ class DomainChecker {
       <div class="result-card result-card--taken">
         <div class="result-card__top">
           <span class="result-card__name">${escapeHtml(full)}</span>
-          <span class="result-card__status" style="background:var(--ink-500)">Couldn't verify</span>
+          <span class="result-card__status" style="background:var(--ink-500)">Couldn’t verify</span>
         </div>
-        <p class="result-card__price" style="font-weight:400;color:var(--ink-500);font-size:.9rem;margin:0">We couldn't reach the registry just now. Try again in a moment, or let us confirm it for you.</p>
+        <p class="result-card__note">We couldn’t reach the registry just now. Try again in a moment, or let us confirm it for you.</p>
         <div class="result-card__actions">
           <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Ask us to confirm</button>
         </div>
       </div>`;
-        qsa('[data-lead]', this.result).forEach((btn) => {
-            btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
-        });
     }
     renderLoading() {
         this.result.innerHTML = `
-      <div class="skeleton" aria-label="Checking availability">
+      <div class="skeleton" role="status" aria-label="Checking availability">
         <div class="skeleton__line skeleton__line--short"></div>
         <div class="skeleton__line"></div>
         <div class="skeleton__line skeleton__line--btn"></div>
@@ -275,278 +494,177 @@ class DomainChecker {
     renderResult(data) {
         const full = `${data.domain}${data.tld}`;
         if (data.status === 'available') {
-            const context = escapeHtml(`I'd like to register ${full} ($${formatPrice(data.priceUsd)}/yr).`);
+            const context = escapeHtml(`I'd like to register ${full} (${this.money(data.priceUsd)}/yr).`);
             this.result.innerHTML = `
         <div class="result-card result-card--ok">
           <div class="result-card__top">
-            <span class="result-card__name">✅ ${escapeHtml(full)}</span>
+            <span class="result-card__name">${escapeHtml(full)}</span>
             <span class="result-card__status">Available</span>
           </div>
           <div class="result-card__top">
-            <span class="result-card__price">$${formatPrice(data.priceUsd)} <small>/ year</small></span>
-            <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Add to Cart</button>
+            <span class="result-card__price"><span data-usd="${formatPrice(data.priceUsd)}">${this.money(data.priceUsd)}</span> <small>/ year</small></span>
+            <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Request this domain</button>
           </div>
         </div>`;
+            return;
         }
-        else {
-            const transferContext = escapeHtml(`I'd like to transfer ${full} to BlacTec.`);
-            const supportContext = escapeHtml(`I have a question about ${full}.`);
-            const alts = data.alternatives
-                .map((alt) => {
-                const altFull = `${data.domain}${alt.tld}`;
-                const altContext = escapeHtml(`I'd like to register ${altFull} ($${formatPrice(alt.priceUsd)}/yr).`);
-                return `
+        const transferContext = escapeHtml(`I'd like to transfer ${full} to BlacTec.`);
+        const supportContext = escapeHtml(`I have a question about ${full}.`);
+        this.result.innerHTML = `
+      <div class="result-card result-card--taken">
+        <div class="result-card__top">
+          <span class="result-card__name">${escapeHtml(full)}</span>
+          <span class="result-card__status">Taken</span>
+        </div>
+        <p class="result-card__note">That domain is already registered — transfer it to us, or see what’s free below.</p>
+        <div class="result-card__actions">
+          <button class="btn btn--primary" data-lead data-lead-context="${transferContext}" type="button">Transfer it to us</button>
+          <button class="btn btn--secondary" data-lead data-lead-context="${supportContext}" type="button">Contact support</button>
+        </div>
+        <div class="alts" data-alts>
+          <span class="alts__title">Checking other extensions…</span>
+        </div>
+      </div>`;
+    }
+    renderAlternatives(domain, alternatives) {
+        const holder = qs('[data-alts]', this.result);
+        if (!holder) {
+            return;
+        }
+        if (alternatives.length === 0) {
+            holder.innerHTML = '<span class="alts__title">No other extensions are free for that name — try a variation.</span>';
+            return;
+        }
+        const rows = alternatives
+            .map((alt) => {
+            const altFull = `${domain}${alt.tld}`;
+            const context = escapeHtml(`I'd like to register ${altFull} (${this.money(alt.priceUsd)}/yr).`);
+            return `
           <div class="alt">
-            <span class="alt__name">${escapeHtml(data.domain)}<b>${escapeHtml(alt.tld)}</b></span>
-            <span class="alt__price">$${formatPrice(alt.priceUsd)}/yr</span>
-            <button class="alt__add" data-lead data-lead-context="${altContext}" type="button">Add</button>
+            <span class="alt__name">${escapeHtml(domain)}<b>${escapeHtml(alt.tld)}</b></span>
+            <span class="alt__price"><span data-usd="${formatPrice(alt.priceUsd)}">${this.money(alt.priceUsd)}</span>/yr</span>
+            <button class="alt__add" data-lead data-lead-context="${context}" type="button">Request</button>
           </div>`;
-            })
-                .join('');
-            this.result.innerHTML = `
-        <div class="result-card result-card--taken">
-          <div class="result-card__top">
-            <span class="result-card__name">❌ ${escapeHtml(full)}</span>
-            <span class="result-card__status">Taken</span>
-          </div>
-          <p class="result-card__price" style="font-weight:400;color:var(--ink-500);font-size:.9rem;margin:0">That domain is already registered — transfer it to us or grab an alternative below.</p>
-          <div class="result-card__actions">
-            <button class="btn btn--primary" data-lead data-lead-context="${transferContext}" type="button">Initiate Transfer</button>
-            <button class="btn btn--secondary" data-lead data-lead-context="${supportContext}" type="button">Contact Support</button>
-          </div>
-          <div class="alts">
-            <span class="alts__title">Available alternatives</span>
-            ${alts}
-          </div>
-        </div>`;
-        }
-        qsa('[data-lead]', this.result).forEach((btn) => {
-            btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
-        });
+        })
+            .join('');
+        holder.innerHTML = `<span class="alts__title">Available alternatives</span>${rows}`;
     }
 }
 /* ============================================================
-   Hero carousel — auto-rotating slides + dot navigation
+   Tabs — accessible, with a thumb that slides on a spring
+   Used for: pricing categories, the home plans shelf, hosting hero stack.
    ============================================================ */
-class Carousel {
-    constructor(root) {
+class Tabs {
+    constructor(list) {
         this.index = 0;
-        this.intervalMs = 6500;
-        this.root = root;
-        this.slides = qsa('.herox__slide', root);
-        this.dots = qsa('.herox__dot', root);
-        this.reduceMotion = prefersReducedMotion();
+        this.list = list;
+        this.tabs = qsa('[role="tab"]', list);
+        this.thumb = document.createElement('span');
+        this.thumb.className = 'tabs__thumb';
+        this.thumb.setAttribute('aria-hidden', 'true');
+        list.prepend(this.thumb);
+        list.classList.add('tabs--thumb');
+        if (window.getComputedStyle(list).position === 'static') {
+            list.style.position = 'relative';
+        }
+        const initial = this.tabs.findIndex((tab) => tab.classList.contains('is-active') || tab.getAttribute('aria-selected') === 'true');
+        this.index = initial >= 0 ? initial : 0;
         this.bind();
-        if (!this.reduceMotion) {
-            this.play();
+        this.layout();
+        // Enable the spring only after the first layout, so the thumb never "slides in" on load.
+        window.requestAnimationFrame(() => list.classList.add('tabs--ready'));
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(() => this.layout()).observe(list);
+        }
+        if (document.fonts && document.fonts.ready) {
+            void document.fonts.ready.then(() => this.layout());
         }
     }
     bind() {
-        this.dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => this.activate(i, true));
-            dot.addEventListener('keydown', (event) => this.onKey(event, i));
-        });
-        this.root.addEventListener('mouseenter', () => this.pause());
-        this.root.addEventListener('mouseleave', () => {
-            if (!this.reduceMotion) {
-                this.play();
-            }
-        });
-        this.root.addEventListener('focusin', () => this.pause());
-        this.root.addEventListener('focusout', () => {
-            if (!this.reduceMotion) {
-                this.play();
-            }
-        });
-        this.bindSwipe();
-    }
-    /** Touch/pen swipe — the hero reads as a swipeable card (dots + a bordered visual), so it
-     *  should behave like one. Threshold-gated rather than 1:1 finger-tracking since slides
-     *  crossfade rather than translate with the pointer; the horizontal-vs-vertical check
-     *  keeps page scroll untouched when the gesture turns out to be a vertical scroll. */
-    bindSwipe() {
-        let startX = 0;
-        let startY = 0;
-        let tracking = false;
-        const threshold = 40;
-        this.root.addEventListener('pointerdown', (event) => {
-            if (event.pointerType === 'mouse') {
-                return;
-            }
-            tracking = true;
-            startX = event.clientX;
-            startY = event.clientY;
-            this.pause();
-        });
-        this.root.addEventListener('pointerup', (event) => {
-            if (!tracking) {
-                return;
-            }
-            tracking = false;
-            const dx = event.clientX - startX;
-            const dy = event.clientY - startY;
-            if (Math.abs(dx) >= threshold && Math.abs(dx) > Math.abs(dy)) {
-                const next = dx < 0
-                    ? (this.index + 1) % this.slides.length
-                    : (this.index - 1 + this.slides.length) % this.slides.length;
-                this.activate(next, true);
-            }
-            else if (!this.reduceMotion) {
-                this.play();
-            }
-        });
-        this.root.addEventListener('pointercancel', () => {
-            tracking = false;
-            if (!this.reduceMotion) {
-                this.play();
-            }
+        this.tabs.forEach((tab, index) => {
+            // Respond on press, not release.
+            tab.addEventListener('pointerdown', (event) => {
+                if (event.pointerType === 'mouse' && event.button !== 0) {
+                    return;
+                }
+                if (index !== this.index) {
+                    this.activate(index, false);
+                }
+            });
+            tab.addEventListener('click', () => {
+                if (index !== this.index) {
+                    this.activate(index, false);
+                }
+            });
+            tab.addEventListener('keydown', (event) => this.onKey(event, index));
         });
     }
     onKey(event, index) {
         let next = index;
         if (event.key === 'ArrowRight') {
-            next = (index + 1) % this.dots.length;
+            next = (index + 1) % this.tabs.length;
         }
         else if (event.key === 'ArrowLeft') {
-            next = (index - 1 + this.dots.length) % this.dots.length;
+            next = (index - 1 + this.tabs.length) % this.tabs.length;
         }
         else if (event.key === 'Home') {
             next = 0;
         }
         else if (event.key === 'End') {
-            next = this.dots.length - 1;
+            next = this.tabs.length - 1;
         }
         else {
             return;
         }
         event.preventDefault();
         this.activate(next, true);
-        this.dots[next].focus();
     }
-    play() {
-        this.pause();
-        this.timer = window.setInterval(() => {
-            this.activate((this.index + 1) % this.slides.length, false);
-        }, this.intervalMs);
-    }
-    pause() {
-        if (this.timer !== undefined) {
-            window.clearInterval(this.timer);
-            this.timer = undefined;
-        }
-    }
-    activate(index, userTriggered) {
-        this.index = index;
-        this.slides.forEach((slide, i) => {
-            const selected = i === index;
-            slide.classList.toggle('is-active', selected);
-            if (selected) {
-                slide.removeAttribute('hidden');
-            }
-            else {
-                slide.setAttribute('hidden', '');
-            }
-        });
-        this.dots.forEach((dot, i) => {
-            const selected = i === index;
-            dot.classList.toggle('is-active', selected);
-            dot.setAttribute('aria-selected', String(selected));
-            dot.tabIndex = selected ? 0 : -1;
-        });
-        if (userTriggered && !this.reduceMotion) {
-            this.play();
-        }
-    }
-}
-/* ============================================================
-   Hero solutions stack — small auto-rotating slideshow that shows
-   web hosting (cPanel/WordPress) and email hosting (Workspace/365/Zoho)
-   as independent slides.
-   ============================================================ */
-class HeroStack {
-    constructor(root) {
-        this.index = 0;
-        this.intervalMs = 4200;
-        this.root = root;
-        this.slides = qsa('.hero__stack-slide', root);
-        this.dots = qsa('.hero__stack-dot', root);
-        this.reduceMotion = prefersReducedMotion();
-        this.bind();
-        if (!this.reduceMotion) {
-            this.play();
-        }
-    }
-    bind() {
-        this.dots.forEach((dot, i) => {
-            dot.addEventListener('click', () => this.activate(i, true));
-        });
-        this.root.addEventListener('mouseenter', () => this.pause());
-        this.root.addEventListener('mouseleave', () => {
-            if (!this.reduceMotion) {
-                this.play();
-            }
-        });
-        this.root.addEventListener('focusin', () => this.pause());
-        this.root.addEventListener('focusout', () => {
-            if (!this.reduceMotion) {
-                this.play();
-            }
-        });
-    }
-    play() {
-        this.pause();
-        this.timer = window.setInterval(() => {
-            this.activate((this.index + 1) % this.slides.length, false);
-        }, this.intervalMs);
-    }
-    pause() {
-        if (this.timer !== undefined) {
-            window.clearInterval(this.timer);
-            this.timer = undefined;
-        }
-    }
-    activate(index, userTriggered) {
-        this.index = index;
-        this.slides.forEach((slide, i) => {
-            const selected = i === index;
-            slide.classList.toggle('is-active', selected);
-            if (selected) {
-                slide.removeAttribute('hidden');
-            }
-            else {
-                slide.setAttribute('hidden', '');
-            }
-        });
-        this.dots.forEach((dot, i) => {
-            const selected = i === index;
-            dot.classList.toggle('is-active', selected);
-            dot.setAttribute('aria-selected', String(selected));
-        });
-        if (userTriggered && !this.reduceMotion) {
-            this.play();
-        }
-    }
-}
-/* ============================================================
-   Image loop — cycles a stack of real product screenshots
-   (used for the Google Workspace card's rotating screenshots)
-   ============================================================ */
-class ImageLoop {
-    constructor(root, intervalMs = 2600) {
-        const imgs = qsa('.wsmock__img', root);
-        if (imgs.length < 2 || prefersReducedMotion()) {
+    layout() {
+        const active = this.tabs[this.index];
+        if (!active) {
             return;
         }
-        let index = 0;
-        window.setInterval(() => {
-            imgs[index].classList.remove('is-active');
-            index = (index + 1) % imgs.length;
-            imgs[index].classList.add('is-active');
-        }, intervalMs);
+        this.list.style.setProperty('--x', `${active.offsetLeft}px`);
+        this.list.style.setProperty('--y', `${active.offsetTop}px`);
+        this.list.style.setProperty('--w', `${active.offsetWidth}px`);
+        this.list.style.setProperty('--h', `${active.offsetHeight}px`);
+    }
+    activate(index, focus) {
+        this.index = index;
+        this.tabs.forEach((tab, i) => {
+            const selected = i === index;
+            tab.classList.toggle('is-active', selected);
+            tab.setAttribute('aria-selected', String(selected));
+            tab.tabIndex = selected ? 0 : -1;
+            const panelId = tab.getAttribute('aria-controls');
+            if (panelId) {
+                const panel = document.getElementById(panelId);
+                if (panel) {
+                    panel.classList.toggle('is-active', selected);
+                    if (selected) {
+                        panel.removeAttribute('hidden');
+                    }
+                    else {
+                        panel.setAttribute('hidden', '');
+                    }
+                }
+            }
+        });
+        this.layout();
+        const active = this.tabs[index];
+        if (focus) {
+            active.focus();
+        }
+        // A horizontally scrolling tab strip keeps the active tab in view — without scrolling the page.
+        if (this.list.scrollWidth > this.list.clientWidth + 2) {
+            const left = active.offsetLeft - (this.list.clientWidth - active.offsetWidth) / 2;
+            this.list.scrollTo({ left, behavior: scrollBehavior() });
+        }
+        this.list.dispatchEvent(new CustomEvent('tabs:change', { bubbles: true, detail: { index } }));
     }
 }
 /* ============================================================
-   Pricing — data-driven cards + accessible tabs
+   Pricing — data-driven cards
    ============================================================ */
 const PRICING = {
     hosting: [
@@ -686,22 +804,22 @@ const PRICING = {
         },
     ],
 };
-const CHECK_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="rgba(34,165,94,.14)"/><path d="M7 12.5l3.2 3.2L17 9" stroke="var(--success)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const CHECK_SVG = '<svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="rgba(21,122,70,.12)"/><path d="M7 12.5l3.2 3.2L17 9" stroke="var(--success-strong)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+function unitLabel(unit) {
+    switch (unit) {
+        case 'user/year': return '/ user / year';
+        case 'user/month': return '/ user / month';
+        case 'month': return '/ month';
+        case 'one-time': return 'one-time';
+        default: return '/ year';
+    }
+}
 class PricingRenderer {
-    constructor(toast) {
-        this.currency = 'UGX';
-        this.toast = toast;
+    constructor() {
+        this.slots = [];
+        currencyStore.subscribe(() => this.updatePrices());
     }
-    getCurrency() {
-        return this.currency;
-    }
-    setCurrency(currency) {
-        if (this.currency === currency) {
-            return;
-        }
-        this.currency = currency;
-        this.render();
-    }
+    /** Cards are rendered once; a currency change updates the numbers in place (no scroll reset, no re-bind). */
     render() {
         Object.keys(PRICING).forEach((key) => {
             const container = qs(`[data-cards="${key}"]`);
@@ -709,28 +827,48 @@ class PricingRenderer {
                 return;
             }
             container.innerHTML = PRICING[key].map((plan) => this.cardHtml(plan)).join('');
+            qsa('.plan-slot', container).forEach((el, index) => {
+                this.slots.push({ el, plan: PRICING[key][index] });
+            });
         });
-        this.bindLeadButtons();
     }
-    /** Cards are re-rendered on every currency switch, so lead buttons must be rebound each time. */
-    bindLeadButtons() {
-        qsa('.tab-panel [data-lead]').forEach((btn) => {
-            btn.addEventListener('click', () => this.toast.fireLead(btn.dataset['leadContext']));
+    contextFor(plan, currency) {
+        const priceLabel = formatMoney(convertPrice(plan, currency), currency);
+        return `I'm interested in the ${plan.name} plan (${priceLabel} ${unitLabel(plan.unit)}).`;
+    }
+    updatePrices() {
+        const currency = currencyStore.value;
+        this.slots.forEach(({ el, plan }) => {
+            const { prefix, amount, isSymbol } = formatMoneyParts(convertPrice(plan, currency), currency);
+            const cur = qs('.plan__currency', el);
+            const amt = qs('.plan__amount', el);
+            const btn = qs('[data-lead]', el);
+            if (cur) {
+                cur.textContent = prefix;
+                cur.classList.toggle('plan__currency--symbol', isSymbol);
+            }
+            if (amt) {
+                amt.textContent = amount;
+                amt.classList.remove('is-flipping');
+                void amt.offsetWidth; // restart the little settle animation
+                amt.classList.add('is-flipping');
+            }
+            if (btn) {
+                btn.dataset['leadContext'] = this.contextFor(plan, currency);
+            }
         });
     }
     cardHtml(plan) {
-        const unitLabel = plan.unit === 'user/year' ? '/ user / year' : plan.unit === 'user/month' ? '/ user / month' : plan.unit === 'month' ? '/ month' : plan.unit === 'one-time' ? 'one-time' : '/ year';
-        const ribbon = plan.popular ? '<span class="plan__ribbon">★ Most popular</span>' : '';
+        const currency = currencyStore.value;
+        const ribbon = plan.popular ? '<span class="plan__ribbon">Most popular</span>' : '';
         const btnClass = plan.popular ? 'btn btn--secondary' : 'btn btn--primary';
         const features = plan.features
             .map((feat) => `<li>${CHECK_SVG}<span>${escapeHtml(feat)}</span></li>`)
             .join('');
-        const amountValue = convertPrice(plan, this.currency);
-        const priceLabel = formatMoney(amountValue, this.currency);
-        const { prefix, amount, isSymbol } = formatMoneyParts(amountValue, this.currency);
-        const context = escapeHtml(`I'm interested in the ${plan.name} plan (${priceLabel} ${unitLabel}).`);
+        const { prefix, amount, isSymbol } = formatMoneyParts(convertPrice(plan, currency), currency);
+        const context = escapeHtml(this.contextFor(plan, currency));
         return `
-      <div class="plan-slot">
+      <div class="plan-slot${plan.popular ? ' plan-slot--popular' : ''}">
       ${ribbon}
       <article class="plan${plan.popular ? ' plan--popular' : ''}">
         <h3 class="plan__name">${escapeHtml(plan.name)}</h3>
@@ -740,7 +878,7 @@ class PricingRenderer {
             <span class="plan__currency${isSymbol ? ' plan__currency--symbol' : ''}">${prefix}</span>
             <span class="plan__amount">${amount}</span>
           </span>
-          <span class="plan__unit">${unitLabel}</span>
+          <span class="plan__unit">${unitLabel(plan.unit)}</span>
         </div>
         <ul class="plan__features">${features}</ul>
         <button class="${btnClass}" data-lead data-lead-context="${context}" type="button">
@@ -751,21 +889,40 @@ class PricingRenderer {
       </div>`;
     }
 }
-class CurrencyToggle {
-    constructor(root, renderer) {
-        this.renderer = renderer;
-        this.buttons = qsa('.currency-toggle__btn', root);
-        this.bind();
-        this.sync(renderer.getCurrency());
+/** Static prices written into the HTML (home plans shelf, domain chips) follow the same shared currency. */
+class StaticPrices {
+    constructor() {
+        this.byName = new Map();
+        Object.values(PRICING).forEach((plans) => {
+            plans.forEach((plan) => this.byName.set(plan.name, plan));
+        });
+        currencyStore.subscribe(() => this.update());
+        this.update();
     }
-    bind() {
+    update() {
+        const currency = currencyStore.value;
+        qsa('[data-plan-price]').forEach((el) => {
+            const plan = this.byName.get(el.dataset['planPrice'] ?? '');
+            if (plan) {
+                el.textContent = formatMoney(convertPrice(plan, currency), currency);
+            }
+        });
+        qsa('[data-usd]').forEach((el) => {
+            const usd = Number(el.dataset['usd'] ?? '0');
+            el.textContent = formatMoney(usdTo(usd, currency), currency);
+        });
+    }
+}
+class CurrencyToggle {
+    constructor(root) {
+        this.buttons = qsa('.currency-toggle__btn', root);
         this.buttons.forEach((btn) => {
             btn.addEventListener('click', () => {
-                const currency = btn.dataset['currency'] === 'USD' ? 'USD' : 'UGX';
-                this.renderer.setCurrency(currency);
-                this.sync(currency);
+                currencyStore.set(btn.dataset['currency'] === 'USD' ? 'USD' : 'UGX');
             });
         });
+        currencyStore.subscribe((currency) => this.sync(currency));
+        this.sync(currencyStore.value);
     }
     sync(active) {
         this.buttons.forEach((btn) => {
@@ -775,58 +932,19 @@ class CurrencyToggle {
         });
     }
 }
-class PricingTabs {
-    constructor(tablist) {
-        this.tabs = qsa('.tab', tablist);
-        this.bind();
-    }
-    bind() {
-        this.tabs.forEach((tab, index) => {
-            tab.addEventListener('click', () => this.activate(index));
-            tab.addEventListener('keydown', (event) => this.onKey(event, index));
+/** A single "Show prices in USD" link-button for places without room for the full toggle. */
+class CurrencyFlip {
+    constructor(button) {
+        this.button = button;
+        button.addEventListener('click', () => {
+            currencyStore.set(currencyStore.value === 'UGX' ? 'USD' : 'UGX');
         });
+        currencyStore.subscribe(() => this.sync());
+        this.sync();
     }
-    onKey(event, index) {
-        let next = index;
-        if (event.key === 'ArrowRight') {
-            next = (index + 1) % this.tabs.length;
-        }
-        else if (event.key === 'ArrowLeft') {
-            next = (index - 1 + this.tabs.length) % this.tabs.length;
-        }
-        else if (event.key === 'Home') {
-            next = 0;
-        }
-        else if (event.key === 'End') {
-            next = this.tabs.length - 1;
-        }
-        else {
-            return;
-        }
-        event.preventDefault();
-        this.activate(next);
-        this.tabs[next].focus();
-    }
-    activate(index) {
-        this.tabs.forEach((tab, i) => {
-            const selected = i === index;
-            tab.classList.toggle('is-active', selected);
-            tab.setAttribute('aria-selected', String(selected));
-            tab.tabIndex = selected ? 0 : -1;
-            const panelId = tab.getAttribute('aria-controls');
-            if (panelId) {
-                const panel = document.getElementById(panelId);
-                if (panel) {
-                    panel.classList.toggle('is-active', selected);
-                    if (selected) {
-                        panel.removeAttribute('hidden');
-                    }
-                    else {
-                        panel.setAttribute('hidden', '');
-                    }
-                }
-            }
-        });
+    sync() {
+        const other = currencyStore.value === 'UGX' ? 'USD' : 'UGX';
+        this.button.textContent = `Show prices in ${other}`;
     }
 }
 /* ============================================================
@@ -890,6 +1008,38 @@ class TestimonialSwitcher {
     }
 }
 /* ============================================================
+   Image loop — walks once through a stack of product screenshots
+   when it scrolls into view, then rests on the last frame.
+   Finite and under 5 seconds, so it never becomes unstoppable motion.
+   ============================================================ */
+class ImageLoop {
+    constructor(root, stepMs = 1400) {
+        const imgs = qsa('.wsmock__img', root);
+        if (imgs.length < 2 || prefersReducedMotion() || !('IntersectionObserver' in window)) {
+            return;
+        }
+        let index = 0;
+        const run = () => {
+            const timer = window.setInterval(() => {
+                if (index >= imgs.length - 1) {
+                    window.clearInterval(timer);
+                    return;
+                }
+                imgs[index].classList.remove('is-active');
+                index += 1;
+                imgs[index].classList.add('is-active');
+            }, stepMs);
+        };
+        const observer = new IntersectionObserver((entries) => {
+            if (entries.some((entry) => entry.isIntersecting)) {
+                observer.disconnect();
+                run();
+            }
+        }, { threshold: 0.5 });
+        observer.observe(root);
+    }
+}
+/* ============================================================
    Logo wall — graceful text wordmark until real logos exist
    ============================================================ */
 class LogoWall {
@@ -923,65 +1073,86 @@ class LogoWall {
     }
 }
 /* ============================================================
-   Scroll carousel — prev/next buttons that page a scroll-snap track
+   Scroll carousel — prev/next buttons that page a scroll-snap track.
+   Native scrolling does the physics (momentum, rubber-banding);
+   the buttons disappear at the ends instead of wrapping.
    ============================================================ */
 class ScrollCarousel {
-    constructor(track, prevBtn, nextBtn, loop = false) {
-        this.track = track;
-        this.loop = loop;
+    constructor(resolveTrack, prevBtn, nextBtn, watch) {
+        this.resolveTrack = resolveTrack;
+        this.ticking = false;
+        this.prevBtn = prevBtn;
+        this.nextBtn = nextBtn;
         prevBtn?.addEventListener('click', () => this.page(-1));
         nextBtn?.addEventListener('click', () => this.page(1));
-    }
-    page(direction) {
-        const card = this.track.firstElementChild;
-        const gap = Number.parseFloat(getComputedStyle(this.track).columnGap || '0');
-        const step = card ? card.getBoundingClientRect().width + gap : this.track.clientWidth;
-        const behavior = prefersReducedMotion() ? 'auto' : 'smooth';
-        if (this.loop) {
-            const maxScroll = this.track.scrollWidth - this.track.clientWidth;
-            if (direction === 1 && this.track.scrollLeft >= maxScroll - 2) {
-                this.track.scrollTo({ left: 0, behavior });
+        const schedule = () => {
+            if (this.ticking) {
                 return;
             }
-            if (direction === -1 && this.track.scrollLeft <= 2) {
-                this.track.scrollTo({ left: maxScroll, behavior });
-                return;
-            }
-        }
-        this.track.scrollBy({ left: direction * step, behavior });
-    }
-}
-/** Same paging behaviour as ScrollCarousel, but resolves the active pricing tab-panel on every click since the track swaps with the selected category. */
-class PricingCarousel {
-    constructor(prevBtn, nextBtn) {
-        this.scope = prevBtn?.closest('.pricing__carousel') ?? nextBtn?.closest('.pricing__carousel') ?? document;
-        prevBtn?.addEventListener('click', () => this.page(-1));
-        nextBtn?.addEventListener('click', () => this.page(1));
+            this.ticking = true;
+            window.requestAnimationFrame(() => {
+                this.ticking = false;
+                this.update();
+            });
+        };
+        watch.forEach((el) => el.addEventListener('scroll', schedule, { passive: true }));
+        window.addEventListener('resize', schedule);
+        document.addEventListener('tabs:change', schedule);
+        this.update();
     }
     page(direction) {
-        const track = qs('.tab-panel.is-active', this.scope);
+        const track = this.resolveTrack();
         if (!track) {
             return;
         }
         const card = track.firstElementChild;
-        const gap = Number.parseFloat(getComputedStyle(track).columnGap || '0');
+        const gap = Number.parseFloat(getComputedStyle(track).columnGap || '0') || 0;
         const step = card ? card.getBoundingClientRect().width + gap : track.clientWidth;
-        track.scrollBy({ left: direction * step, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+        track.scrollBy({ left: direction * step, behavior: scrollBehavior() });
+    }
+    update() {
+        const track = this.resolveTrack();
+        if (!track) {
+            return;
+        }
+        const max = track.scrollWidth - track.clientWidth;
+        const hasOverflow = max > 2;
+        if (this.prevBtn) {
+            this.prevBtn.disabled = !hasOverflow || track.scrollLeft <= 2;
+        }
+        if (this.nextBtn) {
+            this.nextBtn.disabled = !hasOverflow || track.scrollLeft >= max - 2;
+        }
     }
 }
 /* ============================================================
-   Reveal on scroll (staggered)
+   Reveal on scroll (staggered). Elements are only ever hidden when JS is running
+   (see `.js .reveal`), and once revealed they are *released*: the class and the
+   stagger delay are removed so hover/press transitions behave normally.
    ============================================================ */
 class RevealOnScroll {
     constructor() {
         const items = qsa('.reveal');
         if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
-            items.forEach((el) => el.classList.add('is-in'));
-            this.observer = new IntersectionObserver(() => undefined);
+            items.forEach((el) => this.release(el));
+            this.observer = null;
             return;
         }
-        this.observer = new IntersectionObserver((entries) => this.onIntersect(entries), { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
-        items.forEach((el) => this.observer.observe(el));
+        // Items inside a horizontal scroller can't wait for the viewport to "see" them.
+        const scrollers = '.pillars__track, .showcase__grid, .tab-panel';
+        this.observer = new IntersectionObserver((entries) => this.onIntersect(entries), { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+        items.forEach((el) => {
+            if (el.closest(scrollers)) {
+                this.release(el);
+            }
+            else {
+                this.observer?.observe(el);
+            }
+        });
+    }
+    release(el) {
+        el.classList.remove('reveal', 'is-in');
+        el.style.transitionDelay = '';
     }
     onIntersect(entries) {
         entries.forEach((entry) => {
@@ -989,28 +1160,39 @@ class RevealOnScroll {
                 return;
             }
             const el = entry.target;
-            const siblings = el.parentElement ? qsa('.reveal', el.parentElement) : [el];
+            const siblings = el.parentElement ? qsa('.reveal', el.parentElement).filter((s) => s.parentElement === el.parentElement) : [el];
             const index = Math.max(0, siblings.indexOf(el));
-            el.style.transitionDelay = `${Math.min(index, 6) * 80}ms`;
+            const delay = Math.min(index, 5) * 70;
+            el.style.transitionDelay = `${delay}ms`;
             el.classList.add('is-in');
-            this.observer.unobserve(el);
+            this.observer?.unobserve(el);
+            window.setTimeout(() => this.release(el), delay + 800);
         });
     }
 }
 /* ============================================================
-   Stats counter (count-up, once)
+   Stats counter (count-up, once). Real values live in the HTML;
+   we only rewind them to 0 when we are about to animate.
    ============================================================ */
 class StatsCounter {
     constructor() {
-        this.nums = qsa('.stat__num');
+        const nums = qsa('.stat__num');
+        if (prefersReducedMotion() || !('IntersectionObserver' in window)) {
+            this.observer = null;
+            return;
+        }
         this.observer = new IntersectionObserver((entries) => this.onIntersect(entries), { threshold: 0.5 });
-        this.nums.forEach((el) => this.observer.observe(el));
+        nums.forEach((el) => {
+            const decimals = Number(el.dataset['decimals'] ?? '0');
+            el.textContent = (0).toFixed(decimals) + (el.dataset['suffix'] ?? '');
+            this.observer?.observe(el);
+        });
     }
     onIntersect(entries) {
         entries.forEach((entry) => {
             if (entry.isIntersecting) {
                 this.animate(entry.target);
-                this.observer.unobserve(entry.target);
+                this.observer?.unobserve(entry.target);
             }
         });
     }
@@ -1018,17 +1200,12 @@ class StatsCounter {
         const target = Number(el.dataset['count'] ?? '0');
         const suffix = el.dataset['suffix'] ?? '';
         const decimals = Number(el.dataset['decimals'] ?? '0');
-        if (prefersReducedMotion()) {
-            el.textContent = target.toFixed(decimals) + suffix;
-            return;
-        }
-        const duration = 1400;
+        const duration = 1200;
         const start = performance.now();
         const step = (now) => {
             const progress = Math.min(1, (now - start) / duration);
             const eased = 1 - Math.pow(1 - progress, 3);
-            const value = target * eased;
-            el.textContent = value.toFixed(decimals) + suffix;
+            el.textContent = (target * eased).toFixed(decimals) + suffix;
             if (progress < 1) {
                 window.requestAnimationFrame(step);
             }
@@ -1040,22 +1217,37 @@ class StatsCounter {
     }
 }
 /* ============================================================
-   Sticky header + scroll spy + scroll progress + back to top
+   Sticky header + scroll spy + scroll progress + back to top.
+   Layout is measured on resize, not on every scroll frame;
+   the progress bar only ever changes `transform`.
    ============================================================ */
 class StickyHeader {
     constructor(header, progress, toTop) {
+        this.offsets = [];
+        this.scrollable = 0;
         this.ticking = false;
         this.header = header;
         this.progress = progress;
         this.toTop = toTop;
         this.navLinks = qsa('.nav__link[href^="#"]');
         this.sections = this.navLinks
-            .map((link) => document.getElementById(link.getAttribute('href').slice(1)))
+            .map((link) => document.getElementById((link.getAttribute('href') ?? '').slice(1)))
             .filter((el) => el !== null);
         window.addEventListener('scroll', () => this.onScroll(), { passive: true });
+        window.addEventListener('resize', () => this.measure());
+        window.addEventListener('load', () => this.measure());
+        if ('ResizeObserver' in window) {
+            new ResizeObserver(() => this.measure()).observe(document.body);
+        }
         this.toTop.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: prefersReducedMotion() ? 'auto' : 'smooth' });
+            window.scrollTo({ top: 0, behavior: scrollBehavior() });
         });
+        this.measure();
+    }
+    measure() {
+        const doc = document.documentElement;
+        this.scrollable = doc.scrollHeight - doc.clientHeight;
+        this.offsets = this.sections.map((section) => section.getBoundingClientRect().top + window.scrollY);
         this.update();
     }
     onScroll() {
@@ -1070,120 +1262,177 @@ class StickyHeader {
     }
     update() {
         const y = window.scrollY;
-        this.header.classList.toggle('is-stuck', y > 40);
+        this.header.classList.toggle('is-stuck', y > 8);
         this.toTop.classList.toggle('is-visible', y > 600);
-        const doc = document.documentElement;
-        const scrollable = doc.scrollHeight - doc.clientHeight;
-        const pct = scrollable > 0 ? (y / scrollable) * 100 : 0;
-        this.progress.style.width = `${pct}%`;
+        const pct = this.scrollable > 0 ? Math.min(1, Math.max(0, y / this.scrollable)) : 0;
+        this.progress.style.transform = `scaleX(${pct})`;
         this.spy(y);
     }
     spy(y) {
+        if (this.navLinks.length === 0) {
+            return;
+        }
         const marker = y + window.innerHeight * 0.3;
+        // The current section is the one whose top is nearest above the marker — regardless of nav order.
         let activeId = '';
-        this.sections.forEach((section) => {
-            if (section.offsetTop <= marker) {
+        let best = -Infinity;
+        this.sections.forEach((section, i) => {
+            if (this.offsets[i] <= marker && this.offsets[i] > best) {
+                best = this.offsets[i];
                 activeId = section.id;
             }
         });
         this.navLinks.forEach((link) => {
-            link.classList.toggle('is-active', link.getAttribute('href') === `#${activeId}`);
+            const active = link.getAttribute('href') === `#${activeId}`;
+            link.classList.toggle('is-active', active);
+            if (active) {
+                link.setAttribute('aria-current', 'location');
+            }
+            else {
+                link.removeAttribute('aria-current');
+            }
         });
     }
 }
 /* ============================================================
-   Accordion (one open at a time, height-animated)
+   Accordion — independent items (you decide what stays open).
+   The height animation is pure CSS (grid rows), so there is no measured
+   height to go stale when the window resizes.
    ============================================================ */
 class Accordion {
-    constructor(root) {
-        this.items = qsa('.acc', root);
-        this.bind();
-    }
-    bind() {
-        this.items.forEach((item) => {
+    constructor(root, group) {
+        qsa('.acc', root).forEach((item, i) => {
             const button = qs('.acc__q', item);
             const answer = qs('.acc__a', item);
             if (!button || !answer) {
                 return;
             }
-            button.addEventListener('click', () => this.toggle(item, button, answer));
+            const base = `acc-${group}-${i}`;
+            button.id = button.id || `${base}-q`;
+            answer.id = answer.id || `${base}-a`;
+            button.setAttribute('aria-controls', answer.id);
+            answer.setAttribute('role', 'region');
+            answer.setAttribute('aria-labelledby', button.id);
+            button.addEventListener('click', () => {
+                const open = !item.classList.contains('is-open');
+                item.classList.toggle('is-open', open);
+                button.setAttribute('aria-expanded', String(open));
+            });
         });
-    }
-    toggle(item, button, answer) {
-        const willOpen = !item.classList.contains('is-open');
-        this.items.forEach((other) => this.close(other));
-        if (willOpen) {
-            item.classList.add('is-open');
-            button.setAttribute('aria-expanded', 'true');
-            answer.style.maxHeight = `${answer.scrollHeight}px`;
-        }
-    }
-    close(item) {
-        const button = qs('.acc__q', item);
-        const answer = qs('.acc__a', item);
-        item.classList.remove('is-open');
-        if (button) {
-            button.setAttribute('aria-expanded', 'false');
-        }
-        if (answer) {
-            answer.style.maxHeight = '0px';
-        }
     }
 }
 /* ============================================================
-   Mega menu (keyboard + click on desktop)
+   Mega menu
+   - mouse: opens on hover *intent* (short delay), click pins it open
+   - touch/keyboard: click toggles
+   - closes on: outside click, Escape, focus leaving, choosing a link
    ============================================================ */
 class MegaMenu {
     constructor(item) {
+        this.pinned = false;
         this.item = item;
         this.trigger = qs('.nav__trigger', item);
         this.mega = qs('.mega', item);
+        if (!this.mega.id) {
+            this.mega.id = 'mega-services';
+        }
+        this.trigger.setAttribute('aria-controls', this.mega.id);
+        this.trigger.removeAttribute('aria-haspopup');
+        this.mega.removeAttribute('role');
         this.bind();
     }
-    /** Single source of truth for open/closed — CSS no longer opens on :hover on its own,
-     *  so a click can never be fighting a hover state that's still active underneath it. */
+    isOpen() {
+        return this.mega.classList.contains('is-open');
+    }
     open() {
+        this.cancelTimer();
         this.mega.classList.add('is-open');
         this.trigger.setAttribute('aria-expanded', 'true');
     }
     close() {
+        this.cancelTimer();
+        this.pinned = false;
         this.mega.classList.remove('is-open');
         this.trigger.setAttribute('aria-expanded', 'false');
+    }
+    cancelTimer() {
+        if (this.timer !== undefined) {
+            window.clearTimeout(this.timer);
+            this.timer = undefined;
+        }
+    }
+    schedule(open, ms) {
+        this.cancelTimer();
+        this.timer = window.setTimeout(() => (open ? this.open() : this.close()), ms);
     }
     bind() {
         this.trigger.addEventListener('click', (event) => {
             event.preventDefault();
-            if (this.mega.classList.contains('is-open')) {
+            if (this.isOpen() && this.pinned) {
                 this.close();
             }
             else {
+                // First click while hover-open (or closed) pins it, so a click never fights the hover.
                 this.open();
+                this.pinned = true;
             }
         });
-        this.item.addEventListener('mouseenter', () => this.open());
-        this.item.addEventListener('mouseleave', () => this.close());
+        this.item.addEventListener('pointerenter', (event) => {
+            if (event.pointerType === 'mouse') {
+                this.schedule(true, 70);
+            }
+        });
+        this.item.addEventListener('pointerleave', (event) => {
+            if (event.pointerType === 'mouse' && !this.pinned) {
+                this.schedule(false, 140);
+            }
+        });
+        this.mega.addEventListener('click', (event) => {
+            if (event.target.closest('a')) {
+                this.close();
+            }
+        });
+        this.item.addEventListener('focusout', (event) => {
+            const next = event.relatedTarget;
+            if (next && !this.item.contains(next)) {
+                this.close();
+            }
+        });
         document.addEventListener('click', (event) => {
             if (!this.item.contains(event.target)) {
                 this.close();
             }
         });
         document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape') {
+            if (event.key === 'Escape' && this.isOpen()) {
+                const hadFocus = this.item.contains(document.activeElement);
                 this.close();
+                if (hadFocus) {
+                    this.trigger.focus();
+                }
             }
         });
     }
 }
 /* ============================================================
-   Mobile menu (focus-trapped overlay, ESC to close)
+   Mobile menu — a sheet you can grab.
+   Opens/closes on a critically damped spring; while open you can drag it
+   toward the right edge (1:1, with rubber-banding the other way). On release it
+   keeps the finger's velocity and rests wherever the *projected* position says.
+   Grabbing it mid-flight stops it where it is.
    ============================================================ */
 class MobileMenu {
     constructor(menu, hamburger, closeBtn) {
         this.lastFocused = null;
+        this.x = 0;
+        this.target = 0;
+        this.spring = null;
+        this.opened = false;
         this.menu = menu;
         this.hamburger = hamburger;
         this.closeBtn = closeBtn;
         this.bind();
+        this.bindDrag();
     }
     bind() {
         this.hamburger.addEventListener('click', () => this.open());
@@ -1192,7 +1441,7 @@ class MobileMenu {
             link.addEventListener('click', () => this.close());
         });
         document.addEventListener('keydown', (event) => {
-            if (!this.isOpen()) {
+            if (!this.opened) {
                 return;
             }
             if (event.key === 'Escape') {
@@ -1202,27 +1451,30 @@ class MobileMenu {
                 this.trapFocus(event);
             }
         });
+        // Leaving the mobile layout while the sheet is open: just tidy up.
+        window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
+            if (event.matches && this.opened) {
+                this.close(true);
+            }
+        });
     }
-    isOpen() {
-        return this.menu.classList.contains('is-open');
+    width() {
+        return this.menu.offsetWidth || window.innerWidth;
     }
     focusable() {
         return qsa('a[href], button:not([disabled]), summary', this.menu);
     }
-    open() {
+    markOpen() {
+        this.opened = true;
         this.lastFocused = document.activeElement;
         this.menu.classList.add('is-open');
         this.menu.setAttribute('aria-hidden', 'false');
         this.hamburger.classList.add('is-open');
         this.hamburger.setAttribute('aria-expanded', 'true');
         document.body.style.overflow = 'hidden';
-        const first = this.focusable()[0];
-        if (first) {
-            first.focus();
-        }
     }
-    close() {
-        this.menu.classList.remove('is-open');
+    markClosed() {
+        this.opened = false;
         this.menu.setAttribute('aria-hidden', 'true');
         this.hamburger.classList.remove('is-open');
         this.hamburger.setAttribute('aria-expanded', 'false');
@@ -1230,6 +1482,63 @@ class MobileMenu {
         if (this.lastFocused) {
             this.lastFocused.focus();
         }
+    }
+    render(x) {
+        this.x = x;
+        this.menu.style.transform = `translateX(${x}px)`;
+    }
+    release() {
+        this.spring = null;
+        this.menu.classList.remove('is-driven');
+        this.menu.style.transform = '';
+        if (this.target !== 0) {
+            this.menu.classList.remove('is-open');
+        }
+    }
+    /** Spring the sheet to `to`, continuing from its live position and velocity. */
+    drive(to, velocity) {
+        if (this.spring) {
+            this.spring.cancel();
+        }
+        this.target = to;
+        this.menu.classList.add('is-driven');
+        this.spring = springTo(this.x, to, velocity, 0.42, (x) => this.render(x), () => this.release());
+    }
+    open() {
+        if (this.opened && this.target === 0) {
+            return;
+        }
+        const wasClosed = !this.opened;
+        if (wasClosed) {
+            this.markOpen();
+        }
+        const first = this.focusable()[0];
+        if (prefersReducedMotion()) {
+            this.target = 0;
+            this.release();
+            first?.focus();
+            return;
+        }
+        if (wasClosed && !this.spring) {
+            this.render(this.width());
+        }
+        this.drive(0, 0);
+        first?.focus({ preventScroll: true });
+    }
+    close(immediate = false) {
+        if (!this.opened) {
+            return;
+        }
+        this.markClosed();
+        if (immediate || prefersReducedMotion()) {
+            if (this.spring) {
+                this.spring.cancel();
+            }
+            this.target = this.width();
+            this.release();
+            return;
+        }
+        this.drive(this.width(), 0);
     }
     trapFocus(event) {
         const nodes = this.focusable();
@@ -1247,88 +1556,144 @@ class MobileMenu {
             first.focus();
         }
     }
+    bindDrag() {
+        let pointerId = -1;
+        let startX = 0;
+        let startY = 0;
+        let baseX = 0;
+        let dragging = false;
+        let interrupted = false;
+        let samples = [];
+        this.menu.addEventListener('pointerdown', (event) => {
+            if (!this.opened || event.pointerType === 'mouse') {
+                return;
+            }
+            pointerId = event.pointerId;
+            startX = event.clientX;
+            startY = event.clientY;
+            dragging = false;
+            samples = [{ x: event.clientX, t: event.timeStamp }];
+            // Grabbing a moving sheet stops it right where it is — no waiting for it to land.
+            interrupted = this.spring !== null;
+            if (this.spring) {
+                this.spring.cancel();
+                this.spring = null;
+            }
+            baseX = this.x;
+        });
+        this.menu.addEventListener('pointermove', (event) => {
+            if (event.pointerId !== pointerId) {
+                return;
+            }
+            const dx = event.clientX - startX;
+            const dy = event.clientY - startY;
+            if (!dragging) {
+                if (Math.abs(dx) < 10 && Math.abs(dy) < 10) {
+                    return; // hysteresis: wait until intent is clear
+                }
+                if (Math.abs(dy) > Math.abs(dx)) {
+                    pointerId = -1; // a vertical scroll — the page's, not ours
+                    if (interrupted) {
+                        this.drive(this.target, 0);
+                    }
+                    return;
+                }
+                dragging = true;
+                this.menu.classList.add('is-driven');
+                try {
+                    this.menu.setPointerCapture(event.pointerId);
+                }
+                catch {
+                    /* pointer already released */
+                }
+            }
+            const raw = baseX + dx;
+            this.render(raw < 0 ? -rubberband(-raw, this.width()) : raw);
+            samples.push({ x: event.clientX, t: event.timeStamp });
+            while (samples.length > 2 && event.timeStamp - samples[0].t > 100) {
+                samples.shift();
+            }
+        });
+        const end = (event) => {
+            if (event.pointerId !== pointerId) {
+                return;
+            }
+            pointerId = -1;
+            if (!dragging) {
+                if (interrupted) {
+                    this.drive(this.target, 0);
+                }
+                return;
+            }
+            dragging = false;
+            const first = samples[0];
+            const last = samples[samples.length - 1];
+            const dt = Math.max(1, last.t - first.t);
+            const velocity = ((last.x - first.x) / dt) * 1000; // px/s
+            const projected = this.x + project(velocity);
+            const closing = projected > this.width() * 0.5;
+            if (closing) {
+                this.markClosed();
+            }
+            this.drive(closing ? this.width() : 0, velocity);
+        };
+        this.menu.addEventListener('pointerup', end);
+        this.menu.addEventListener('pointercancel', end);
+    }
 }
 /* ============================================================
    Bootstrap
    ============================================================ */
 function bootstrap() {
+    document.documentElement.classList.add('js');
     const toastEl = document.getElementById('toast');
     const toast = new Toast(toastEl);
+    // One delegated handler for every "lead" button — including ones rendered later.
+    document.addEventListener('click', (event) => {
+        const btn = event.target.closest('[data-lead]');
+        if (btn) {
+            toast.fireLead(btn.dataset['leadContext']);
+        }
+    });
     const quoteForm = qs('#quoteForm');
     if (quoteForm) {
         toast.attachQuoteForm(new QuoteForm(quoteForm, toast));
     }
-    // Pricing cards must render before we wire their lead buttons.
-    const pricingRenderer = new PricingRenderer(toast);
-    pricingRenderer.render();
+    // Cards render before the static-price pass and the tab wiring.
+    new PricingRenderer().render();
+    new StaticPrices();
     const domainForm = qs('#domainForm');
     if (domainForm) {
-        new DomainChecker(domainForm, toast);
-    }
-    const heroCarousel = document.getElementById('heroCarousel');
-    if (heroCarousel) {
-        new Carousel(heroCarousel);
-    }
-    const heroStack = document.getElementById('heroStack');
-    if (heroStack) {
-        new HeroStack(heroStack);
+        new DomainChecker(domainForm);
     }
     qsa('.wsmock').forEach((el) => new ImageLoop(el));
-    const tablist = document.getElementById('pricingTabs');
-    if (tablist) {
-        new PricingTabs(tablist);
-    }
-    const hostingTabs = document.getElementById('pricingTabsHosting');
-    if (hostingTabs) {
-        new PricingTabs(hostingTabs);
-    }
-    const emailTabs = document.getElementById('pricingTabsEmail');
-    if (emailTabs) {
-        new PricingTabs(emailTabs);
-    }
-    const serviceTabs = document.getElementById('serviceTabs');
-    if (serviceTabs) {
-        new PricingTabs(serviceTabs);
-    }
-    const currencyToggle = document.getElementById('currencyToggle');
-    if (currencyToggle) {
-        new CurrencyToggle(currencyToggle, pricingRenderer);
-    }
-    const trustTabs = document.getElementById('trustTabs');
-    if (trustTabs) {
-        new TestimonialSwitcher(trustTabs);
-    }
+    qsa('[role="tablist"]').forEach((list) => {
+        if (list.id === 'trustTabs') {
+            new TestimonialSwitcher(list);
+        }
+        else {
+            new Tabs(list);
+        }
+    });
+    qsa('.currency-toggle').forEach((el) => new CurrencyToggle(el));
+    qsa('[data-currency-flip]').forEach((el) => new CurrencyFlip(el));
     const logoWall = document.getElementById('logoWall');
     if (logoWall) {
         new LogoWall(logoWall);
     }
-    const solutionsTrack = document.getElementById('solutionsTrack');
-    if (solutionsTrack) {
-        new ScrollCarousel(solutionsTrack, qs('#solutionsPrev'), qs('#solutionsNext'));
-    }
     const pillarsTrack = document.getElementById('pillarsTrack');
     if (pillarsTrack) {
-        new ScrollCarousel(pillarsTrack, qs('#pillarsPrev'), qs('#pillarsNext'));
+        new ScrollCarousel(() => pillarsTrack, qs('#pillarsPrev'), qs('#pillarsNext'), [pillarsTrack]);
     }
     const showcaseTrack = document.getElementById('showcaseTrack');
     if (showcaseTrack) {
-        new ScrollCarousel(showcaseTrack, qs('#showcasePrev'), qs('#showcaseNext'), true);
+        new ScrollCarousel(() => showcaseTrack, qs('#showcasePrev'), qs('#showcaseNext'), [showcaseTrack]);
     }
-    const pricingPrev = qs('#pricingPrev');
-    const pricingNext = qs('#pricingNext');
-    if (pricingPrev || pricingNext) {
-        new PricingCarousel(pricingPrev, pricingNext);
-    }
-    const pricingPrevHosting = qs('#pricingPrevHosting');
-    const pricingNextHosting = qs('#pricingNextHosting');
-    if (pricingPrevHosting || pricingNextHosting) {
-        new PricingCarousel(pricingPrevHosting, pricingNextHosting);
-    }
-    const pricingPrevEmail = qs('#pricingPrevEmail');
-    const pricingNextEmail = qs('#pricingNextEmail');
-    if (pricingPrevEmail || pricingNextEmail) {
-        new PricingCarousel(pricingPrevEmail, pricingNextEmail);
-    }
+    // Pricing carousels resolve the *active* tab panel on every use.
+    qsa('.pricing__carousel').forEach((carousel) => {
+        const panels = qsa('.tab-panel', carousel);
+        new ScrollCarousel(() => qs('.tab-panel.is-active', carousel), qs('.pricing__nav--prev', carousel), qs('.pricing__nav--next', carousel), panels);
+    });
     new RevealOnScroll();
     new StatsCounter();
     const header = document.getElementById('header');
@@ -1337,10 +1702,7 @@ function bootstrap() {
     if (header && progress && toTop) {
         new StickyHeader(header, progress, toTop);
     }
-    const accordion = document.getElementById('accordion');
-    if (accordion) {
-        new Accordion(accordion);
-    }
+    qsa('.accordion').forEach((accordion, group) => new Accordion(accordion, group));
     const megaItem = qs('.has-mega');
     if (megaItem) {
         new MegaMenu(megaItem);

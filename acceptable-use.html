@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
+  <script>document.documentElement.classList.add('js');</script>
   <script>
     if (location.pathname.endsWith('.html')) {
       var clean = location.pathname === '/index.html' ? '/' : location.pathname.slice(0, -5);
@@ -12,7 +13,8 @@
   <title>Acceptable Use Policy | BlacTec Technologies</title>
   <meta name="description" content="What's allowed and not allowed on BlacTec Technologies Ltd. hosting, email and cloud services." />
   <link rel="canonical" href="https://blactec.ug/acceptable-use" />
-  <meta name="theme-color" content="#0e0f13" />
+  <meta name="theme-color" content="#ffffff" />
+  <meta name="color-scheme" content="light" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Acceptable Use Policy | BlacTec Technologies" />
   <meta property="og:description" content="What's allowed and not allowed on BlacTec hosting, email and cloud services." />
@@ -23,42 +25,17 @@
   <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,700;9..40,1000&display=swap" />
-  <link rel="stylesheet" href="styles.css?v=1.11.4" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" />
+  <link rel="stylesheet" href="styles.css?v=1.12.0" />
 </head>
 <body>
-  <div class="splash" id="splash" aria-hidden="true">
-    <svg class="splash__mark" width="72" height="72" viewBox="0 0 34 34" aria-hidden="true">
-      <rect width="34" height="34" rx="8" fill="#000"></rect>
-      <text x="9.5" y="24" font-family="'DM Sans',sans-serif" font-size="20" font-weight="1000" fill="#fff">b</text>
-      <circle cx="24.5" cy="22.5" r="2.6" fill="#e0e007"></circle>
-    </svg>
-  </div>
-  <script>
-    (function () {
-      var splash = document.getElementById('splash');
-      if (!splash) return;
-      var seen;
-      try { seen = sessionStorage.getItem('blactecSplashShown'); } catch (e) { seen = null; }
-      if (seen) { splash.remove(); return; }
-      try { sessionStorage.setItem('blactecSplashShown', '1'); } catch (e) {}
-      var done = false;
-      function hide() {
-        if (done) return;
-        done = true;
-        splash.classList.add('splash--hide');
-        setTimeout(function () { splash.remove(); }, 500);
-      }
-      window.addEventListener('load', hide);
-      setTimeout(hide, 900);
-    })();
-  </script>
+  <a class="skip-link" href="#top">Skip to content</a>
   <header class="legal-header">
     <div class="container legal-header__inner">
       <a href="/" class="logo" aria-label="BlacTec — home">
         <svg class="logo__mark" width="34" height="34" viewBox="0 0 34 34" aria-hidden="true">
           <rect width="34" height="34" rx="8" fill="#000"></rect>
-          <text x="9.5" y="24" font-family="'DM Sans',sans-serif" font-size="20" font-weight="1000" fill="#fff">b</text>
+          <text x="9.5" y="24" font-family="'DM Sans',sans-serif" font-size="20" font-weight="700" fill="#fff">b</text>
           <circle cx="24.5" cy="22.5" r="2.6" fill="#e0e007"></circle>
         </svg>
         <span class="logo__word"><span class="logo__blac">blac</span><span class="logo__tec">tec</span><span class="logo__dot">.</span></span>
@@ -70,7 +47,7 @@
     </div>
   </header>
 
-  <main>
+  <main id="top">
     <div class="container">
       <article class="legal">
         <h1>Acceptable Use Policy</h1>
@@ -96,6 +73,15 @@
 
         <h2>Reporting abuse</h2>
         <p>If you believe content or traffic from a BlacTec-hosted service is abusive, email <a href="mailto:info@blactec.ug">info@blactec.ug</a> with details and we'll investigate.</p>
+        <nav class="legal-nav" aria-label="Legal">
+          <p class="legal-nav__title">Legal</p>
+          <ul>
+            <li><a href="/privacy">Privacy Policy</a></li>
+            <li><a href="/terms">Terms of Service</a></li>
+            <li><a href="/acceptable-use" aria-current="page">Acceptable Use</a></li>
+            <li><a href="/refund-policy">Refund Policy</a></li>
+          </ul>
+        </nav>
       </article>
     </div>
   </main>
@@ -104,6 +90,10 @@
     <div class="footer__bar">
       <div class="container footer__bar-inner">
         <p>© 2026 BlacTec Technologies Ltd. All rights reserved.</p>
+        <ul class="footer__links">
+          <li><a href="/">blactec.ug</a></li>
+          <li><a href="mailto:info@blactec.ug">info@blactec.ug</a></li>
+        </ul>
       </div>
     </div>
   </footer>
