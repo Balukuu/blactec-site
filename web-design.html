@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" />
 
-  <link rel="stylesheet" href="styles.css?v=1.12.0" />
+  <link rel="stylesheet" href="styles.css?v=1.12.1" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -98,7 +98,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.12.0"></script>
+  <script defer src="dist/main.js?v=1.12.1"></script>
 </head>
 <body class="page-webdesign">
   <a class="skip-link" href="#top">Skip to content</a>
@@ -246,28 +246,19 @@
         </div>
 
         <!-- Right column illustration -->
-        <div class="hero__art" aria-hidden="true">
-          <div class="sitemock">
-            <div class="sitemock__bar">
-              <span class="sitemock__dot"></span><span class="sitemock__dot"></span><span class="sitemock__dot"></span>
-              <span class="sitemock__url">yourbusiness.ug</span>
-            </div>
-            <div class="sitemock__body">
-              <div class="sitemock__hero"></div>
-              <div class="sitemock__line"></div>
-              <div class="sitemock__line sitemock__line--short"></div>
-              <div class="sitemock__cards">
-                <span class="sitemock__card"></span>
-                <span class="sitemock__card sitemock__card--accent"></span>
-                <span class="sitemock__card"></span>
-              </div>
-              <div class="sitemock__line"></div>
-              <div class="sitemock__line sitemock__line--short"></div>
-            </div>
+        <div class="hero__art">
+          <div class="lineup lineup--duo">
+          <figure class="device device--main" aria-hidden="true">
+            <div class="device__bar"><i></i><i></i><i></i><span class="device__url">goldenmarketing.co.ug</span></div>
+            <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
+          </figure>
+          <figure class="device device--side device--left" aria-hidden="true">
+            <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kanizapartments.co.ug</span></div>
+            <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+          </figure>
           </div>
-          <span class="chip chip--float chip--a"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Mobile-First</span>
-          <span class="chip chip--float chip--b">Launch in weeks, not months</span>
-          <span class="chip chip--float chip--c"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>SEO Ready</span>
+          <span class="chip chip--float chip--a" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Mobile-first</span>
+          <span class="chip chip--float chip--c" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>SEO ready</span>
         </div>
       </div>
     </section>

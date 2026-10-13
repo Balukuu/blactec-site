@@ -10,8 +10,8 @@
    - springs for anything a finger can grab; critically damped by default
    - nothing is locked out while it moves
    ============================================================ */
-/** Approximate market rate — one number for the whole site (the static USD figures in the HTML are derived from it). */
-const UGX_PER_USD = 3700;
+/** Approximate market rate — one number for the whole site. The static UGX fallbacks in index.html are derived from it. */
+const UGX_PER_USD = 4100;
 function formatUgx(value) {
     return `UGX ${Math.round(value).toLocaleString('en-US')}`;
 }

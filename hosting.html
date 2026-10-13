@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" />
 
-  <link rel="stylesheet" href="styles.css?v=1.12.0" />
+  <link rel="stylesheet" href="styles.css?v=1.12.1" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -101,7 +101,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.12.0"></script>
+  <script defer src="dist/main.js?v=1.12.1"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -352,8 +352,13 @@
 
         <div class="pillars__grid">
           <article class="pcard reveal">
-            <div class="pcard__ic">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/></svg>
+            <div class="media" aria-hidden="true">
+              <div class="stack">
+                <span class="stack__tile"><img src="assets/brand/cpanel.svg" alt="" /></span>
+                <span class="stack__tile"><img src="assets/brand/wordpress.svg" alt="" /></span>
+                <span class="stack__tile stack__tile--lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
+              </div>
+              <span class="media__badge">Free SSL included</span>
             </div>
             <h3 class="pcard__title">Shared Hosting</h3>
             <p>Your site shares a server with others, fully managed by us. The most affordable way to get a business website, blog or portfolio online fast.</p>
@@ -365,8 +370,13 @@
           </article>
 
           <article class="pcard reveal">
-            <div class="pcard__ic">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5-1.6A4 4 0 0 1 17.5 19h-11Z"/></svg>
+            <div class="media" aria-hidden="true" style="--ic:#6a4c93">
+              <div class="term">
+                <div><b>$</b> ssh root@your-server</div>
+                <div><span>Welcome — you have root.</span></div>
+                <div><b>#</b> systemctl status nginx</div>
+                <div><span>● active (running)</span></div>
+              </div>
             </div>
             <h3 class="pcard__title">VPS Hosting</h3>
             <p>A private slice of a server with full root access and dedicated RAM/CPU. More control and headroom for growing sites and custom stacks.</p>
@@ -378,8 +388,9 @@
           </article>
 
           <article class="pcard reveal">
-            <div class="pcard__ic">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/><path d="M19.5 20a3.5 3.5 0 0 1-3.5 3H13"/></svg>
+            <div class="media" aria-hidden="true" style="--ic:#1d1e20">
+              <div class="rack" style="left:50%;transform:translate(-50%,-50%);width:56%"><div class="rack__u"><i></i><i></i><span></span></div><div class="rack__u"><i></i><i></i><span></span></div><div class="rack__u"><i></i><i></i><span></span></div><div class="rack__u"><i></i><i></i><span></span></div></div>
+              <span class="media__badge" style="left:auto;right:9%">Fully managed</span>
             </div>
             <h3 class="pcard__title">Dedicated Servers</h3>
             <p>The entire physical machine, exclusively yours and fully managed by our engineers. Built for the busiest, most demanding platforms.</p>

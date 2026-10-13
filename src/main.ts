@@ -42,8 +42,8 @@ interface PricingPlan {
 
 type PanelKey = 'hosting' | 'vps' | 'dedicated' | 'workspace' | 'microsoft365' | 'zoho' | 'reseller' | 'security' | 'webdesign' | 'webredesign';
 
-/** Approximate market rate — one number for the whole site (the static USD figures in the HTML are derived from it). */
-const UGX_PER_USD = 3700;
+/** Approximate market rate — one number for the whole site. The static UGX fallbacks in index.html are derived from it. */
+const UGX_PER_USD = 4100;
 
 function formatUgx(value: number): string {
   return `UGX ${Math.round(value).toLocaleString('en-US')}`;
