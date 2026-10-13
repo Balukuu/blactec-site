@@ -1641,6 +1641,327 @@ class MobileMenu {
         this.menu.addEventListener('pointercancel', end);
     }
 }
+class TechHeroCanvas {
+    constructor(canvas) {
+        this.nodes = [];
+        this.packets = [];
+        this.width = 0;
+        this.height = 0;
+        this.dpr = 1;
+        this.rafId = null;
+        this.isVisible = false;
+        this.pointer = { x: -9999, y: -9999, active: false };
+        this.resizeObserver = null;
+        this.intersectionObserver = null;
+        this.canvas = canvas;
+        this.ctx = canvas.getContext('2d');
+        const parent = canvas.closest('section, header, .hero2, .hero');
+        this.host = parent ?? canvas.parentElement ?? document.body;
+        if (!this.ctx) {
+            return;
+        }
+        this.init();
+    }
+    init() {
+        this.handleResize();
+        if (typeof IntersectionObserver !== 'undefined') {
+            this.intersectionObserver = new IntersectionObserver((entries) => {
+                const entry = entries[0];
+                if (entry) {
+                    this.isVisible = entry.isIntersecting;
+                    if (this.isVisible) {
+                        this.start();
+                    }
+                    else {
+                        this.stop();
+                    }
+                }
+            }, { threshold: 0.02 });
+            this.intersectionObserver.observe(this.host);
+        }
+        else {
+            this.isVisible = true;
+            this.start();
+        }
+        if (typeof ResizeObserver !== 'undefined') {
+            this.resizeObserver = new ResizeObserver(() => {
+                this.handleResize();
+            });
+            this.resizeObserver.observe(this.host);
+        }
+        else {
+            window.addEventListener('resize', () => this.handleResize(), { passive: true });
+        }
+        this.host.addEventListener('pointermove', (e) => {
+            const rect = this.canvas.getBoundingClientRect();
+            this.pointer.x = e.clientX - rect.left;
+            this.pointer.y = e.clientY - rect.top;
+            this.pointer.active = true;
+        }, { passive: true });
+        this.host.addEventListener('pointerleave', () => {
+            this.pointer.active = false;
+            this.pointer.x = -9999;
+            this.pointer.y = -9999;
+        }, { passive: true });
+        const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+        media.addEventListener?.('change', () => {
+            if (prefersReducedMotion()) {
+                this.stop();
+                this.renderStatic();
+            }
+            else if (this.isVisible) {
+                this.start();
+            }
+        });
+        if (prefersReducedMotion()) {
+            this.renderStatic();
+        }
+        else {
+            this.start();
+        }
+    }
+    handleResize() {
+        const rect = this.host.getBoundingClientRect();
+        this.width = Math.max(300, Math.floor(rect.width));
+        this.height = Math.max(200, Math.floor(rect.height));
+        this.dpr = Math.min(window.devicePixelRatio || 1, 2);
+        this.canvas.width = Math.floor(this.width * this.dpr);
+        this.canvas.height = Math.floor(this.height * this.dpr);
+        if (this.ctx) {
+            this.ctx.setTransform(1, 0, 0, 1, 0, 0);
+            this.ctx.scale(this.dpr, this.dpr);
+        }
+        this.spawnElements();
+        if (prefersReducedMotion()) {
+            this.renderStatic();
+        }
+    }
+    spawnElements() {
+        const area = this.width * this.height;
+        const targetCount = Math.max(20, Math.min(52, Math.floor(area / 22000)));
+        const colors = [
+            '#3373e0', // BlacTec primary blue
+            '#3373e0',
+            '#22a55e', // live network emerald
+            '#f4821f', // warm server amber
+        ];
+        this.nodes = [];
+        for (let i = 0; i < targetCount; i++) {
+            const isBeacon = i % 7 === 0;
+            this.nodes.push({
+                x: Math.random() * this.width,
+                y: Math.random() * this.height,
+                vx: (Math.random() - 0.5) * 0.42,
+                vy: (Math.random() - 0.5) * 0.42,
+                radius: isBeacon ? 2.8 : 1.4 + Math.random() * 1.4,
+                color: colors[i % colors.length] ?? '#3373e0',
+                baseAlpha: 0.35 + Math.random() * 0.4,
+                isBeacon,
+                beaconTimer: Math.random() * 200,
+            });
+        }
+        const packetCount = Math.max(4, Math.floor(targetCount * 0.28));
+        this.packets = [];
+        for (let i = 0; i < packetCount; i++) {
+            this.packets.push(this.createPacket());
+        }
+    }
+    createPacket() {
+        const s = Math.floor(Math.random() * this.nodes.length);
+        let t = Math.floor(Math.random() * this.nodes.length);
+        if (t === s && this.nodes.length > 1) {
+            t = (t + 1) % this.nodes.length;
+        }
+        const color = Math.random() > 0.35 ? '#3373e0' : '#22a55e';
+        return {
+            sourceIndex: s,
+            targetIndex: t,
+            progress: Math.random(),
+            speed: 0.006 + Math.random() * 0.008,
+            color,
+        };
+    }
+    start() {
+        if (this.rafId !== null || prefersReducedMotion()) {
+            return;
+        }
+        const loop = () => {
+            this.update();
+            this.draw();
+            this.rafId = window.requestAnimationFrame(loop);
+        };
+        this.rafId = window.requestAnimationFrame(loop);
+    }
+    stop() {
+        if (this.rafId !== null) {
+            window.cancelAnimationFrame(this.rafId);
+            this.rafId = null;
+        }
+    }
+    update() {
+        const maxDist = 135;
+        const maxDistSq = maxDist * maxDist;
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            if (!node)
+                continue;
+            node.x += node.vx;
+            node.y += node.vy;
+            if (node.x < -10)
+                node.x = this.width + 10;
+            else if (node.x > this.width + 10)
+                node.x = -10;
+            if (node.y < -10)
+                node.y = this.height + 10;
+            else if (node.y > this.height + 10)
+                node.y = -10;
+            if (this.pointer.active) {
+                const dx = this.pointer.x - node.x;
+                const dy = this.pointer.y - node.y;
+                const dSq = dx * dx + dy * dy;
+                if (dSq < 160 * 160 && dSq > 1) {
+                    const d = Math.sqrt(dSq);
+                    const factor = (1 - d / 160) * 0.06;
+                    node.x += (dx / d) * factor * 6;
+                    node.y += (dy / d) * factor * 6;
+                }
+            }
+            if (node.isBeacon) {
+                node.beaconTimer += 1;
+            }
+        }
+        for (let p = 0; p < this.packets.length; p++) {
+            const pkt = this.packets[p];
+            if (!pkt)
+                continue;
+            pkt.progress += pkt.speed;
+            const a = this.nodes[pkt.sourceIndex];
+            const b = this.nodes[pkt.targetIndex];
+            if (!a || !b) {
+                this.packets[p] = this.createPacket();
+                continue;
+            }
+            const dx = b.x - a.x;
+            const dy = b.y - a.y;
+            const distSq = dx * dx + dy * dy;
+            if (pkt.progress >= 1 || distSq > maxDistSq * 1.5) {
+                this.packets[p] = this.createPacket();
+            }
+        }
+    }
+    draw() {
+        if (!this.ctx)
+            return;
+        this.ctx.clearRect(0, 0, this.width, this.height);
+        // 1. Subtle tech coordinate grid
+        const gridSize = 64;
+        this.ctx.strokeStyle = 'rgba(14, 15, 19, 0.038)';
+        this.ctx.lineWidth = 1;
+        this.ctx.beginPath();
+        for (let x = gridSize; x < this.width; x += gridSize) {
+            for (let y = gridSize; y < this.height; y += gridSize) {
+                this.ctx.moveTo(x - 3, y);
+                this.ctx.lineTo(x + 3, y);
+                this.ctx.moveTo(x, y - 3);
+                this.ctx.lineTo(x, y + 3);
+            }
+        }
+        this.ctx.stroke();
+        // 2. Interactive mouse ambient glow & aura
+        if (this.pointer.active && this.pointer.x > 0 && this.pointer.y > 0) {
+            const pGrad = this.ctx.createRadialGradient(this.pointer.x, this.pointer.y, 0, this.pointer.x, this.pointer.y, 160);
+            pGrad.addColorStop(0, 'rgba(51, 115, 224, 0.08)');
+            pGrad.addColorStop(1, 'rgba(51, 115, 224, 0)');
+            this.ctx.fillStyle = pGrad;
+            this.ctx.beginPath();
+            this.ctx.arc(this.pointer.x, this.pointer.y, 160, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+        // 3. Network links between nodes
+        const maxDist = 135;
+        const maxDistSq = maxDist * maxDist;
+        this.ctx.lineWidth = 1;
+        for (let i = 0; i < this.nodes.length; i++) {
+            const a = this.nodes[i];
+            if (!a)
+                continue;
+            for (let j = i + 1; j < this.nodes.length; j++) {
+                const b = this.nodes[j];
+                if (!b)
+                    continue;
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const distSq = dx * dx + dy * dy;
+                if (distSq < maxDistSq) {
+                    const dist = Math.sqrt(distSq);
+                    const alpha = (1 - dist / maxDist) * 0.22;
+                    this.ctx.strokeStyle = `rgba(51, 115, 224, ${alpha.toFixed(3)})`;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(a.x, a.y);
+                    this.ctx.lineTo(b.x, b.y);
+                    this.ctx.stroke();
+                }
+            }
+            if (this.pointer.active) {
+                const dx = this.pointer.x - a.x;
+                const dy = this.pointer.y - a.y;
+                const dSq = dx * dx + dy * dy;
+                if (dSq < 140 * 140) {
+                    const dist = Math.sqrt(dSq);
+                    const alpha = (1 - dist / 140) * 0.32;
+                    this.ctx.strokeStyle = `rgba(51, 115, 224, ${alpha.toFixed(3)})`;
+                    this.ctx.beginPath();
+                    this.ctx.moveTo(a.x, a.y);
+                    this.ctx.lineTo(this.pointer.x, this.pointer.y);
+                    this.ctx.stroke();
+                }
+            }
+        }
+        // 4. Data packets traveling along lines
+        for (let p = 0; p < this.packets.length; p++) {
+            const pkt = this.packets[p];
+            if (!pkt)
+                continue;
+            const a = this.nodes[pkt.sourceIndex];
+            const b = this.nodes[pkt.targetIndex];
+            if (!a || !b)
+                continue;
+            const px = a.x + (b.x - a.x) * pkt.progress;
+            const py = a.y + (b.y - a.y) * pkt.progress;
+            this.ctx.fillStyle = pkt.color;
+            this.ctx.beginPath();
+            this.ctx.arc(px, py, 2.2, 0, Math.PI * 2);
+            this.ctx.fill();
+        }
+        // 5. Node dots and ping beacon rings
+        for (let i = 0; i < this.nodes.length; i++) {
+            const node = this.nodes[i];
+            if (!node)
+                continue;
+            if (node.isBeacon) {
+                const cycle = (node.beaconTimer % 180) / 180;
+                const ringRadius = node.radius + cycle * 22;
+                const ringAlpha = (1 - cycle) * 0.40;
+                this.ctx.strokeStyle = `rgba(34, 165, 94, ${ringAlpha.toFixed(3)})`;
+                this.ctx.lineWidth = 1.1;
+                this.ctx.beginPath();
+                this.ctx.arc(node.x, node.y, ringRadius, 0, Math.PI * 2);
+                this.ctx.stroke();
+            }
+            this.ctx.fillStyle = node.color;
+            this.ctx.globalAlpha = node.baseAlpha;
+            this.ctx.beginPath();
+            this.ctx.arc(node.x, node.y, node.radius, 0, Math.PI * 2);
+            this.ctx.fill();
+            this.ctx.globalAlpha = 1.0;
+        }
+    }
+    renderStatic() {
+        if (!this.ctx)
+            return;
+        this.draw();
+    }
+}
 /* ============================================================
    Bootstrap
    ============================================================ */
@@ -1713,6 +2034,7 @@ function bootstrap() {
     if (mobileMenu && hamburger && mobileClose) {
         new MobileMenu(mobileMenu, hamburger, mobileClose);
     }
+    qsa('.hero__tech-canvas').forEach((canvas) => new TechHeroCanvas(canvas));
 }
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', bootstrap);
