@@ -428,6 +428,7 @@ h1, h2, h3 { text-wrap: balance; }
 .hero__stack-slide { display: none; flex-direction: column; align-items: center; text-align: center; gap: 1.2rem; }
 .hero__stack-slide.is-active { display: flex; animation: panelIn .5s var(--ease-out) both; }
 .hero__stack-nav { margin: 1.6rem auto 0; }
+.hero__stack-nav .tab { padding: .5rem .85rem; font-size: .85rem; min-height: 38px; }
 
 .hero__stack-price { display: inline-flex; align-items: baseline; gap: .35rem; }
 .hero__stack-price small { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-500); }.hero__stack-price strong { font-size: 1.4rem; font-weight: 700; color: var(--ink-900); font-variant-numeric: tabular-nums; }
