@@ -1390,9 +1390,6 @@ html:not(.js) .acc__a-in { visibility: visible; }
 .dsearch__tld[aria-pressed="true"] { background: var(--ink-900); color: #fff; }
 .dsearch__tld[aria-pressed="true"] small { color: rgba(255, 255, 255, .72); }
 @media (hover: hover) { .dsearch__tld[aria-pressed="false"]:hover { background: rgba(14, 15, 19, .09); } }
-.dsearch__note { margin: .8rem 0 0; font-size: .84rem; color: var(--ink-500); text-align: left; }
-.link-btn { color: var(--link); font-weight: 600; text-underline-offset: 3px; min-height: 44px; padding: 0 .2rem; }
-@media (hover: hover) { .link-btn:hover { text-decoration: underline; } }
 
 .link-chev { display: inline-flex; align-items: center; min-height: 44px; color: var(--link); font-size: 1.08rem; font-weight: 500; }
 .link-chev::after { content: "›"; margin-left: .35rem; font-size: 1.3em; line-height: 1; transition: transform .25s var(--ease-out); }
@@ -1415,7 +1412,6 @@ html:not(.js) .acc__a-in { visibility: visible; }
   .dsearch { margin-inline: auto; }
   .dsearch__result:not(:empty) { margin-inline: auto; }
   .dsearch__tlds { justify-content: center; }
-  .dsearch__note { text-align: center; }
   .hero2__art {
     max-width: 520px;
     margin-inline: auto;
@@ -1625,8 +1621,10 @@ html:not(.js) .acc__a-in { visibility: visible; }
 /* reset the generic .chip--a/.chip--c offsets, otherwise opposing edges stretch the chips into a bar / pill */
 .lineup--side .chip--a { top: 6%; right: -2%; bottom: auto; left: auto; animation: heroDriftAlt 6s ease-in-out infinite; }
 .lineup--side .chip--c { top: auto; right: -2%; bottom: 8%; left: auto; animation: heroDrift 7s ease-in-out .8s infinite; }
-.hero2__art .lineup__cta { display: flex; flex-direction: column; align-items: center; gap: 1rem; margin-top: 1.1rem; }
+.hero2__art .lineup__cta { display: none; flex-direction: column; align-items: center; gap: 1rem; margin-top: 1.1rem; }
 .hero2__art .lineup__caption { margin: 0; text-align: center; font-size: .88rem; color: var(--ink-500); }
+/* the header already carries "See our work" on desktop; show it here once the header button is hidden */
+@media (max-width: 860px) { .hero2__art .lineup__cta { display: flex; } }
 @media (max-width: 760px) {
   .lineup--side {
     max-width: 440px;
@@ -1666,8 +1664,7 @@ html:not(.js) .acc__a-in { visibility: visible; }
 .trusted__label { margin: 0 0 1rem; font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-500); }
 .trusted__logos { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 1.1rem 2.4rem; margin: 0; padding: 0; list-style: none; }
 .trusted__logos li { display: flex; align-items: center; height: 40px; }
-.trusted__logos img { display: block; max-height: 36px; max-width: 120px; width: auto; height: auto; object-fit: contain; filter: grayscale(1); opacity: .62; mix-blend-mode: multiply; transition: filter .3s var(--ease), opacity .3s var(--ease); }
-@media (hover: hover) { .trusted__logos li:hover img { filter: none; opacity: 1; } }
+.trusted__logos img { display: block; max-height: 36px; max-width: 120px; width: auto; height: auto; object-fit: contain; mix-blend-mode: multiply; }
 
 /* ---- Feature-card vignettes ------------------------------------------- */
 .media {
@@ -1755,7 +1752,6 @@ html:not(.js) .acc__a-in { visibility: visible; }
 }
 @media (prefers-contrast: more) {
   .device, .mini, .dom__url, .dom__mail, .mig__node, .cloud li, .stack__tile { box-shadow: 0 0 0 1.5px var(--ink-700); }
-  .trusted__logos img { opacity: 1; }
 }
 
 /* ============================================================
