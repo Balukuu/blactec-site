@@ -246,65 +246,71 @@
     <!-- HERO — one idea, one action: say what we do and let people start right here -->
     <section class="hero2" id="hero" aria-labelledby="heroTitle">
       <div class="container hero2__inner">
-        <p class="hero2__eyebrow">Domains · Hosting · Email · Websites · Managed IT</p>
-        <h1 class="hero2__title" id="heroTitle">Every business deserves to be online.</h1>
-        <p class="hero2__sub">Start with a name. We’ll take care of the domain, hosting, email and website — built and supported by engineers in Kampala.</p>
+        <div class="hero2__copy">
+          <p class="hero2__eyebrow">Domains · Hosting · Email · Websites · Managed IT</p>
+          <h1 class="hero2__title" id="heroTitle">Every business deserves to be online.</h1>
+          <p class="hero2__sub">Start with a name. We’ll take care of the domain, hosting, email and website — built and supported by engineers in Kampala.</p>
 
-        <div id="hero-search">
-          <form class="dsearch" id="domainForm" role="search" aria-label="Search for a domain name" novalidate>
-            <span class="dsearch__www" aria-hidden="true">www.</span>
-            <input class="dsearch__input" id="domainInput" type="text" inputmode="url" placeholder="your-business"
-                   aria-label="Domain name to search" autocomplete="off" autocapitalize="none" spellcheck="false" />
-            <span class="dsearch__sel">
-              <select id="tldSelect" aria-label="Domain extension">
-                <option value=".ug" data-price="35.50">.ug</option>
-                <option value=".co.ug" data-price="35.50">.co.ug</option>
-                <option value=".org.ug" data-price="35.50">.org.ug</option>
-                <option value=".ac.ug" data-price="35.50">.ac.ug</option>
-                <option value=".com" data-price="14.20">.com</option>
-                <option value=".org" data-price="14.20">.org</option>
-                <option value=".net" data-price="17.75">.net</option>
-              </select>
-            </span>
-            <button class="dsearch__btn" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Search</span></button>
-          </form>
-          <div class="dsearch__result" id="domainResult" aria-live="polite"></div>
-          <ul class="dsearch__tlds" aria-label="Popular extensions, price per year">
-            <li><button type="button" class="dsearch__tld domain__eg" data-tld=".ug" aria-pressed="true">.ug <small data-usd="35.50">UGX 145,550</small></button></li>
-            <li><button type="button" class="dsearch__tld domain__eg" data-tld=".com" aria-pressed="false">.com <small data-usd="14.20">UGX 58,220</small></button></li>
-            <li><button type="button" class="dsearch__tld domain__eg" data-tld=".net" aria-pressed="false">.net <small data-usd="17.75">UGX 72,775</small></button></li>
-            <li><button type="button" class="dsearch__tld domain__eg" data-tld=".org" aria-pressed="false">.org <small data-usd="14.20">UGX 58,220</small></button></li>
+          <div id="hero-search">
+            <form class="dsearch" id="domainForm" role="search" aria-label="Search for a domain name" novalidate>
+              <span class="dsearch__www" aria-hidden="true">www.</span>
+              <input class="dsearch__input" id="domainInput" type="text" inputmode="url" placeholder="your-business"
+                     aria-label="Domain name to search" autocomplete="off" autocapitalize="none" spellcheck="false" />
+              <span class="dsearch__sel">
+                <select id="tldSelect" aria-label="Domain extension">
+                  <option value=".ug" data-price="35.50">.ug</option>
+                  <option value=".co.ug" data-price="35.50">.co.ug</option>
+                  <option value=".org.ug" data-price="35.50">.org.ug</option>
+                  <option value=".ac.ug" data-price="35.50">.ac.ug</option>
+                  <option value=".com" data-price="14.20">.com</option>
+                  <option value=".org" data-price="14.20">.org</option>
+                  <option value=".net" data-price="17.75">.net</option>
+                </select>
+              </span>
+              <button class="dsearch__btn" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Search</span></button>
+            </form>
+            <div class="dsearch__result" id="domainResult" aria-live="polite"></div>
+            <ul class="dsearch__tlds" aria-label="Popular extensions, price per year">
+              <li><button type="button" class="dsearch__tld domain__eg" data-tld=".ug" aria-pressed="true">.ug <small data-usd="35.50">UGX 145,550</small></button></li>
+              <li><button type="button" class="dsearch__tld domain__eg" data-tld=".com" aria-pressed="false">.com <small data-usd="14.20">UGX 58,220</small></button></li>
+              <li><button type="button" class="dsearch__tld domain__eg" data-tld=".net" aria-pressed="false">.net <small data-usd="17.75">UGX 72,775</small></button></li>
+              <li><button type="button" class="dsearch__tld domain__eg" data-tld=".org" aria-pressed="false">.org <small data-usd="14.20">UGX 58,220</small></button></li>
+            </ul>
+            <p class="dsearch__note">Indicative yearly prices — we confirm live availability when we process your request. <button type="button" class="link-btn" data-currency-flip>Show prices in USD</button></p>
+          </div>
+
+          <ul class="hero2__links">
+            <li><a class="link-chev" href="#plans">Compare plans</a></li>
+            <li><a class="link-chev" href="/web-design">Website packages</a></li>
+            <li><a class="link-chev" href="#contact">Talk to an engineer</a></li>
           </ul>
-          <p class="dsearch__note">Indicative yearly prices — we confirm live availability when we process your request. <button type="button" class="link-btn" data-currency-flip>Show prices in USD</button></p>
+
+          <ul class="hero2__trust" aria-label="Why BlacTec">
+            <li>99.9% uptime SLA</li>
+            <li>24/7 engineer-led support</li>
+            <li>Mobile Money &amp; card payments</li>
+          </ul>
         </div>
 
-        <ul class="hero2__links">
-          <li><a class="link-chev" href="#plans">Compare plans</a></li>
-          <li><a class="link-chev" href="/web-design">Website packages</a></li>
-          <li><a class="link-chev" href="#contact">Talk to an engineer</a></li>
-        </ul>
-
-        <ul class="hero2__trust" aria-label="Why BlacTec">
-          <li>99.9% uptime SLA</li>
-          <li>24/7 engineer-led support</li>
-          <li>Mobile Money &amp; card payments</li>
-        </ul>
-      </div>
-
-      <div class="lineup">
-        <figure class="device device--side device--left" aria-hidden="true">
-          <div class="device__bar"><i></i><i></i><i></i><span class="device__url">goldenmarketing.co.ug</span></div>
-          <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
-        </figure>
-        <figure class="device device--main" aria-hidden="true">
-          <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kaco.ug</span></div>
-          <img src="assets/showcase/kaco-systems.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
-        </figure>
-        <figure class="device device--side device--right" aria-hidden="true">
-          <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kanizapartments.co.ug</span></div>
-          <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
-        </figure>
-        <p class="lineup__caption">Recent client sites — designed, built and hosted by BlacTec. <a href="#portfolio">See our work</a></p>
+        <div class="hero2__art">
+          <div class="lineup lineup--side">
+            <figure class="device device--side device--left" aria-hidden="true">
+              <div class="device__bar"><i></i><i></i><i></i><span class="device__url">goldenmarketing.co.ug</span></div>
+              <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+            </figure>
+            <figure class="device device--main" aria-hidden="true">
+              <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kaco.ug</span></div>
+              <img src="assets/showcase/kaco-systems.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
+            </figure>
+            <figure class="device device--side device--right" aria-hidden="true">
+              <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kanizapartments.co.ug</span></div>
+              <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+            </figure>
+            <span class="chip chip--float chip--a" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg>99.9% SLA</span>
+            <span class="chip chip--float chip--c" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>Free SSL</span>
+          </div>
+          <p class="lineup__caption">Recent client sites — designed, built and hosted by BlacTec. <a href="#portfolio">See our work</a></p>
+        </div>
       </div>
 
       <div class="trusted">
