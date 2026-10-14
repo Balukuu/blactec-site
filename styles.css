@@ -1297,21 +1297,21 @@ html:not(.js) .acc__a-in { visibility: visible; }
   position: relative; overflow: hidden; text-align: left;
   padding: clamp(3rem, 6vw, 5rem) 0 clamp(2.5rem, 4vw, 3.5rem);
   background:
-    radial-gradient(55% 55% at 50% -8%, rgba(51, 115, 224, .13), transparent 72%),
-    radial-gradient(36% 40% at 94% 34%, rgba(244, 130, 31, .07), transparent 72%),
-    var(--surface-0);
+    radial-gradient(55% 55% at 50% -8%, rgba(51, 115, 224, .11), transparent 72%),
+    radial-gradient(36% 40% at 94% 34%, rgba(244, 130, 31, .06), transparent 72%),
+    #eef3f6;
 }
 .hero2::after {
-  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .5;
-  background-image: radial-gradient(rgba(14, 15, 19, .07) 1px, transparent 1px); background-size: 26px 26px;
-  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 12%, #000 20%, transparent 74%);
-          mask-image: radial-gradient(ellipse 60% 50% at 50% 12%, #000 20%, transparent 74%);
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .55;
+  background-image: radial-gradient(rgba(14, 15, 19, .06) 1px, transparent 1px); background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 60% 50% at 50% 12%, #000 22%, transparent 76%);
+          mask-image: radial-gradient(ellipse 60% 50% at 50% 12%, #000 22%, transparent 76%);
 }
 .hero2__inner {
   position: relative; z-index: 1;
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
-  gap: clamp(2rem, 4.5vw, 4rem);
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(2rem, 4vw, 3rem);
   align-items: center;
   max-width: var(--container);
   margin-inline: auto;
@@ -1320,6 +1320,7 @@ html:not(.js) .acc__a-in { visibility: visible; }
 .hero2__copy {
   animation: fadeUp .8s var(--ease-out) both;
   text-align: left;
+  max-width: 620px;
 }
 .hero2__copy > * { animation: fadeUp .8s var(--ease-out) both; }
 .hero2__copy > :nth-child(2) { animation-delay: .06s; }
@@ -1335,14 +1336,14 @@ html:not(.js) .acc__a-in { visibility: visible; }
 
 .hero2__eyebrow { margin: 0 0 .9rem; font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-500); }
 .hero2__title {
-  margin: 0; font-size: clamp(2.3rem, 4.4vw, 3.8rem); font-weight: 700; line-height: 1.05;
-  letter-spacing: -.035em; color: var(--ink-900); text-wrap: balance;
+  margin: 0; font-size: clamp(3.1rem, 5vw, 6.2rem); font-weight: 700; line-height: .96;
+  letter-spacing: -.045em; color: var(--ink-900); text-wrap: balance;
 }
-.hero2__sub { margin: 1.1rem 0 0; max-width: 36rem; font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.55; color: var(--ink-500); text-wrap: pretty; }
+.hero2__sub { margin: 1.1rem 0 0; max-width: 39rem; font-size: clamp(1.02rem, 1.5vw, 1.18rem); line-height: 1.55; color: var(--ink-500); text-wrap: pretty; }
 
 /* domain search — the hero's primary object */
 .dsearch {
-  display: flex; align-items: center; gap: .3rem; max-width: 100%; margin: 1.8rem 0 0;
+  display: flex; align-items: center; gap: .3rem; width: min(100%, 670px); margin: 1.8rem 0 0;
   padding: 7px 7px 7px 1.4rem; text-align: left;
   background: rgba(255, 255, 255, .86); border: 1px solid rgba(14, 15, 19, .12); border-radius: 999px;
   -webkit-backdrop-filter: saturate(180%) blur(16px); backdrop-filter: saturate(180%) blur(16px);
@@ -1587,31 +1588,37 @@ html:not(.js) .acc__a-in { visibility: visible; }
 
 /* side variant (home hero side layout) */
 .lineup--side {
-  position: relative; margin: 0 auto; max-width: 530px; padding: 1.4rem 0 3.2rem; isolation: isolate;
+  position: relative; display: flow-root; margin: 0 auto; max-width: 530px; padding: 0 0 8rem; isolation: isolate;
 }
 .lineup--side::before {
   content: ""; position: absolute; left: 8%; right: 8%; bottom: 6%; height: 34%; z-index: 0; pointer-events: none;
   background: radial-gradient(55% 55% at 50% 50%, rgba(51, 115, 224, .18), transparent 75%); filter: blur(16px);
 }
+.lineup--side .device img { aspect-ratio: auto; } /* follow each screenshot's own ratio, no blank band */
+.lineup--side .device__url { flex-basis: 60%; } /* narrower windows: keep the full domain readable */
 .lineup--side .device {
   position: relative;
   transition: transform .35s var(--ease), box-shadow .35s var(--ease);
   will-change: transform;
 }
 .lineup--side .device--left {
-  position: absolute; top: 0; left: 0; width: 74%; z-index: 1; opacity: .94;
+  position: absolute; top: 0; left: 0; width: 64%; z-index: 1; opacity: .94;
   animation: sideInLeft .85s var(--ease-out) .15s both;
   box-shadow: 0 0 0 1px rgba(14, 15, 19, .08), 0 14px 32px -10px rgba(14, 15, 19, .22);
+  border-radius: 18px;
 }
 .lineup--side .device--main {
-  position: relative; width: 82%; margin: 14% 0 0 auto; z-index: 2;
+  position: relative; width: 74%; margin: 20% 0 0 auto; z-index: 2;
   animation: fadeUp .85s var(--ease-out) .08s both;
   box-shadow: 0 0 0 1px rgba(14, 15, 19, .09), 0 26px 62px -14px rgba(14, 15, 19, .38);
+  border-radius: 18px;
 }
 .lineup--side .device--right {
-  position: absolute; bottom: 0; left: 4%; width: 70%; z-index: 3;
+  /* top/right reset: the shared .lineup .device--side rule sets top:13%, which with bottom:0 stretched this frame */
+  position: absolute; top: auto; right: auto; bottom: 0; left: 6%; width: 58%; z-index: 3;
   animation: sideInRight .85s var(--ease-out) .25s both;
   box-shadow: 0 0 0 1px rgba(14, 15, 19, .09), 0 20px 48px -12px rgba(14, 15, 19, .32);
+  border-radius: 18px;
 }
 @media (hover: hover) {
   .lineup--side .device:hover {
@@ -1621,13 +1628,14 @@ html:not(.js) .acc__a-in { visibility: visible; }
   }
 }
 .lineup--side .chip { position: absolute; z-index: 4; white-space: nowrap; }
-.lineup--side .chip--a { top: 6%; right: -2%; }
-.lineup--side .chip--c { bottom: 8%; right: -2%; }
+/* reset the generic .chip--a/.chip--c offsets, otherwise opposing edges stretch the chips into a bar / pill */
+.lineup--side .chip--a { top: 6%; right: -2%; bottom: auto; left: auto; }
+.lineup--side .chip--c { top: auto; right: -2%; bottom: 8%; left: auto; }
 .hero2__art .lineup__caption { margin-top: 1rem; text-align: center; font-size: .88rem; color: var(--ink-500); }
 @media (max-width: 760px) {
   .lineup--side {
     max-width: 440px;
-    padding: .6rem 0 2.2rem;
+    padding: .6rem 0 6.5rem;
   }
   .lineup--side .device--left {
     display: none;
@@ -1638,8 +1646,8 @@ html:not(.js) .acc__a-in { visibility: visible; }
   }
   .lineup--side .device--right {
     display: block;
-    width: 66%;
-    bottom: -8px;
+    width: 60%;
+    bottom: 0;
     left: 2%;
   }
   .lineup--side .chip {
