@@ -1564,6 +1564,8 @@ html:not(.js) .acc__a-in { visibility: visible; }
   background: #fff; border: 1px solid rgba(14, 15, 19, .07); font-size: .68rem; line-height: 18px; color: var(--ink-500);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+.device__url--mob { display: none; } /* phone-only label, paired with the <picture> swap in the home hero */
+.device picture { display: block; }
 .device img { display: block; width: 100%; height: auto; aspect-ratio: 960 / 534; object-fit: cover; object-position: top; background: var(--surface-1); }
 
 /* ---- Lineup (hero): one big window, two peeking behind ---------------- */
@@ -1646,24 +1648,23 @@ html:not(.js) .acc__a-in { visibility: visible; }
 .hero2__art .lineup__caption { margin: 0; text-align: center; font-size: .88rem; color: var(--ink-500); }
 /* the header already carries "See our work" on desktop; show it here once the header button is hidden */
 @media (max-width: 860px) { .hero2__art .lineup__cta { display: flex; } }
+/* phones: the main window shows Conservation Trips (the <picture> swap in index.html), so both side windows drop out
+   — the right one is that same site and would otherwise appear twice */
 @media (max-width: 760px) {
   .lineup--side {
     max-width: 440px;
-    padding: .6rem 0 6.5rem;
+    padding: .6rem 0 0;
   }
-  .lineup--side .device--left {
+  .lineup--side .device--left,
+  .lineup--side .device--right {
     display: none;
   }
   .lineup--side .device--main {
     width: 88%;
     margin: 0 auto;
   }
-  .lineup--side .device--right {
-    display: block;
-    width: 60%;
-    bottom: 0;
-    left: 2%;
-  }
+  .lineup--side .device__url--desk { display: none; }
+  .lineup--side .device__url--mob { display: block; }
   .lineup--side .chip {
     display: none;
   }
@@ -1671,9 +1672,6 @@ html:not(.js) .acc__a-in { visibility: visible; }
 @media (max-width: 480px) {
   .lineup--side {
     padding: 0;
-  }
-  .lineup--side .device--right {
-    display: none;
   }
   .lineup--side .device--main {
     width: 100%;
