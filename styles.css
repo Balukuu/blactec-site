@@ -1828,3 +1828,25 @@ html:not(.js) .acc__a-in { visibility: visible; }
   .hero__art .lineup--duo ~ .chip--a { top: auto; bottom: 10px; left: 8px; }
   .hero__art .lineup--duo ~ .chip--c { top: auto; bottom: 10px; right: 8px; }
 }
+
+/* Web design hero: larger device stage, plain checklist instead of pills (scoped; hosting.html shares the base hero) */
+.page-webdesign .hero__sub { text-wrap: balance; }
+.page-webdesign .hero__trust { flex-direction: column; flex-wrap: nowrap; gap: .6rem; margin-top: 1.5rem; }
+.page-webdesign .hero__trust li { padding: 0; background: none; border: 0; border-radius: 0; font-size: .96rem; }
+.page-webdesign .hero__actions { margin-top: 1.5rem; }
+.page-webdesign .hero__proof { margin-top: 1.6rem; padding-top: 1.1rem; border-top: 1px solid var(--border); max-width: 34rem; }
+@media (min-width: 481px) { .page-webdesign .hero__art .lineup--duo ~ .chip--a { top: -2.1rem; left: 2.2rem; } }
+@media (min-width: 761px) {
+  .page-webdesign .lineup--duo { padding-bottom: clamp(3.5rem, 7vw, 5.5rem); }
+  .page-webdesign .lineup--duo .device--main { width: 92%; }
+  .page-webdesign .lineup--duo .device--side { width: 54%; }
+}
+@media (min-width: 1025px) {
+  .page-webdesign .hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 3.5rem; }
+  .page-webdesign .hero__art::after { display: none; }
+  .page-webdesign .hero__art::before {
+    content: ""; position: absolute; inset: -1.6rem -1.2rem -1.6rem -1.2rem; z-index: -1; pointer-events: none;
+    border-radius: 32px; border: 1px solid rgba(51, 115, 224, .12);
+    background: radial-gradient(110% 80% at 90% 0%, rgba(51, 115, 224, .14), transparent 62%), linear-gradient(165deg, var(--blue-050), rgba(241, 246, 255, 0) 78%);
+  }
+}
