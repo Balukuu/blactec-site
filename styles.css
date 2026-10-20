@@ -643,8 +643,8 @@ h1, h2, h3 { text-wrap: balance; }
 }
 .pricing__tick { color: var(--success-strong); font-weight: 700; }
 .pricing__note {
-  display: flex; align-items: center; gap: .5rem; text-align: center; margin: 1.4rem auto 0; width: fit-content;
-  max-width: min(640px, 100%); font-size: .88rem; font-weight: 500; color: var(--ink-700);
+  text-align: center; margin: 1.4rem auto 0; width: fit-content;
+  max-width: min(720px, 100%); font-size: .88rem; font-weight: 500; color: var(--ink-700);
   background: var(--surface-1); border: 1px solid rgba(14, 15, 19, .08); padding: .7rem 1.2rem; border-radius: 999px;
 }
 
@@ -686,6 +686,8 @@ h1, h2, h3 { text-wrap: balance; }
 .currency-toggle__btn.is-active { background: var(--ink-900); color: #fff; }
 
 .pricing__carousel { position: relative; }
+.pricing__note + .currency-toggle { margin-top: 1.2rem; }
+.currency-toggle + .pricing__carousel { margin-top: 2.2rem; }
 
 .tab-panel { display: none; }
 .tab-panel.is-active {
