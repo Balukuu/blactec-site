@@ -165,7 +165,7 @@ class Toast {
     }
     /** Standard conversion cue: toast + prefill + smooth scroll to the quote form. */
     fireLead(context) {
-        this.show('Great choice — tell us a little about your project below.');
+        this.show('Great choice. Tell us a little about your project below.');
         if (this.quoteForm) {
             this.quoteForm.prefill(context);
         }
@@ -221,7 +221,7 @@ class QuoteForm {
         const phone = this.phoneInput.value.trim();
         const service = this.serviceSelect.value;
         const message = this.messageInput.value.trim();
-        const subject = `Quote request from ${name} — ${service}`;
+        const subject = `Quote request from ${name}: ${service}`;
         const body = [
             `Name: ${name}`,
             `Email: ${email}`,
@@ -248,7 +248,7 @@ class QuoteForm {
         }
         const { subject, body } = this.compose();
         this.showFallback(subject, body);
-        this.toast.show('Opening your email app — if nothing happens, use the options below the form.');
+        this.toast.show('Opening your email app. If nothing happens, use the options below the form.');
         window.location.href = `mailto:info@blactec.ug?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
     }
     showFallback(subject, body) {
@@ -268,7 +268,7 @@ class QuoteForm {
         const text = `${subject}\n\n${body}`;
         this.fallback.hidden = false;
         this.fallback.innerHTML = `
-      <p><strong>Didn’t your email app open?</strong> Your details are still here — send the same request another way:</p>
+      <p><strong>Didn’t your email app open?</strong> Your details are still here. Send the same request another way:</p>
       <div class="quote__fallback-actions">
         <a class="btn btn--primary" href="https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(text)}" target="_blank" rel="noopener">Send on WhatsApp</a>
         <button class="btn btn--secondary" type="button" data-copy>Copy details</button>
@@ -429,7 +429,7 @@ class DomainChecker {
         const domain = this.sanitize(this.input.value);
         if (domain.length === 0) {
             this.input.focus();
-            this.renderError('Type a name to search — your business name works well.');
+            this.renderError('Type a name to search. Your business name works well.');
             return;
         }
         this.input.value = domain;
@@ -470,7 +470,7 @@ class DomainChecker {
     /** The lookup itself failed (network, proxy down, timeout) — distinct from a real "taken" result. */
     renderCheckError(full, err) {
         console.error('Domain availability check failed:', err);
-        const context = escapeHtml(`I searched for ${full} but the checker couldn't confirm it — please check availability and get back to me.`);
+        const context = escapeHtml(`I searched for ${full} but the checker couldn't confirm it. Please check availability and get back to me.`);
         this.result.innerHTML = `
       <div class="result-card result-card--taken">
         <div class="result-card__top">
@@ -516,7 +516,7 @@ class DomainChecker {
           <span class="result-card__name">${escapeHtml(full)}</span>
           <span class="result-card__status">Taken</span>
         </div>
-        <p class="result-card__note">That domain is already registered — transfer it to us, or see what’s free below.</p>
+        <p class="result-card__note">That domain is already registered. Transfer it to us, or see what’s free below.</p>
         <div class="result-card__actions">
           <button class="btn btn--primary" data-lead data-lead-context="${transferContext}" type="button">Transfer it to us</button>
           <button class="btn btn--secondary" data-lead data-lead-context="${supportContext}" type="button">Contact support</button>
@@ -532,7 +532,7 @@ class DomainChecker {
             return;
         }
         if (alternatives.length === 0) {
-            holder.innerHTML = '<span class="alts__title">No other extensions are free for that name — try a variation.</span>';
+            holder.innerHTML = '<span class="alts__title">No other extensions are free for that name. Try a variation.</span>';
             return;
         }
         const rows = alternatives
@@ -751,7 +751,7 @@ const PRICING = {
     // Zoho Workplace — Zoho list price (annual billing, per user/month) + 10% BlacTec markup.
     zoho: [
         { name: 'Mail Lite', desc: 'Essential custom email for your domain.', currency: 'USD', price: 1.10, unit: 'user/month', features: ['5–10 GB mail storage per user', 'AI assistant (Zia)', 'Mail, Calendar, ToDo & Directory', 'Billed annually'] },
-        { name: 'Workplace Standard', desc: 'Complete collaboration suite — best value.', currency: 'USD', price: 3.30, unit: 'user/month', popular: true, features: ['30 GB mail + 100 GB team storage', 'WorkDrive, Writer, Sheet & Show', 'Cliq chat, Meeting & Vault', 'AI assistant (Zia) & Trident desktop app'] },
+        { name: 'Workplace Standard', desc: 'Complete collaboration suite. Best value.', currency: 'USD', price: 3.30, unit: 'user/month', popular: true, features: ['30 GB mail + 100 GB team storage', 'WorkDrive, Writer, Sheet & Show', 'Cliq chat, Meeting & Vault', 'AI assistant (Zia) & Trident desktop app'] },
         { name: 'Mail Premium', desc: 'Email with retention and eDiscovery.', currency: 'USD', price: 4.40, unit: 'user/month', features: ['50 GB mail + 50 GB retention storage', 'Email retention & eDiscovery', 'eProtect email security', 'Billed annually'] },
         { name: 'Workplace Professional', desc: 'Maximum storage with intranet tools.', currency: 'USD', price: 6.60, unit: 'user/month', features: ['100 GB mail + 100 GB retention storage', '1 TB team storage', 'Email retention, eProtect & eDiscovery', 'Zoho Connect intranet'] },
     ],
@@ -763,7 +763,7 @@ const PRICING = {
     security: [
         { name: 'DV SSL Certificate', desc: 'Domain Validation encryption.', currency: 'USD', price: 17.75, unit: 'year', features: ['Domain-validated HTTPS', 'Fast automated issuance', 'Browser padlock trust'] },
         { name: 'OV SSL Certificate', desc: 'Organization Validation trust.', currency: 'USD', price: 88.70, unit: 'year', features: ['Verified organization identity', 'Stronger customer assurance', 'Ideal for business sites'] },
-        { name: 'EV SSL Certificate', desc: 'Extended Validation — green trust bar.', currency: 'USD', price: 177.40, unit: 'year', features: ['Highest level of validation', 'Green trust bar treatment', 'Maximum buyer confidence'] },
+        { name: 'EV SSL Certificate', desc: 'Extended Validation with a green trust bar.', currency: 'USD', price: 177.40, unit: 'year', features: ['Highest level of validation', 'Green trust bar treatment', 'Maximum buyer confidence'] },
         { name: 'Automated Cloud Backup', desc: 'Acronis-powered backup pipeline.', currency: 'USD', price: 42.60, unit: 'year', features: ['25 GB Acronis sandbox', 'Automated backup pipeline', 'Rapid restore & recovery'] },
         { name: 'Website Security Basic', desc: 'Daily malware scanning for a single small site.', currency: 'UGX', price: 50000, unit: 'month', features: ['Scans up to 25 pages daily', 'Malware & blacklist monitoring', 'Automated alert emails'] },
         { name: 'Website Security Professional', desc: 'Deeper scanning with automatic malware removal.', currency: 'UGX', price: 80000, unit: 'month', popular: true, features: ['Scans up to 100 pages daily', 'Automatic malware removal', 'SQLi & XSS vulnerability scans'] },
@@ -776,7 +776,7 @@ const PRICING = {
             features: ['Up to 5 pages', 'Custom mobile-responsive design', 'Contact & inquiry form', 'Basic on-page SEO setup', 'Free SSL certificate', '1 round of revisions', 'Delivered in 10–14 days'],
         },
         {
-            name: 'Business Website', desc: 'Our most-booked package — a growth-ready site with fast, free monthly updates handled for you.',
+            name: 'Business Website', desc: 'Our most-booked package: a growth-ready site with fast, free monthly updates handled for you.',
             currency: 'UGX', price: 2500000, unit: 'one-time', popular: true,
             features: ['Up to 12 pages', 'Fully custom design, no templates', 'Free monthly content updates', 'Blog / news section', 'WhatsApp click-to-chat', 'Google Analytics & Search Console setup', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
         },
@@ -793,12 +793,12 @@ const PRICING = {
             features: ['Up to 5 pages restyled', 'Keep your existing content & structure', 'Mobile responsiveness fixes', 'Speed & Core Web Vitals tuning', 'Basic SEO clean-up', '1 round of revisions', 'Delivered in 7–10 days'],
         },
         {
-            name: 'Full Redesign', desc: 'A ground-up rebuild — new design, new build, your content migrated for you.',
+            name: 'Full Redesign', desc: 'A ground-up rebuild: new design, new build, your content migrated for you.',
             currency: 'UGX', price: 2000000, unit: 'one-time', popular: true,
             features: ['Up to 12 pages rebuilt', 'Brand-new custom design', 'Content migrated from your old site', 'Free monthly content updates', 'On-page SEO improvements', '2 rounds of revisions', 'Delivered in 3–4 weeks'],
         },
         {
-            name: 'Platform Migration & Redesign', desc: 'Move off an outdated platform entirely — redesigned, rebuilt and relaunched with zero data loss.',
+            name: 'Platform Migration & Redesign', desc: 'Move off an outdated platform entirely: redesigned, rebuilt and relaunched with zero data loss.',
             currency: 'UGX', price: 3500000, unit: 'one-time',
             features: ['Full rebuild on a modern stack', 'E-commerce & database migration', '301 redirects to protect your search rankings', 'Staging preview before go-live', 'Zero-downtime launch', '3 rounds of revisions', 'Delivered in 5–7 weeks'],
         },
