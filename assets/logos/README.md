@@ -21,6 +21,7 @@ Save each client logo here using the **exact filename** below. Prefer a transpar
 | `genbionex-consulting.png`   | GenBionex Consulting Company Ltd.   |
 | `normah-agro-farm.png`       | Normah Agro Farm                    |
 | `phirez-international.svg`   | Phirez International Limited        |
+| `obuntu-bedside-nursing.png` | Obuntu Bedside & Nursing Care       |
 
 The first six clients also appear in the testimonial switcher above the logo wall.
 
