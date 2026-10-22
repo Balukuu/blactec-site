@@ -44,7 +44,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" />
 
-  <link rel="stylesheet" href="styles.css?v=1.12.5" />
+  <link rel="stylesheet" href="styles.css?v=1.13.0" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -98,7 +98,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.12.5"></script>
+  <script defer src="dist/main.js?v=1.13.0"></script>
 </head>
 <body class="page-webdesign">
   <a class="skip-link" href="#top">Skip to content</a>
@@ -174,7 +174,9 @@
       </nav>
 
       <div class="header__actions">
-        <a class="btn btn--header" href="#contact"><span>Get a Quote</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        <a class="header__login" href="https://billing.blactec.ug/client/login?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=header-login">Log in</a>
+        <a class="header__cart" href="https://billing.blactec.ug/client/cart?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=header-cart" aria-label="Shopping cart"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 4h2.2l1.6 10.2a1 1 0 0 0 1 .8h8.9a1 1 0 0 0 1-.8L19.3 8H6"/><circle cx="9.5" cy="19.2" r="1.3"/><circle cx="16.5" cy="19.2" r="1.3"/></svg></a>
+        <a class="btn btn--header" href="https://billing.blactec.ug/client/register?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=header-signup"><span>Get started</span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
         <button class="hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false" aria-controls="mobileMenu">
           <span></span><span></span><span></span>
         </button>
@@ -203,7 +205,9 @@
       <a class="mobile-menu__link" href="/#managed-it">Managed IT &amp; Support</a>
       <a class="mobile-menu__link" href="/#portfolio">Portfolio</a>
       <a class="mobile-menu__link" href="/hosting">Hosting Plans</a>
-      <a class="btn btn--primary btn--block" href="#contact">Get a Quote</a>
+      <a class="mobile-menu__link" href="#contact">Get a quote</a>
+      <a class="btn btn--primary btn--block" href="https://billing.blactec.ug/client/register?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=mobile-menu">Get started</a>
+      <a class="btn btn--secondary btn--block" href="https://billing.blactec.ug/client/login?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=mobile-menu">Client login</a>
       <a class="phone-chip phone-chip--mobile" href="tel:+256750870755">📞 +256 750 870755</a>
     </nav>
   </div>
@@ -687,7 +691,7 @@
           <li><span class="pricing__tick">✓</span>One-time price, no surprise fees</li>
           <li><span class="pricing__tick">✓</span>Free SSL &amp; 1 year hosting included</li>
           <li><span class="pricing__tick">✓</span>24/7 support after launch</li>
-          <li><span class="pricing__tick">✓</span>Mobile Money &amp; card payments</li>
+          <li><span class="pricing__tick">✓</span>Pay with Airtel Money</li>
         </ul>
 
         <div class="tabs" role="tablist" aria-label="Package categories" id="pricingTabs">
@@ -792,7 +796,7 @@
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">What payment methods do you accept?<span class="acc__chev">+</span></button>
-            <div class="acc__a"><div class="acc__a-in"><p>We accept MTN Mobile Money and Airtel Money for fast local payment, as well as Visa and Mastercard for international cards, whatever is easiest for your business.</p></div></div>
+            <div class="acc__a"><div class="acc__a-in"><p>Invoices are paid with Airtel Money, straight from your phone, as soon as your order is placed. Need another way to pay? Contact us and we’ll see what we can arrange.</p></div></div>
           </div>
         </div>
       </div>
@@ -919,6 +923,17 @@
       </div>
 
       <div class="footer__col">
+        <h3 class="footer__h">Client area</h3>
+        <ul>
+          <li><a href="https://billing.blactec.ug/client/login?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=footer">Log in</a></li>
+          <li><a href="https://billing.blactec.ug/client/register?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=footer">Create an account</a></li>
+          <li><a href="https://billing.blactec.ug/client/store?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=footer">Order online</a></li>
+          <li><a href="https://billing.blactec.ug/client/tickets/create?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=footer">Open a support ticket</a></li>
+          <li><a href="https://billing.blactec.ug/client/knowledgebase?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=footer">Knowledge base</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
         <h3 class="footer__h">Legal</h3>
         <ul>
           <li><a href="/privacy">Privacy Policy</a></li>
@@ -937,10 +952,7 @@
           <a href="https://x.com/blactecug" aria-label="X" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.9 2h3.3l-7.2 8.2L23.5 22h-6.6l-5.2-6.8L5.7 22H2.4l7.7-8.8L2 2h6.8l4.7 6.2zm-1.2 18h1.8L7.4 3.9H5.5z"/></svg></a>
           <a href="https://www.instagram.com/blactec" aria-label="Instagram" target="_blank" rel="noopener"><svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.2c3.2 0 3.6 0 4.9.07 3.25.15 4.6 1.5 4.75 4.75.06 1.3.07 1.7.07 4.9s0 3.6-.07 4.9c-.15 3.25-1.5 4.6-4.75 4.75-1.3.06-1.7.07-4.9.07s-3.6 0-4.9-.07c-3.25-.15-4.6-1.5-4.75-4.75C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.9C2.42 3.85 3.77 2.5 7.02 2.35 8.4 2.2 8.8 2.2 12 2.2zm0 3.1a6.7 6.7 0 100 13.4 6.7 6.7 0 000-13.4zm0 11a4.3 4.3 0 110-8.6 4.3 4.3 0 010 8.6zM18.4 5a1.6 1.6 0 100 3.1 1.6 1.6 0 000-3.1z"/></svg></a>
         </div>
-        <div class="footer__pay" aria-label="Accepted payments">
-          <span class="pay"><img src="assets/brand/visa.svg" alt="Visa" loading="lazy" /></span>
-          <span class="pay"><img src="assets/brand/mastercard.svg" alt="Mastercard" loading="lazy" /></span>
-          <span class="pay"><img src="assets/brand/mtn.svg" alt="MTN" loading="lazy" /><span>MoMo</span></span>
+        <div class="footer__pay" aria-label="Pay with Airtel Money">
           <span class="pay"><img src="assets/brand/airtel.svg" alt="Airtel" loading="lazy" /><span>Money</span></span>
         </div>
       </div>

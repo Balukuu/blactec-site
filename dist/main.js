@@ -60,6 +60,57 @@ function escapeHtml(value) {
 function formatPrice(value) {
     return value.toFixed(2);
 }
+/* ============================================================
+   Billing portal — where accounts are created and orders are placed
+   ============================================================
+   Every "buy" button on this site hands off to the client portal. Links carry
+   UTM tags so each placement can be told apart in the portal's analytics. */
+const BILLING_URL = 'https://billing.blactec.ug';
+/** A plan name on this site → the slug of the matching product's order page in the portal. */
+const BILLING_PRODUCTS = {
+    'Starter Hosting': 'starter-hosting',
+    'Business Hosting': 'business-hosting',
+    'Enterprise Hosting': 'enterprise-hosting',
+    'Starter Website': 'starter-website',
+    'Business Website': 'business-website',
+    'Premium / E-commerce': 'premium-e-commerce',
+    'Refresh': 'website-refresh',
+    'Full Redesign': 'full-website-redesign',
+    'Platform Migration & Redesign': 'platform-migration-redesign',
+};
+/** Which part of the site a hosting/website/domain button lives in, for the utm_campaign tag. */
+const BILLING_PLACEMENT = {
+    hosting: 'hosting-plans',
+    webdesign: 'webdesign-plans',
+    webredesign: 'webredesign-plans',
+};
+/**
+ * The portal's own availability check cannot reach the .ug registry, so its domain
+ * search offers no "Register" button for .ug names. Until it can (the portal
+ * needs to ask the same lookup service this site uses), .ug requests stay with us.
+ * Flip to true once the portal registers .ug names.
+ */
+const PORTAL_REGISTERS_UG = false;
+function billingUrl(path, placement, params = {}) {
+    const url = new URL(path, BILLING_URL);
+    Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+    url.searchParams.set('utm_source', 'blactec.ug');
+    url.searchParams.set('utm_medium', 'website');
+    url.searchParams.set('utm_campaign', placement);
+    return url.toString();
+}
+/** The order page for a plan, or null when the portal does not sell it (those stay a quote request). */
+function planOrderUrl(planName, placement) {
+    const slug = BILLING_PRODUCTS[planName];
+    return slug ? billingUrl(`/client/store/configure/${slug}`, placement) : null;
+}
+/** Extensions the portal has prices for. .org.ug and .ac.ug are not among them, so those stay a request. */
+const PORTAL_GLOBAL_TLDS = ['.com', '.net', '.org'];
+const PORTAL_UG_TLDS = ['.ug', '.co.ug'];
+/** Whether the portal can take an order for this domain extension right now. */
+function portalSellsTld(tld) {
+    return PORTAL_GLOBAL_TLDS.includes(tld) || (PORTAL_REGISTERS_UG && PORTAL_UG_TLDS.includes(tld));
+}
 /**
  * Critically damped spring (damping ratio 1.0 — no overshoot) from `from` to `to`, starting at `velocity` px/s.
  * Closed-form, so it is exact at any frame rate and can be re-targeted from the live value + live velocity.
@@ -491,10 +542,18 @@ class DomainChecker {
         <div class="skeleton__line skeleton__line--btn"></div>
       </div>`;
     }
+    /** Registering a name: straight into the portal's cart where it can take the order, otherwise a request to us. */
+    registerAction(domain, tld, priceUsd, cls, label) {
+        if (portalSellsTld(tld)) {
+            const href = billingUrl('/client/domain-search', 'hero-search', { domain, tld });
+            return `<a class="${cls}" href="${escapeHtml(href)}">${label}</a>`;
+        }
+        const context = escapeHtml(`I'd like to register ${domain}${tld} (${this.money(priceUsd)}/yr).`);
+        return `<button class="${cls}" data-lead data-lead-context="${context}" type="button">${label}</button>`;
+    }
     renderResult(data) {
         const full = `${data.domain}${data.tld}`;
         if (data.status === 'available') {
-            const context = escapeHtml(`I'd like to register ${full} (${this.money(data.priceUsd)}/yr).`);
             this.result.innerHTML = `
         <div class="result-card result-card--ok">
           <div class="result-card__top">
@@ -503,13 +562,15 @@ class DomainChecker {
           </div>
           <div class="result-card__top">
             <span class="result-card__price"><span data-usd="${formatPrice(data.priceUsd)}">${this.money(data.priceUsd)}</span> <small>/ year</small></span>
-            <button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Request this domain</button>
+            ${this.registerAction(data.domain, data.tld, data.priceUsd, 'btn btn--primary', portalSellsTld(data.tld) ? 'Register this domain' : 'Request this domain')}
           </div>
         </div>`;
             return;
         }
-        const transferContext = escapeHtml(`I'd like to transfer ${full} to BlacTec.`);
         const supportContext = escapeHtml(`I have a question about ${full}.`);
+        const transfer = portalSellsTld(data.tld)
+            ? `<a class="btn btn--primary" href="${escapeHtml(billingUrl('/client/domains/transfer', 'hero-search', { domain: full }))}">Transfer it to us</a>`
+            : `<button class="btn btn--primary" data-lead data-lead-context="${escapeHtml(`I'd like to transfer ${full} to BlacTec.`)}" type="button">Transfer it to us</button>`;
         this.result.innerHTML = `
       <div class="result-card result-card--taken">
         <div class="result-card__top">
@@ -518,7 +579,7 @@ class DomainChecker {
         </div>
         <p class="result-card__note">That domain is already registered. Transfer it to us, or see what’s free below.</p>
         <div class="result-card__actions">
-          <button class="btn btn--primary" data-lead data-lead-context="${transferContext}" type="button">Transfer it to us</button>
+          ${transfer}
           <button class="btn btn--secondary" data-lead data-lead-context="${supportContext}" type="button">Contact support</button>
         </div>
         <div class="alts" data-alts>
@@ -537,13 +598,11 @@ class DomainChecker {
         }
         const rows = alternatives
             .map((alt) => {
-            const altFull = `${domain}${alt.tld}`;
-            const context = escapeHtml(`I'd like to register ${altFull} (${this.money(alt.priceUsd)}/yr).`);
             return `
           <div class="alt">
             <span class="alt__name">${escapeHtml(domain)}<b>${escapeHtml(alt.tld)}</b></span>
             <span class="alt__price"><span data-usd="${formatPrice(alt.priceUsd)}">${this.money(alt.priceUsd)}</span>/yr</span>
-            <button class="alt__add" data-lead data-lead-context="${context}" type="button">Request</button>
+            ${this.registerAction(domain, alt.tld, alt.priceUsd, 'alt__add', portalSellsTld(alt.tld) ? 'Register' : 'Request')}
           </div>`;
         })
             .join('');
@@ -826,7 +885,7 @@ class PricingRenderer {
             if (!container) {
                 return;
             }
-            container.innerHTML = PRICING[key].map((plan) => this.cardHtml(plan)).join('');
+            container.innerHTML = PRICING[key].map((plan) => this.cardHtml(plan, key)).join('');
             qsa('.plan-slot', container).forEach((el, index) => {
                 this.slots.push({ el, plan: PRICING[key][index] });
             });
@@ -858,7 +917,7 @@ class PricingRenderer {
             }
         });
     }
-    cardHtml(plan) {
+    cardHtml(plan, key) {
         const currency = currencyStore.value;
         const ribbon = plan.popular ? '<span class="plan__ribbon">Most popular</span>' : '';
         const btnClass = plan.popular ? 'btn btn--secondary' : 'btn btn--primary';
@@ -867,6 +926,17 @@ class PricingRenderer {
             .join('');
         const { prefix, amount, isSymbol } = formatMoneyParts(convertPrice(plan, currency), currency);
         const context = escapeHtml(this.contextFor(plan, currency));
+        // Plans the portal sells are ordered there; the rest (VPS, dedicated, email suites…) stay a request.
+        const placement = BILLING_PLACEMENT[key];
+        const orderUrl = placement ? planOrderUrl(plan.name, placement) : null;
+        const arrow = '<svg class="plan__cta-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+        const cta = orderUrl
+            ? `<a class="${btnClass}" href="${escapeHtml(orderUrl)}"><span>Order now</span>${arrow}</a>`
+            : `<button class="${btnClass}" data-lead data-lead-context="${context}" type="button"><span>Choose plan</span>${arrow}</button>`;
+        // A website project is a bigger decision than a hosting plan, so keep a human option next to checkout.
+        const talk = orderUrl && key !== 'hosting'
+            ? `<button class="plan__ask" data-lead data-lead-context="${context}" type="button">Talk to us first</button>`
+            : '';
         return `
       <div class="plan-slot${plan.popular ? ' plan-slot--popular' : ''}">
       ${ribbon}
@@ -881,10 +951,8 @@ class PricingRenderer {
           <span class="plan__unit">${unitLabel(plan.unit)}</span>
         </div>
         <ul class="plan__features">${features}</ul>
-        <button class="${btnClass}" data-lead data-lead-context="${context}" type="button">
-          <span>Choose plan</span>
-          <svg class="plan__cta-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-        </button>
+        ${cta}
+        ${talk}
       </article>
       </div>`;
     }
@@ -1452,7 +1520,7 @@ class MobileMenu {
             }
         });
         // Leaving the mobile layout while the sheet is open: just tidy up.
-        window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
+        window.matchMedia('(min-width: 1141px)').addEventListener('change', (event) => {
             if (event.matches && this.opened) {
                 this.close(true);
             }
