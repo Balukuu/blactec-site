@@ -213,8 +213,9 @@ h1, h2, h3 { text-wrap: balance; }
 /* Mega menu */
 .mega {
   position: absolute; left: 0; right: 0; top: 100%;
-  background: rgba(255, 255, 255, .98); border-top: 1px solid rgba(14, 15, 19, .08);
+  background: #fff; border-top: 1px solid rgba(14, 15, 19, .08);
   box-shadow: 0 24px 48px rgba(29, 30, 32, .12);
+  white-space: normal; /* .nav__list is nowrap; don't let it leak in and push titles into the next column */
   opacity: 0; visibility: hidden; transform: translateY(-6px);
   transition: opacity .2s var(--ease), transform .2s var(--ease), visibility 0s linear .2s;
   z-index: 90;
@@ -231,8 +232,10 @@ h1, h2, h3 { text-wrap: balance; }
   box-shadow: inset 0 1px 0 rgba(255,255,255,.9); transition: color .25s cubic-bezier(.4,0,.2,1), background .25s cubic-bezier(.4,0,.2,1);
 }
 .mega__ic svg { width: 19px; height: 19px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
-@media (hover: hover) { .mega__item:hover .mega__ic { color: #fff; background: linear-gradient(150deg, var(--primary-500), var(--primary-700)); } }.mega__item strong { display: block; font-size: .92rem; color: var(--ink-900); font-weight: 600; }
-.mega__item em { font-style: normal; font-size: .78rem; color: var(--ink-500); }
+@media (hover: hover) { .mega__item:hover .mega__ic { color: #fff; background: linear-gradient(150deg, var(--primary-500), var(--primary-700)); } }
+.mega__item > span:last-child { min-width: 0; }
+.mega__item strong { display: block; font-size: .92rem; color: var(--ink-900); font-weight: 600; line-height: 1.3; text-wrap: balance; }
+.mega__item em { display: block; margin-top: .1rem; font-style: normal; font-size: .78rem; line-height: 1.4; color: var(--ink-500); text-wrap: pretty; }
 .mega__col--feature { background: linear-gradient(160deg, var(--primary-050), #fff); border: 1px solid var(--primary-100); border-radius: 14px; padding: .9rem; margin: -.3rem 0; }
 .mega__cta { display: inline-flex; align-items: center; gap: .35rem; margin-top: .7rem; padding-left: .55rem; color: var(--primary-600); font-weight: 700; font-size: .88rem; }
 @media (hover: hover) { .mega__cta:hover { color: var(--primary-700); } }
