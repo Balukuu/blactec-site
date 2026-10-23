@@ -1,5 +1,5 @@
 /* ============================================================
-   BlacTec Technologies Ltd. — Front-end interaction layer
+   BlacTec — Front-end interaction layer
    Strict TypeScript · no runtime libraries · compiled to dist/main.js
 
    Principles this file follows (Apple "fluid interfaces"):

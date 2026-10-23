@@ -1,7 +1,7 @@
 {
   "name": "blactec-site",
   "version": "1.13.0",
-  "description": "BlacTec Technologies Ltd. — Web Hosting, .UG Domains, Cloud & Managed IT. Kampala, Uganda.",
+  "description": "BlacTec — Web Hosting, .UG Domains, Cloud & Managed IT. Kampala, Uganda.",
   "private": true,
   "scripts": {
     "build": "tsc",
@@ -15,7 +15,7 @@
     "uganda",
     "kampala"
   ],
-  "author": "BlacTec Technologies Ltd.",
+  "author": "BlacTec",
   "license": "UNLICENSED",
   "devDependencies": {
     "typescript": "^5.6.0"
