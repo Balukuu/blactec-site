@@ -152,12 +152,11 @@ const BILLING_PLACEMENT: Record<string, string> = {
 };
 
 /**
- * The portal's own availability check cannot reach the .ug registry, so its domain
- * search offers no "Register" button for .ug names. Until it can (the portal
- * needs to ask the same lookup service this site uses), .ug requests stay with us.
- * Flip to true once the portal registers .ug names.
+ * The portal now asks the .ug registry itself, so its domain search offers a "Register"
+ * button for .ug and .co.ug names. Set this back to false if the portal stops being
+ * able to check them; .ug requests then stay with us as a quote request.
  */
-const PORTAL_REGISTERS_UG = false;
+const PORTAL_REGISTERS_UG = true;
 
 function billingUrl(path: string, placement: string, params: Record<string, string> = {}): string {
   const url = new URL(path, BILLING_URL);
