@@ -77,12 +77,29 @@ const BILLING_PRODUCTS = {
     'Refresh': 'website-refresh',
     'Full Redesign': 'full-website-redesign',
     'Platform Migration & Redesign': 'platform-migration-redesign',
+    'DV SSL Certificate': 'dv-ssl-certificate',
+    'OV SSL Certificate': 'ov-ssl-certificate',
+    'EV SSL Certificate': 'ev-ssl-certificate',
+    'Starter Google Workspace': 'starter-google-workspace',
+    'Standard Google Workspace': 'standard-google-workspace',
+    'Plus Google Workspace': 'plus-google-workspace',
+    'Business Basic': 'microsoft-365-business-basic',
+    'Business Standard': 'microsoft-365-business-standard',
+    'Business Premium': 'microsoft-365-business-premium',
+    'Mail Lite': 'zoho-mail-lite',
+    'Workplace Standard': 'zoho-workplace-standard',
+    'Mail Premium': 'zoho-mail-premium',
+    'Workplace Professional': 'zoho-workplace-professional',
 };
 /** Which part of the site a hosting/website/domain button lives in, for the utm_campaign tag. */
 const BILLING_PLACEMENT = {
     hosting: 'hosting-plans',
     webdesign: 'webdesign-plans',
     webredesign: 'webredesign-plans',
+    security: 'ssl-plans',
+    workspace: 'workspace-plans',
+    microsoft365: 'microsoft365-plans',
+    zoho: 'zoho-plans',
 };
 /**
  * The portal's own availability check cannot reach the .ug registry, so its domain
