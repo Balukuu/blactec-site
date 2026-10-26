@@ -127,6 +127,7 @@ const BILLING_PRODUCTS: Record<string, string> = {
   'Platform Migration & Redesign': 'platform-migration-redesign',
   'DV SSL Certificate': 'dv-ssl-certificate',
   'OV SSL Certificate': 'ov-ssl-certificate',
+  'Wildcard SSL Certificate': 'wildcard-ssl-certificate',
   'EV SSL Certificate': 'ev-ssl-certificate',
   'Starter Google Workspace': 'starter-google-workspace',
   'Standard Google Workspace': 'standard-google-workspace',
@@ -982,6 +983,7 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
   security: [
     { name: 'DV SSL Certificate', desc: 'Domain Validation encryption.', currency: 'USD', price: 17.75, unit: 'year', features: ['Domain-validated HTTPS', 'Fast automated issuance', 'Browser padlock trust'] },
     { name: 'OV SSL Certificate', desc: 'Organization Validation trust.', currency: 'USD', price: 88.70, unit: 'year', features: ['Verified organization identity', 'Stronger customer assurance', 'Ideal for business sites'] },
+    { name: 'Wildcard SSL Certificate', desc: 'One certificate for your domain and all its subdomains.', currency: 'USD', price: 103, unit: 'year', features: ['Secures your domain and every subdomain', 'Domain-validated (DNS validation)', 'One certificate to manage'] },
     { name: 'EV SSL Certificate', desc: 'Extended Validation with the strictest identity checks.', currency: 'USD', price: 177.40, unit: 'year', features: ['Highest level of validation', 'Company details shown when the certificate is inspected', 'Maximum buyer confidence'] },
     { name: 'Automated Cloud Backup', desc: 'Acronis-powered backup pipeline.', currency: 'USD', price: 42.60, unit: 'year', features: ['25 GB Acronis sandbox', 'Automated backup pipeline', 'Rapid restore & recovery'] },
     { name: 'Website Security Basic', desc: 'Daily malware scanning for a single small site.', currency: 'UGX', price: 50000, unit: 'month', features: ['Scans up to 25 pages daily', 'Malware & blacklist monitoring', 'Automated alert emails'] },
