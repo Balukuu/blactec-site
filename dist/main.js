@@ -58,7 +58,8 @@ function escapeHtml(value) {
         .replace(/"/g, '&quot;');
 }
 function formatPrice(value) {
-    return value.toFixed(2);
+    // four decimals: the UGX figure is this x 4100, and two decimals turned UGX 100,000 into 99,999
+    return value.toFixed(4);
 }
 /* ============================================================
    Billing portal — where accounts are created and orders are placed

@@ -103,7 +103,8 @@ function escapeHtml(value: string): string {
 }
 
 function formatPrice(value: number): string {
-  return value.toFixed(2);
+  // four decimals: the UGX figure is this x 4100, and two decimals turned UGX 100,000 into 99,999
+  return value.toFixed(4);
 }
 
 /* ============================================================
