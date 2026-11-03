@@ -597,8 +597,10 @@ a.alt__add { display: inline-flex; align-items: center; }
 .features { background: var(--surface-1); padding: clamp(3.5rem, 8vw, 6rem) 0; }
 .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8rem 1.5rem; margin-top: 3rem; }
 .feature { display: flex; align-items: flex-start; gap: 1rem; }
+.feature .pcard__ic { flex: none; }
 .feature__title { font-size: 1rem; font-weight: 700; color: var(--ink-900); margin-bottom: .25rem; }
 .feature p { color: var(--ink-500); font-size: .88rem; }
+.features__cta { margin-top: 2.6rem; text-align: center; }
 
 /* ============================================================
    Platforms & technology badges
