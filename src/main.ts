@@ -1504,6 +1504,7 @@ class StickyHeader {
   private readonly header: HTMLElement;
   private readonly progress: HTMLElement;
   private readonly toTop: HTMLElement;
+  private readonly waFab: HTMLElement | null;
   private readonly navLinks: HTMLAnchorElement[];
   private readonly sections: HTMLElement[];
   private offsets: number[] = [];
@@ -1514,6 +1515,7 @@ class StickyHeader {
     this.header = header;
     this.progress = progress;
     this.toTop = toTop;
+    this.waFab = qs<HTMLElement>('.wa-fab');
     this.navLinks = qsa<HTMLAnchorElement>('.nav__link[href^="#"]');
     this.sections = this.navLinks
       .map((link) => document.getElementById((link.getAttribute('href') ?? '').slice(1)))
@@ -1553,6 +1555,8 @@ class StickyHeader {
     const y = window.scrollY;
     this.header.classList.toggle('is-stuck', y > 8);
     this.toTop.classList.toggle('is-visible', y > 600);
+    // On phones WhatsApp waits until the first screen has been scrolled past (CSS only reads this class there).
+    this.waFab?.classList.toggle('is-visible', y > 420);
     const pct = this.scrollable > 0 ? Math.min(1, Math.max(0, y / this.scrollable)) : 0;
     this.progress.style.transform = `scaleX(${pct})`;
     this.spy(y);
@@ -1964,6 +1968,41 @@ class MobileMenu {
 }
 
 /* ============================================================
+   Floating buttons step aside while the quote form is on screen,
+   so they never sit on top of the fields.
+   ============================================================ */
+
+class FabQuiet {
+  constructor(form: HTMLElement) {
+    if (!('IntersectionObserver' in window)) {
+      return;
+    }
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => document.body.classList.toggle('fab-away', entry.isIntersecting));
+    }).observe(form);
+  }
+}
+
+/* ============================================================
+   Logo strip: a real pause control (it scrolls by itself for
+   longer than five seconds, so people must be able to stop it).
+   ============================================================ */
+
+class MarqueeControl {
+  constructor(wall: HTMLElement, button: HTMLButtonElement) {
+    const text = qs<HTMLElement>('.logowall__pause-text', button);
+    button.addEventListener('click', () => {
+      const paused = wall.classList.toggle('is-paused');
+      button.dataset['state'] = paused ? 'paused' : 'playing';
+      button.setAttribute('aria-label', paused ? 'Play scrolling logos' : 'Pause scrolling logos');
+      if (text) {
+        text.textContent = paused ? 'Play' : 'Pause';
+      }
+    });
+  }
+}
+
+/* ============================================================
    Bootstrap
    ============================================================ */
 
@@ -1984,6 +2023,7 @@ function bootstrap(): void {
   const quoteForm = qs<HTMLFormElement>('#quoteForm');
   if (quoteForm) {
     toast.attachQuoteForm(new QuoteForm(quoteForm, toast));
+    new FabQuiet(quoteForm);
   }
 
   // Cards render before the static-price pass and the tab wiring.
@@ -2011,6 +2051,10 @@ function bootstrap(): void {
   const logoWall = document.getElementById('logoWall');
   if (logoWall) {
     new LogoWall(logoWall);
+    const pauseButton = document.getElementById('logoWallPause');
+    if (pauseButton) {
+      new MarqueeControl(logoWall, pauseButton as HTMLButtonElement);
+    }
   }
 
   const pillarsTrack = document.getElementById('pillarsTrack');
