@@ -66,7 +66,7 @@ function formatPrice(value) {
    ============================================================
    Every "buy" button on this site hands off to the client portal. Links carry
    UTM tags so each placement can be told apart in the portal's analytics. */
-const BILLING_URL = 'https://billing.blactec.ug';
+const BILLING_URL = 'https://cloud.blactec.ug';
 /** A plan name on this site → the slug of the matching product's order page in the portal. */
 const BILLING_PRODUCTS = {
     'Starter Hosting': 'starter-hosting',
