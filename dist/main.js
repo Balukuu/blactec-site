@@ -1249,11 +1249,11 @@ class RevealOnScroll {
             const el = entry.target;
             const siblings = el.parentElement ? qsa('.reveal', el.parentElement).filter((s) => s.parentElement === el.parentElement) : [el];
             const index = Math.max(0, siblings.indexOf(el));
-            const delay = Math.min(index, 5) * 70;
+            const delay = Math.min(index, 3) * 50;
             el.style.transitionDelay = `${delay}ms`;
             el.classList.add('is-in');
             this.observer?.unobserve(el);
-            window.setTimeout(() => this.release(el), delay + 800);
+            window.setTimeout(() => this.release(el), delay + 600);
         });
     }
 }
@@ -1763,6 +1763,19 @@ class MarqueeControl {
     }
 }
 /* ============================================================
+   Hero decorations only move while they are on screen.
+   ============================================================ */
+class HeroMotion {
+    constructor(stage) {
+        if (!('IntersectionObserver' in window)) {
+            return;
+        }
+        new IntersectionObserver((entries) => {
+            entries.forEach((entry) => stage.classList.toggle('is-offscreen', !entry.isIntersecting));
+        }).observe(stage);
+    }
+}
+/* ============================================================
    Bootstrap
    ============================================================ */
 function bootstrap() {
@@ -1820,6 +1833,7 @@ function bootstrap() {
         const panels = qsa('.tab-panel', carousel);
         new ScrollCarousel(() => qs('.tab-panel.is-active', carousel), qs('.pricing__nav--prev', carousel), qs('.pricing__nav--next', carousel), panels);
     });
+    qsa('.lineup--side').forEach((el) => new HeroMotion(el));
     new RevealOnScroll();
     new StatsCounter();
     const header = document.getElementById('header');

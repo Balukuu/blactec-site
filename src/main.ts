@@ -1434,11 +1434,11 @@ class RevealOnScroll {
       const el = entry.target as HTMLElement;
       const siblings = el.parentElement ? qsa<HTMLElement>('.reveal', el.parentElement).filter((s) => s.parentElement === el.parentElement) : [el];
       const index = Math.max(0, siblings.indexOf(el));
-      const delay = Math.min(index, 5) * 70;
+      const delay = Math.min(index, 3) * 50;
       el.style.transitionDelay = `${delay}ms`;
       el.classList.add('is-in');
       this.observer?.unobserve(el);
-      window.setTimeout(() => this.release(el), delay + 800);
+      window.setTimeout(() => this.release(el), delay + 600);
     });
   }
 }
@@ -2003,6 +2003,21 @@ class MarqueeControl {
 }
 
 /* ============================================================
+   Hero decorations only move while they are on screen.
+   ============================================================ */
+
+class HeroMotion {
+  constructor(stage: HTMLElement) {
+    if (!('IntersectionObserver' in window)) {
+      return;
+    }
+    new IntersectionObserver((entries) => {
+      entries.forEach((entry) => stage.classList.toggle('is-offscreen', !entry.isIntersecting));
+    }).observe(stage);
+  }
+}
+
+/* ============================================================
    Bootstrap
    ============================================================ */
 
@@ -2077,6 +2092,8 @@ function bootstrap(): void {
       panels,
     );
   });
+
+  qsa<HTMLElement>('.lineup--side').forEach((el) => new HeroMotion(el));
 
   new RevealOnScroll();
   new StatsCounter();
