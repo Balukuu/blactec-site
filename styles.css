@@ -109,6 +109,9 @@ h1, h2, h3, h4, p, ul, figure { margin: 0; }
 ul { list-style: none; padding: 0; }
 a { color: inherit; text-decoration: none; }
 img, svg { display: block; max-width: 100%; }
+/* Every <img> carries width/height attributes: they reserve the space before the file arrives (no layout jump).
+   height:auto keeps the picture's own proportions when CSS narrows it; rules that set their own height still win. */
+img { height: auto; }
 button { font-family: inherit; cursor: pointer; border: 0; background: none; }
 input, select, button { font: inherit; }
 /* Touch: no 300ms tap delay, no grey tap flash — feedback is ours (see :active rules) */
