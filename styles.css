@@ -769,10 +769,10 @@ a.alt__add { display: inline-flex; align-items: center; }
   border-radius: 999px; box-shadow: 0 3px 10px rgba(14, 15, 19, .06);
 }
 .pricing__tick { color: var(--success-strong); font-weight: 700; }
+/* A quiet line of text, not a pill: it wraps evenly and never fights the "Most popular" tab below it. */
 .pricing__note {
-  text-align: center; margin: 1.4rem auto 0; width: fit-content;
-  max-width: min(720px, 100%); font-size: .88rem; font-weight: 500; color: var(--ink-700);
-  background: var(--surface-1); border: 1px solid rgba(14, 15, 19, .08); padding: .7rem 1.2rem; border-radius: 999px;
+  text-align: center; margin: 1.1rem auto 0; max-width: 62ch;
+  font-size: .92rem; font-weight: 500; line-height: 1.55; color: var(--ink-500); text-wrap: balance;
 }
 
 .pricing__group + .pricing__group {
@@ -804,6 +804,8 @@ a.alt__add { display: inline-flex; align-items: center; }
 }@media (hover: hover) { .tab:not(.is-active):hover { color: var(--ink-900); } }
 .tab.is-active { background: var(--ink-900); color: #fff; }
 .tabs--thumb .tab.is-active { background: transparent; }
+/* Keyboard focus stays visible but sits inside the grey rail instead of spilling over its edge. */
+.tab:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 1px; }
 .currency-toggle { display: flex; align-items: center; justify-content: center; gap: .5rem; margin: 0 auto; flex-wrap: wrap; }
 .currency-toggle__label { font-size: .88rem; font-weight: 500; color: var(--ink-500); margin-right: .1rem; }
 .currency-toggle__btn {
@@ -815,11 +817,14 @@ a.alt__add { display: inline-flex; align-items: center; }
 .pricing__carousel { position: relative; }
 .pricing__note + .currency-toggle { margin-top: 1.2rem; }
 .currency-toggle + .pricing__carousel { margin-top: 2.2rem; }
+.currency-toggle + .pricing__group { margin-top: 2.8rem; }
+.pricing__note + .pricing__carousel { margin-top: 2.6rem; } /* clears the "Most popular" tab that sits above the card */
 
 .tab-panel { display: none; }
+/* The side/bottom padding is only room for the card shadows (overflow-x makes the box clip them); the negative margins cancel it out. */
 .tab-panel.is-active {
-  display: flex; align-items: stretch; gap: 1.6rem; overflow-x: auto; scroll-snap-type: x mandatory;
-  scroll-padding-inline: 1px; padding: 2.4rem .2rem 2rem; margin: -2.4rem -.2rem -2rem;
+  display: flex; align-items: stretch; gap: 1.25rem; overflow-x: auto; scroll-snap-type: x mandatory;
+  scroll-padding-inline: 1rem; padding: 2.4rem 1rem 3.4rem; margin: -2.4rem -1rem -3.4rem;
   -ms-overflow-style: none; scrollbar-width: none; animation: panelIn .45s var(--ease-out) both;
   justify-content: center; justify-content: safe center; overscroll-behavior-x: contain;
 }
@@ -836,16 +841,18 @@ a.alt__add { display: inline-flex; align-items: center; }
 .pricing__nav svg { width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; }
 .pricing__nav--prev { left: -23px; }
 .pricing__nav--next { right: -23px; }
-.plan-slot { position: relative; flex: 0 0 290px; scroll-snap-align: start; transition: transform .3s var(--ease-out); }
+/* Cards share the row (four fit the 1200px container); past that they keep a 262px minimum and the row scrolls. */
+.plan-slot { position: relative; flex: 1 0 262px; min-width: 262px; max-width: 340px; scroll-snap-align: start; }
 .plan {
   position: relative; width: 100%; height: 100%; background: #fff; border: 1px solid rgba(14, 15, 19, .1); border-radius: 24px;
-  padding: 2.2rem 1.7rem 1.85rem; display: flex; flex-direction: column; gap: 1.15rem;
+  padding: 2.2rem 1.5rem 1.85rem; display: flex; flex-direction: column; gap: 1.15rem;
   overflow: hidden; transition: box-shadow .3s var(--ease), border-color .3s var(--ease);
 }.plan::before {
   content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px;
   background: linear-gradient(90deg, var(--primary-500), var(--primary-600)); opacity: .0; transition: opacity .3s var(--ease);
 }
-.plan--popular { border-color: var(--primary-600); box-shadow: 0 20px 45px rgba(14, 15, 19, .16); }.plan--popular::before { opacity: 1; height: 4px; background: var(--primary-600); }
+/* The featured plan stands out by border and shadow, not by size, so every row lines up across the cards. */
+.plan--popular { border-color: var(--primary-600); box-shadow: 0 0 0 1px var(--primary-600), 0 22px 44px -18px rgba(14, 15, 19, .32); }.plan--popular::before { opacity: 1; height: 4px; background: var(--primary-600); }
 .plan__ribbon {
   position: absolute; top: -13px; left: 50%; transform: translateX(-50%); z-index: 1;
   background: var(--primary-600); color: #fff; font-size: .75rem; font-weight: 600;
@@ -869,9 +876,7 @@ a.alt__add { display: inline-flex; align-items: center; }
 .plan__ask { align-self: center; min-height: 36px; margin-top: -.4rem; padding: 0 .6rem; font-size: .86rem; font-weight: 600; color: var(--ink-500); text-decoration: underline; text-underline-offset: 3px; }
 @media (hover: hover) { .plan__ask:hover { color: var(--ink-900); } }
 .plan__cta-ico { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 2.3; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s cubic-bezier(.4, 0, .2, 1); }
-@media (hover: hover) { .plan .btn:hover .plan__cta-ico { transform: translateX(3px); } }.plan--popular .btn--secondary { background: var(--primary-600); color: #fff; border-color: transparent; }@media (hover: hover) { .plan--popular .btn--secondary:hover { background: var(--primary-500); } }@media (min-width: 1024px) {
-  .plan-slot--popular { transform: scale(1.035); }
-}
+@media (hover: hover) { .plan .btn:hover .plan__cta-ico { transform: translateX(3px); } }.plan--popular .btn--secondary { background: var(--primary-600); color: #fff; border-color: transparent; }@media (hover: hover) { .plan--popular .btn--secondary:hover { background: var(--primary-500); } }
 
 /* ============================================================
    Portfolio — testimonial switcher + logo wall
@@ -1386,7 +1391,7 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
   .pillars__track .pcard { flex-basis: 82%; min-width: 0; }
   .pillars__nav--prev { left: 4px; }
   .pillars__nav--next { right: 4px; }
-  .plan-slot { flex-basis: 84%; }
+  .plan-slot { flex-basis: 84%; min-width: 0; }
   .pricing__nav--prev { left: 4px; }
   .pricing__nav--next { right: 4px; }
   .showcase__card { flex-basis: 84%; }
