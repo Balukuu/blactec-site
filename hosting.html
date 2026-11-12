@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.6" />
+  <link rel="stylesheet" href="styles.css?v=1.13.8" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -95,12 +95,14 @@
       { "@type": "Question", "name": "What's included in the free SSL certificate?", "acceptedAnswer": { "@type": "Answer", "text": "Every shared hosting plan includes a free domain-validated SSL certificate, auto-renewed for as long as you host with us. We also offer paid OV and EV certificates for businesses that need verified organization identity." } },
       { "@type": "Question", "name": "How does the free .ug domain offer work?", "acceptedAnswer": { "@type": "Answer", "text": "Sign up for the annual Enterprise Hosting plan and we'll register a .ug domain of your choice at no extra cost for the first year, subject to registry availability." } },
       { "@type": "Question", "name": "Which operating systems are available on VPS and dedicated servers?", "acceptedAnswer": { "@type": "Answer", "text": "You can choose from popular Linux distributions on VPS and dedicated plans. Let us know your preferred stack and our engineers will provision it during setup." } },
+      { "@type": "Question", "name": "Can I manage my hosting from my phone?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. The BlacTec client area works on any phone, and you can add it to your home screen from your browser so it opens like an app, with no app store needed. Check your services, pay invoices with Mobile Money, open support tickets and use your hosting tools from anywhere." } },
+      { "@type": "Question", "name": "Can I block visitors or countries from my website, and scan it for malware?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Business Hosting and Professional Hosting include a firewall tool in the client area. For each website you can block chosen IP addresses or ranges, allow only the addresses you trust, or block or allow whole countries. You can also switch on HTTPS-only and limit repeated attempts on login pages. A malware scan tool checks your website files on demand and lists any that match known malware; it only reports and never deletes anything. Country rules use where an address block is registered, so a visitor on a VPN can appear in another country." } },
       { "@type": "Question", "name": "What payment methods do you accept?", "acceptedAnswer": { "@type": "Answer", "text": "Pay any invoice with Mobile Money (MTN or Airtel): enter your phone number on the invoice and approve the prompt on your phone, and it is confirmed automatically. You can also pay manually with Airtel Money and share your proof of payment with billing@blactec.ug. Need another way to pay? Contact us and we will see what we can arrange." } }
     ]
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.13.8"></script>
+  <script defer src="dist/main.js?v=1.13.10"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -353,7 +355,7 @@
           <article class="pcard reveal">
             <div class="media" aria-hidden="true">
               <div class="stack">
-                <span class="stack__tile"><img src="assets/brand/cpanel.svg" alt="" width="48" height="48" /></span>
+                <span class="stack__tile stack__tile--panel"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 8.5h18"/><path d="M7 6h.01"/></svg></span>
                 <span class="stack__tile"><img src="assets/brand/wordpress.svg" alt="" width="48" height="48" /></span>
                 <span class="stack__tile stack__tile--lock"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
               </div>
@@ -363,7 +365,7 @@
             <p>Your site shares a server with others, fully managed by us. The most affordable way to get a business website, blog or portfolio online fast.</p>
             <p class="pcard__price">From UGX 100,000 / year</p>
             <ul class="pcard__tags">
-              <li>cPanel</li><li>Free SSL</li><li>Beginner friendly</li>
+              <li>Control panel</li><li>Free SSL</li><li>Beginner friendly</li>
             </ul>
             <a class="link-arrow" href="#compare"><span>Compare shared plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
           </article>
@@ -457,7 +459,7 @@
             <button class="tab" role="tab" id="tab-reseller" aria-selected="false" aria-controls="panel-reseller" data-panel="reseller" tabindex="-1">Reseller Hosting</button>
             <button class="tab" role="tab" id="tab-security" aria-selected="false" aria-controls="panel-security" data-panel="security" tabindex="-1">Security &amp; Backup</button>
           </div>
-          <p class="pricing__note">Prefer simple webmail? Free cPanel Webmail is included with every hosting plan. No extra sign-up needed.</p>
+          <p class="pricing__note">Prefer simple webmail? Free webmail is included with every hosting plan. No extra sign-up needed.</p>
 
           <div class="pricing__carousel">
             <button class="pricing__nav pricing__nav--prev" id="pricingPrevHosting" type="button" aria-label="Scroll hosting plans left">
@@ -520,7 +522,7 @@
         <div class="feature-grid">
           <div class="feature reveal">
             <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 8.5h18"/><path d="M7 6h.01"/></svg></div>
-            <div><p class="feature__title">cPanel control panel</p><p>An industry-standard dashboard for managing files, email, databases and apps, no terminal required.</p></div>
+            <div><p class="feature__title">Control panel</p><p>An easy dashboard for managing files, email, databases and apps, no terminal required.</p></div>
           </div>
           <div class="feature reveal">
             <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
@@ -546,6 +548,78 @@
       </div>
     </section>
 
+    <!-- Control & protection: client area as a phone app, firewall, malware scan -->
+    <section class="control" id="control" aria-labelledby="controlTitle">
+      <div class="container control__inner">
+        <div class="control__copy reveal">
+          <p class="eyebrow">Control &amp; protection</p>
+          <h2 class="section-title section-title--left" id="controlTitle">Run your hosting from your phone. Protect it your way.</h2>
+          <p class="control__lead">Open the BlacTec client area on your phone like an app. Business Hosting and Professional Hosting add a built-in firewall and malware scan to keep your website safe.</p>
+
+          <ul class="control__list">
+            <li class="feature">
+              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
+              <div><p class="feature__title">Your control panel, on your phone</p><p>Add the client area to your home screen and it opens like an app, with no app store. Check your services, pay invoices with Mobile Money and reach support from anywhere.</p></div>
+            </li>
+            <li class="feature">
+              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg></div>
+              <div><p class="feature__title">A firewall for each website</p><p>Block or allow visitors by IP address or by whole country. Rules apply within seconds, and the tool warns you before you lock yourself out.</p></div>
+            </li>
+            <li class="feature">
+              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+              <div><p class="feature__title">HTTPS-only and login protection</p><p>Send every visitor to the secure version of your site with one switch, and limit repeated attempts on WordPress, Joomla and other common login pages.</p></div>
+            </li>
+            <li class="feature">
+              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+              <div><p class="feature__title">Malware scan on demand</p><p>Scan your website files whenever you like and see which ones match known malware. The scan only reports; it never changes or deletes your files.</p></div>
+            </li>
+          </ul>
+
+          <div class="control__actions">
+            <a class="btn btn--primary" href="#compare">Compare shared hosting plans
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          </div>
+          <p class="control__note">Firewall and malware scan are included with Business Hosting and Professional Hosting. Country rules use where an address block is registered, so a visitor on a VPN can appear in another country.</p>
+        </div>
+
+        <!-- Decorative phone: the hosting tools screen of the client area -->
+        <div class="control__art reveal" aria-hidden="true">
+          <div class="phone">
+            <div class="phone__screen">
+              <div class="phone__head">
+                <span class="phone__title">Hosting tools</span>
+                <span class="phone__domain">yourbusiness.ug</span>
+              </div>
+              <div class="phone__tiles">
+                <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
+                <span class="phone__tile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg>Email</span>
+                <span class="phone__tile"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>Databases</span>
+                <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg>Backups</span>
+                <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg>Firewall</span>
+                <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Malware scan</span>
+              </div>
+              <div class="phone__status">
+                <i class="phone__dot"></i>
+                <span><strong>Firewall active</strong><small>HTTPS-only is on</small></span>
+              </div>
+              <div class="phone__status">
+                <i class="phone__dot"></i>
+                <span><strong>No known malware found</strong><small>Last scan: today</small></span>
+              </div>
+              <div class="phone__bar">
+                <svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-8Z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/></svg>
+                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/></svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- Platforms & technology -->
     <section class="platforms">
       <div class="container">
@@ -566,7 +640,6 @@
         <div class="platforms__group">
           <p class="platforms__label">Powered by</p>
           <ul class="pcard__tags pcard__tags--center">
-            <li><img src="assets/brand/cpanel.svg" alt="" width="48" height="48" loading="lazy" />cPanel</li>
             <li><img src="assets/brand/litespeed.svg" alt="" width="48" height="48" loading="lazy" />LiteSpeed Web Server</li>
             <li>NVMe SSD storage</li>
             <li><img src="assets/brand/mariadb.svg" alt="" width="48" height="48" loading="lazy" />MariaDB</li>
@@ -632,6 +705,14 @@
           <div class="acc">
             <button class="acc__q" aria-expanded="false">Which operating systems are available on VPS and dedicated servers?<span class="acc__chev">+</span></button>
             <div class="acc__a"><div class="acc__a-in"><p>You can choose from popular Linux distributions on VPS and dedicated plans. Let us know your preferred stack and our engineers will provision it during setup.</p></div></div>
+          </div>
+          <div class="acc">
+            <button class="acc__q" aria-expanded="false">Can I manage my hosting from my phone?<span class="acc__chev">+</span></button>
+            <div class="acc__a"><div class="acc__a-in"><p>Yes. The BlacTec client area works on any phone, and you can add it to your home screen from your browser so it opens like an app, with no app store needed. Check your services, pay invoices with Mobile Money, open support tickets and use your hosting tools from anywhere.</p></div></div>
+          </div>
+          <div class="acc">
+            <button class="acc__q" aria-expanded="false">Can I block visitors or countries from my website, and scan it for malware?<span class="acc__chev">+</span></button>
+            <div class="acc__a"><div class="acc__a-in"><p>Yes. Business Hosting and Professional Hosting include a firewall tool in the client area. For each website you can block chosen IP addresses or ranges, allow only the addresses you trust, or block or allow whole countries. You can also switch on HTTPS-only and limit repeated attempts on login pages. A malware scan tool checks your website files on demand and lists any that match known malware; it only reports and never deletes anything. Country rules use where an address block is registered, so a visitor on a VPN can appear in another country.</p></div></div>
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">What payment methods do you accept?<span class="acc__chev">+</span></button>
