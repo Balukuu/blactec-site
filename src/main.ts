@@ -977,7 +977,7 @@ const PRICING: Record<PanelKey, PricingPlan[]> = {
     { name: 'Workplace Professional', desc: 'Maximum storage with intranet tools.', currency: 'USD', price: 6.60, unit: 'user/month', features: ['100 GB mail + 100 GB retention storage', '1 TB team storage', 'Email retention, eProtect & eDiscovery', 'Zoho Connect intranet'] },
   ],
   reseller: [
-    { name: 'Basic Reseller', desc: 'Launch your own hosting brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
+    { name: 'Basic Reseller', desc: 'Launch your own cloud brand.', currency: 'USD', price: 177.40, unit: 'year', features: ['10 GB SSD allocations', 'Up to 5 white-label WordPress sites', 'Powered by LiteSpeed Web Server'] },
     { name: 'Premium Reseller', desc: 'Full toolkit with daily backups.', currency: 'USD', price: 354.80, unit: 'year', popular: true, features: ['20 GB SSD allocations', 'Full WordPress optimization toolkit', 'Automated daily cloud backups'] },
     { name: 'Supreme Reseller', desc: 'Unlimited clients, global reach.', currency: 'USD', price: 532.20, unit: 'year', features: ['30 GB SSD allocations', 'Unlimited corporate client accounts', 'Integrated global CDN'] },
   ],
