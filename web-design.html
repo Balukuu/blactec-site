@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.23" />
+  <link rel="stylesheet" href="styles.css?v=1.13.24" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -133,21 +133,41 @@
               </div>
             </div>
           </li>
-          <li class="nav__item has-mega has-mega--compact">
+          <li class="nav__item has-mega has-mega--wide">
             <button class="nav__link nav__trigger is-active" aria-expanded="false" aria-controls="mega-products">
               Products
               <svg class="nav__caret" width="12" height="12" viewBox="0 0 12 12" aria-hidden="true"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
-            <div class="mega mega--compact" id="mega-products">
-              <div class="mega__card">
-                <a class="mega__item" href="/web-design"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/></svg></span><span><strong>Website design &amp; redesign</strong><em>Corporate sites and online stores</em></span></a>
-                <a class="mega__item" href="/hosting#tab-security"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><strong>SSL &amp; security</strong><em>Certificates, backup and website protection</em></span></a>
-                <a class="mega__item" href="/#migration"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span><span><strong>Backup &amp; migration</strong><em>Move over with no downtime</em></span></a>
-                <a class="mega__item" href="/#managed-it"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/></svg></span><span><strong>Managed IT &amp; support</strong><em>Helpdesk, audits and network care</em></span></a>
-                <a class="mega__item" href="/#security"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/><path d="m9.2 11.7 1.9 1.9 3.7-3.9"/></svg></span><span><strong>Cybersecurity</strong><em>Find the risks and close them</em></span></a>
-                <a class="mega__cta" href="#contact"><span>Talk to an engineer</span><svg class="mega__cta-ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            <div class="mega mega--wide" id="mega-products">
+            <div class="container mega__inner mega__inner--three">
+              <div class="mega__col">
+                <p class="mega__eyebrow">Web</p>
+                <a class="mega__item" href="/#hero-search"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg></span><span><strong>Domain search</strong><em>Check a name and see the price.</em></span></a>
+                <a class="mega__item" href="/web-design"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/></svg></span><span><strong>Website design</strong><em>Corporate sites and online stores.</em></span></a>
+                <a class="mega__item" href="/web-design#redesign"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 0 1 13.5-5.8L20 8.5"/><path d="M20 4v4.5h-4.5"/><path d="M20 12a8 8 0 0 1-13.5 5.8L4 15.5"/><path d="M4 20v-4.5h4.5"/></svg></span><span><strong>Website redesign</strong><em>A fresh start for an old site.</em></span></a>
+                <a class="mega__item" href="/web-design#compare"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 9 5-9 5-9-5 9-5Z"/><path d="m3 13 9 5 9-5"/></svg></span><span><strong>Design packages</strong><em>Compare what each one includes.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-security"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span><span><strong>SSL certificates</strong><em>The padlock for every website.</em></span></a>
+                <a class="mega__item" href="/#portfolio"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="9" cy="10" r="1.6"/><path d="m4 18 5-5 4 4 3-3 4 4"/></svg></span><span><strong>Portfolio</strong><em>Sites we have built for clients.</em></span></a>
+              </div>
+              <div class="mega__col">
+                <p class="mega__eyebrow">Cloud</p>
+                <a class="mega__item mega__item--feature" href="/hosting"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 18.5a4.5 4.5 0 0 1-.7-8.95 6 6 0 0 1 11.4 1.2 3.9 3.9 0 0 1-.6 7.75Z"/></svg></span><span><strong>All cloud plans <svg class="mega__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></strong><em>Hosting, VPS, dedicated and reseller.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-hosting"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M9 9v11"/></svg></span><span><strong>Shared cloud</strong><em>NVMe hosting for your websites.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-vps"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4" width="17" height="6.5" rx="2"/><rect x="3.5" y="13.5" width="17" height="6.5" rx="2"/><path d="M7 7.25h.01"/><path d="M7 16.75h.01"/></svg></span><span><strong>VPS cloud</strong><em>A private server that grows with you.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-dedicated"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M5 12h14"/><path d="M8.5 7.5h.01"/><path d="M8.5 16.5h.01"/></svg></span><span><strong>Dedicated servers</strong><em>A whole machine, only yours.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-reseller"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5 5.5 4h13L20 9.5"/><path d="M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0"/><path d="M5.5 12.5V20h13v-7.5"/></svg></span><span><strong>Reseller cloud</strong><em>Host your own clients under your brand.</em></span></a>
+                <a class="mega__item" href="/hosting#tab-security"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.4-5.7L4 8.5"/><path d="M4 4v4.5h4.5"/><path d="M12 8v4l2.5 1.5"/></svg></span><span><strong>Backups</strong><em>Copies you can restore when needed.</em></span></a>
+                <a class="mega__item" href="/hosting#control"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M3.5 9.5h17"/><path d="M3.5 14.5h17"/><path d="M9 4.5v5"/><path d="M15 9.5v5"/><path d="M9 14.5v5"/></svg></span><span><strong>Firewall &amp; malware scan</strong><em>Included with Business and Professional.</em></span></a>
+              </div>
+              <div class="mega__col">
+                <p class="mega__eyebrow">Services</p>
+                <a class="mega__item" href="/#managed-it"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/></svg></span><span><strong>Managed IT &amp; support</strong><em>Helpdesk, audits and network care.</em></span></a>
+                <a class="mega__item" href="/#security"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/><path d="m9.2 11.7 1.9 1.9 3.7-3.9"/></svg></span><span><strong>Cybersecurity</strong><em>Find the risks and close them.</em></span></a>
+                <a class="mega__item" href="/#migration"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg></span><span><strong>Migration &amp; recovery</strong><em>Move over with no downtime.</em></span></a>
+                <div class="mega__help"><p class="mega__help-title">Not sure what you need?</p><p class="mega__help-text">Tell us about your business and we will suggest what fits.</p><a href="tel:+256750870755"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h3.5l1.8 4.5-2.2 1.4a11 11 0 0 0 5 5l1.4-2.2L19 14.5V18a1.5 1.5 0 0 1-1.6 1.5A14 14 0 0 1 3.5 5.6 1.5 1.5 0 0 1 5 4Z"/></svg><span>+256 750 870755</span></a><a href="#contact"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg><span>Send us a message</span></a></div>
               </div>
             </div>
+          </div>
           </li>
           <li class="nav__item"><a class="nav__link" href="/hosting#tab-vps">Cloud</a></li>
           <li class="nav__item"><a class="nav__link" href="/hosting#tab-hosting">Hosting</a></li>
@@ -186,11 +206,25 @@
       <details class="m-acc">
         <summary>Products <span class="m-acc__chev">▾</span></summary>
         <div class="m-acc__body">
-          <a href="/web-design">Website design &amp; redesign</a>
-          <a href="/hosting#tab-security">SSL &amp; security</a>
-          <a href="/#migration">Backup &amp; migration</a>
+          <p class="m-acc__label">Web</p>
+          <a href="/#hero-search">Domain search</a>
+          <a href="/web-design">Website design</a>
+          <a href="/web-design#redesign">Website redesign</a>
+          <a href="/web-design#compare">Design packages</a>
+          <a href="/hosting#tab-security">SSL certificates</a>
+          <a href="/#portfolio">Portfolio</a>
+          <p class="m-acc__label">Cloud</p>
+          <a href="/hosting">All cloud plans</a>
+          <a href="/hosting#tab-hosting">Shared cloud</a>
+          <a href="/hosting#tab-vps">VPS cloud</a>
+          <a href="/hosting#tab-dedicated">Dedicated servers</a>
+          <a href="/hosting#tab-reseller">Reseller cloud</a>
+          <a href="/hosting#tab-security">Backups</a>
+          <a href="/hosting#control">Firewall &amp; malware scan</a>
+          <p class="m-acc__label">Services</p>
           <a href="/#managed-it">Managed IT &amp; support</a>
           <a href="/#security">Cybersecurity</a>
+          <a href="/#migration">Migration &amp; recovery</a>
         </div>
       </details>
       <a class="mobile-menu__link" href="/hosting#tab-vps">Cloud</a>

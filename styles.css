@@ -2026,3 +2026,31 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
 .mega__card { display: grid; gap: .1rem; padding: .6rem .6rem .8rem; background: #fff; border: 1px solid rgba(14, 15, 19, .08); border-radius: 18px; box-shadow: 0 24px 48px rgba(29, 30, 32, .14); }
 .mega--compact .mega__cta { margin: .35rem .3rem 0; padding: .7rem .3rem 0; border-top: 1px solid var(--border); }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) { .mega__card { border-color: var(--ink-900); } }
+
+/* Products dropdown: a wide panel in three labelled columns (Web / Cloud / Services),
+   a dark "all cloud plans" card on top of Cloud and a help card under Services */
+.nav__item.has-mega--wide { position: static; }
+.mega--wide { border-top-color: transparent; }
+.mega__inner--three { grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr) minmax(0, 1fr); gap: 2.5rem; padding: 1.7rem 0 2.1rem; }
+.mega--wide .mega__eyebrow { display: flex; align-items: center; gap: .55rem; margin: 0 0 .55rem .55rem; }
+.mega--wide .mega__eyebrow::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--warning); }
+.mega__col { display: flex; flex-direction: column; }
+.mega__item--feature { align-items: center; padding: .8rem .8rem; margin-bottom: .45rem; border-radius: 14px; background: var(--ink-900); }
+.mega__item--feature .mega__ic { color: #fff; background: rgba(255, 255, 255, .12); box-shadow: none; }
+.mega__item--feature strong { display: flex; align-items: center; gap: .35rem; color: #fff; }
+.mega__item--feature em { color: rgba(255, 255, 255, .72); }
+.mega__arrow { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; transition: transform .25s cubic-bezier(.4, 0, .2, 1); }
+@media (hover: hover) {
+  .mega__item--feature:hover { background: var(--primary-600); }
+  .mega__item--feature:hover .mega__ic { color: #fff; background: rgba(255, 255, 255, .18); }
+  .mega__item--feature:hover .mega__arrow { transform: translateX(3px); }
+}
+.mega__help { margin-top: 1rem; padding: 1rem 1.1rem; background: var(--surface-1); border: 1px solid var(--border); border-radius: 14px; }
+.mega__help-title { margin: 0; font-size: .95rem; font-weight: 600; color: var(--ink-900); }
+.mega__help-text { margin: .3rem 0 .7rem; font-size: .8rem; line-height: 1.45; color: var(--ink-500); text-wrap: pretty; }
+.mega__help a { display: flex; align-items: center; gap: .55rem; min-height: 32px; font-size: .88rem; font-weight: 500; color: var(--ink-900); }
+.mega__help a svg { flex: none; width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+@media (hover: hover) { .mega__help a:hover span { text-decoration: underline; text-underline-offset: 3px; } }
+.m-acc__label { margin: .7rem 0 .1rem; font-size: .75rem; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--ink-500); }
+.m-acc__label:first-child { margin-top: .2rem; }
+@media (prefers-contrast: more) { .mega__help { border-color: var(--ink-900); } .mega__item--feature em { color: #fff; } }
