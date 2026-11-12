@@ -39,7 +39,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.12" />
+  <link rel="stylesheet" href="styles.css?v=1.13.14" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -117,7 +117,7 @@
 
   <script defer src="dist/main.js?v=1.13.12"></script>
 </head>
-<body>
+<body class="page-apps">
   <a class="skip-link" href="#top">Skip to content</a>
 
   <!-- Scroll progress -->
@@ -257,27 +257,32 @@
         </div>
 
         <div class="hero__art">
-          <div class="hero__stack-card">
-            <div class="hero__stack-slide is-active">
-              <div class="wsmock" aria-hidden="true">
-                <div class="wsmock__bar">
-                  <span class="mockbar__dots"><i></i><i></i><i></i></span>
-                  <span class="wsmock__label">Google Workspace</span>
-                  <span class="wsmock__badge">Gmail + Gemini</span>
-                </div>
-                <div class="wsmock__frame">
-                  <img class="wsmock__img is-active" src="assets/brand/google-workspace-1.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-2.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-3.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-4.png" alt="" width="640" height="515" loading="lazy" />
-                </div>
-              </div>
-              <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
-            </div>
+          <div class="hero__apps">
+            <div class="apptiles apptiles--2" aria-hidden="true">
+            <span class="apptile"><span class="apptile__ic"><img src="assets/brand/gmail.svg" alt="" width="52" height="52" loading="lazy" /></span><em>Gmail</em></span>
+            <span class="apptile"><span class="apptile__ic"><img src="assets/brand/google-drive.svg" alt="" width="52" height="52" loading="lazy" /></span><em>Drive</em></span>
+            <span class="apptile"><span class="apptile__ic"><img src="assets/brand/google-meet.svg" alt="" width="52" height="52" loading="lazy" /></span><em>Meet</em></span>
+            <span class="apptile"><span class="apptile__ic"><img src="assets/brand/google-docs.svg" alt="" width="52" height="52" loading="lazy" /></span><em>Docs</em></span>
+          </div>
+            <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
           </div>
         </div>
       </div>
     </section>
+
+    <!-- On this page -->
+    <nav class="subnav" aria-label="On this page">
+      <div class="container subnav__inner">
+        <ul class="subnav__list">
+          <li><a href="#included">What's included</a></li>
+          <li><a href="#guide">Which plan</a></li>
+          <li><a href="#plans">Plans and pricing</a></li>
+          <li><a href="#migration">Switching</a></li>
+          <li><a href="#faq">FAQ</a></li>
+        </ul>
+        <a class="btn btn--primary subnav__cta" href="#contact">Get a quote</a>
+      </div>
+    </nav>
 
     <!-- What's included -->
     <section class="features" id="included">
@@ -316,7 +321,7 @@
     </section>
 
     <!-- How it works -->
-    <section class="pillars" id="how">
+    <section class="platforms" id="how">
       <div class="container">
         <p class="eyebrow eyebrow--center">How it works</p>
         <h2 class="section-title">Live in three steps</h2>
@@ -351,6 +356,35 @@
             </div>
           </li>
         </ol>
+      </div>
+    </section>
+
+    <!-- Which plan -->
+    <section class="pillars" id="guide">
+      <div class="container">
+        <p class="eyebrow eyebrow--center">Which plan?</p>
+        <h2 class="section-title">Which plan fits your team?</h2>
+        <p class="section-sub">Not sure where to start? Here is how the plans differ in plain words. You can move up later without changing your email addresses.</p>
+        <div class="pillars__grid">
+          <article class="pcard reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg></div>
+            <h3 class="pcard__title">Starter</h3>
+            <p>For teams that need professional email on their own domain, shared calendars and meetings. A good first step off free email addresses.</p>
+            <a class="link-arrow" href="#plans"><span>See the plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="pcard reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.5 19a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5-1.6A4 4 0 0 1 17.5 19h-11Z"/></svg></div>
+            <h3 class="pcard__title">Standard</h3>
+            <p>For teams that share a lot of files and record meetings. Adds far more storage than Starter. Our most popular plan.</p>
+            <a class="link-arrow" href="#plans"><span>See the plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+          <article class="pcard reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/><path d="m9.2 11.7 1.9 1.9 3.7-3.9"/></svg></div>
+            <h3 class="pcard__title">Plus</h3>
+            <p>For businesses that need Vault, advanced device management and tighter security controls.</p>
+            <a class="link-arrow" href="#plans"><span>See the plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+          </article>
+        </div>
       </div>
     </section>
 
@@ -439,7 +473,7 @@
     </section>
 
     <!-- FAQ -->
-    <section class="faq">
+    <section class="faq" id="faq">
       <div class="container faq__inner">
         <div class="faq__head reveal">
           <p class="eyebrow">Questions</p>
