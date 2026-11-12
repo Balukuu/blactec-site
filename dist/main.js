@@ -1810,6 +1810,17 @@ function bootstrap() {
             new Tabs(list);
         }
     });
+    // A link such as /hosting#tab-vps opens that plan tab (the footer uses these), also when the hash changes on the same page.
+    const openTabFromHash = () => {
+        const id = window.location.hash.slice(1);
+        const target = id ? document.getElementById(id) : null;
+        if (target && target.getAttribute('role') === 'tab') {
+            target.click();
+            target.scrollIntoView({ block: 'center' });
+        }
+    };
+    openTabFromHash();
+    window.addEventListener('hashchange', openTabFromHash);
     qsa('.currency-toggle').forEach((el) => new CurrencyToggle(el));
     qsa('[data-currency-flip]').forEach((el) => new CurrencyFlip(el));
     const logoWall = document.getElementById('logoWall');
