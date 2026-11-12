@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.16" />
+  <link rel="stylesheet" href="styles.css?v=1.13.18" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -217,11 +217,6 @@
     <section class="hero" id="hero">
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="hero__grid-bg" aria-hidden="true"></div>
-      <div class="hero__deco" aria-hidden="true">
-        <span class="hero__ic hero__ic--1"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01"/><path d="M7 16.5h.01"/></svg></span>
-        <span class="hero__ic hero__ic--2"><svg viewBox="0 0 24 24"><path d="M6.5 19a4.5 4.5 0 0 1-.5-9 6 6 0 0 1 11.5-1.6A4 4 0 0 1 17.5 19h-11Z"/></svg></span>
-        <span class="hero__ic hero__ic--3"><svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></span>
-      </div>
       <div class="container hero__inner">
         <div class="hero__copy">
           <span class="hero__badge">
@@ -253,13 +248,8 @@
         <div class="hero__art">
           <div class="hero__stack-card">
             <!-- Slide 1: Hosting -->
-            <div class="hero__stack-slide is-active" role="tabpanel" id="stackPanel-0" aria-labelledby="stackTab-0" data-index="0">
+            <div class="hero__stack-slide is-active">
               <div class="rackmock" aria-hidden="true">
-                <div class="rackmock__bar">
-                  <span class="mockbar__dots"><i></i><i></i><i></i></span>
-                  <span class="rackmock__bar-label">Web &amp; Server Cloud</span>
-                  <span class="rackmock__bar-badge">blactec.ug</span>
-                </div>
                 <div class="rackmock__body">
                   <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Shared &amp; Reseller Cloud</span></div>
                   <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Root-Access VPS</span></div>
@@ -273,72 +263,6 @@
               <span class="hero__stack-price"><small>Starting at</small><strong>UGX 100,000</strong><span>/ year</span></span>
             </div>
 
-            <!-- Slide 2: Google Workspace -->
-            <div class="hero__stack-slide" role="tabpanel" id="stackPanel-1" aria-labelledby="stackTab-1" data-index="1" hidden>
-              <div class="wsmock" aria-hidden="true">
-                <div class="wsmock__bar">
-                  <span class="mockbar__dots"><i></i><i></i><i></i></span>
-                  <span class="wsmock__label">Google Workspace</span>
-                  <span class="wsmock__badge">Gmail + Gemini</span>
-                </div>
-                <div class="wsmock__frame">
-                  <img class="wsmock__img is-active" src="assets/brand/google-workspace-1.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-2.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-3.png" alt="" width="640" height="515" loading="lazy" />
-                  <img class="wsmock__img" src="assets/brand/google-workspace-4.png" alt="" width="640" height="515" loading="lazy" />
-                </div>
-              </div>
-              <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
-            </div>
-
-            <!-- Slide 3: Zoho Workplace -->
-            <div class="hero__stack-slide" role="tabpanel" id="stackPanel-2" aria-labelledby="stackTab-2" data-index="2" hidden>
-              <div class="appgrid" aria-hidden="true">
-                <div class="appgrid__bar">
-                  <span class="mockbar__dots"><i></i><i></i><i></i></span>
-                  <span class="appgrid__label">Zoho Workplace</span>
-                  <span class="appgrid__badge">yourbusiness.ug</span>
-                </div>
-                <div class="appgrid__body">
-                  <div class="appgrid__apps appgrid__apps--3">
-                    <span class="appgrid__app"><img src="assets/brand/zoho-mail.svg" alt="" width="48" height="48" loading="lazy" /><em>Mail</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/zoho-workdrive.svg" alt="" width="48" height="48" loading="lazy" /><em>WorkDrive</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/zoho-writer.svg" alt="" width="48" height="48" loading="lazy" /><em>Writer</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/zoho-sheet.svg" alt="" width="48" height="48" loading="lazy" /><em>Sheet</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/zoho-show.svg" alt="" width="48" height="48" loading="lazy" /><em>Show</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/zoho-cliq.svg" alt="" width="48" height="48" loading="lazy" /><em>Cliq</em></span>
-                  </div>
-                </div>
-              </div>
-              <span class="hero__stack-price"><small>Starting at</small><strong>$1</strong><span>/ user / month</span></span>
-            </div>
-
-            <!-- Slide 4: Microsoft 365 -->
-            <div class="hero__stack-slide" role="tabpanel" id="stackPanel-3" aria-labelledby="stackTab-3" data-index="3" hidden>
-              <div class="appgrid" aria-hidden="true">
-                <div class="appgrid__bar">
-                  <span class="mockbar__dots"><i></i><i></i><i></i></span>
-                  <span class="appgrid__label">Microsoft 365</span>
-                  <span class="appgrid__badge">yourbusiness.ug</span>
-                </div>
-                <div class="appgrid__body">
-                  <div class="appgrid__apps">
-                    <span class="appgrid__app"><img src="assets/brand/ms-word.svg" alt="" width="48" height="48" loading="lazy" /><em>Word</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/ms-excel.svg" alt="" width="48" height="48" loading="lazy" /><em>Excel</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/ms-outlook.svg" alt="" width="48" height="48" loading="lazy" /><em>Outlook</em></span>
-                    <span class="appgrid__app"><img src="assets/brand/ms-teams.svg" alt="" width="48" height="48" loading="lazy" /><em>Teams</em></span>
-                  </div>
-                </div>
-              </div>
-              <span class="hero__stack-price"><small>Starting at</small><strong>$7</strong><span>/ user / month</span></span>
-            </div>
-
-            <div class="tabs tabs--scroll hero__stack-nav" role="tablist" aria-label="BlacTec Cloud product categories">
-              <button class="tab is-active" role="tab" id="stackTab-0" aria-selected="true" aria-controls="stackPanel-0" type="button">Cloud</button>
-              <button class="tab" role="tab" id="stackTab-1" aria-selected="false" aria-controls="stackPanel-1" tabindex="-1" type="button">Workspace</button>
-              <button class="tab" role="tab" id="stackTab-2" aria-selected="false" aria-controls="stackPanel-2" tabindex="-1" type="button">Zoho</button>
-              <button class="tab" role="tab" id="stackTab-3" aria-selected="false" aria-controls="stackPanel-3" tabindex="-1" type="button">M365</button>
-            </div>
           </div>
         </div>
       </div>
@@ -405,28 +329,6 @@
       </div>
     </section>
 
-    <!-- Stats band -->
-    <section class="stats" aria-label="BlacTec Cloud by the numbers">
-      <div class="container stats__grid">
-        <div class="stat reveal">
-          <span class="stat__num" data-count="99.9" data-suffix="%" data-decimals="1">0</span>
-          <span class="stat__label">Uptime SLA</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat__num" data-count="13">0</span>
-          <span class="stat__label">Cloud tiers to grow into</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat__num" data-count="20" data-suffix=" TB">0</span>
-          <span class="stat__label">Bandwidth on our largest server</span>
-        </div>
-        <div class="stat reveal">
-          <span class="stat__num" data-count="24" data-suffix="/7">0</span>
-          <span class="stat__label">Engineer-led support</span>
-        </div>
-      </div>
-    </section>
-
     <!-- Compare all plans -->
     <section class="pricing" id="compare">
       <div class="container">
@@ -478,37 +380,34 @@
           </div>
         </div>
 
-        <!-- Group: Email hosting -->
+        <!-- Group: Business email (each suite has its own page) -->
         <div class="pricing__group pricing__group--email" id="email-plans">
           <div class="pricing__group-head">
-            <span class="pricing__group-icons" aria-hidden="true">
-              <img src="assets/brand/google-workspace.svg" alt="" width="48" height="48" loading="lazy" />
-              <img src="assets/brand/microsoft-365.svg" alt="" width="48" height="48" loading="lazy" />
-              <img src="assets/brand/zoho.svg" alt="" width="48" height="48" loading="lazy" />
-            </span>
             <h3 class="pricing__group-title">Business Email</h3>
-            <p class="pricing__group-sub">Custom @yourdomain business email, calendars and cloud docs, separate from your BlacTec Cloud plan, so you can mix and match.</p>
+            <p class="pricing__group-sub">Custom @yourdomain email and team tools, separate from your BlacTec Cloud plan. Pick a suite to see its plans.</p>
           </div>
-
-          <div class="tabs" role="tablist" aria-label="Business email categories" id="pricingTabsEmail">
-            <button class="tab is-active" role="tab" id="tab-workspace" aria-selected="true" aria-controls="panel-workspace" data-panel="workspace">Google Workspace</button>
-            <button class="tab" role="tab" id="tab-microsoft365" aria-selected="false" aria-controls="panel-microsoft365" data-panel="microsoft365" tabindex="-1">Microsoft 365</button>
-            <button class="tab" role="tab" id="tab-zoho" aria-selected="false" aria-controls="panel-zoho" data-panel="zoho" tabindex="-1">Zoho Workplace</button>
-          </div>
-          <p class="pricing__note">See the detail for each suite: <a href="/google-workspace">Google Workspace</a>, <a href="/microsoft-365">Microsoft 365</a> and <a href="/zoho-mail">Zoho Workplace</a>.</p>
-
-          <div class="pricing__carousel">
-            <button class="pricing__nav pricing__nav--prev" id="pricingPrevEmail" type="button" aria-label="Scroll email plans left">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg>
-            </button>
-
-            <div class="tab-panel is-active" role="tabpanel" id="panel-workspace" aria-labelledby="tab-workspace" data-cards="workspace"></div>
-            <div class="tab-panel" role="tabpanel" id="panel-microsoft365" aria-labelledby="tab-microsoft365" data-cards="microsoft365" hidden></div>
-            <div class="tab-panel" role="tabpanel" id="panel-zoho" aria-labelledby="tab-zoho" data-cards="zoho" hidden></div>
-
-            <button class="pricing__nav pricing__nav--next" id="pricingNextEmail" type="button" aria-label="Scroll email plans right">
-              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
-            </button>
+          <div class="pillars__grid appsuites">
+            <a class="pcard appsuite reveal" href="/google-workspace">
+              <img class="appsuite__logo" src="assets/brand/official/google-gmail.png" alt="" width="48" height="48" loading="lazy" />
+              <h3 class="pcard__title">Google Workspace</h3>
+              <p>Gmail, Drive, Meet and Gemini on your own domain.</p>
+              <p class="pcard__price">From $7 / user / month</p>
+              <span class="link-arrow"><span>See plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+            <a class="pcard appsuite reveal" href="/microsoft-365">
+              <img class="appsuite__logo" src="assets/brand/official/ms-365.svg" alt="" width="48" height="48" loading="lazy" />
+              <h3 class="pcard__title">Microsoft 365</h3>
+              <p>Outlook, Teams, OneDrive and the Office apps.</p>
+              <p class="pcard__price">From $7 / user / month</p>
+              <span class="link-arrow"><span>See plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
+            <a class="pcard appsuite reveal" href="/zoho-mail">
+              <img class="appsuite__logo appsuite__logo--wide" src="assets/brand/official/zoho-mail.svg" alt="" width="150" height="40" loading="lazy" />
+              <h3 class="pcard__title">Zoho Workplace</h3>
+              <p>Mail, WorkDrive, Writer and Cliq for less.</p>
+              <p class="pcard__price">From $1.10 / user / month</p>
+              <span class="link-arrow"><span>See plans</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+            </a>
           </div>
         </div>
       </div>
@@ -621,58 +520,6 @@
       </div>
     </section>
 
-    <!-- Platforms & technology -->
-    <section class="platforms">
-      <div class="container">
-        <p class="eyebrow eyebrow--center">Built to run what you already use</p>
-        <h2 class="section-title">One-click apps, industry-standard infrastructure</h2>
-
-        <div class="platforms__group">
-          <p class="platforms__label">Install in one click</p>
-          <ul class="pcard__tags pcard__tags--center">
-            <li><img src="assets/brand/wordpress.svg" alt="" width="48" height="48" loading="lazy" />WordPress</li>
-            <li><img src="assets/brand/joomla.svg" alt="" width="48" height="48" loading="lazy" />Joomla</li>
-            <li><img src="assets/brand/drupal.svg" alt="" width="48" height="48" loading="lazy" />Drupal</li>
-            <li><img src="assets/brand/magento.svg" alt="" width="48" height="48" loading="lazy" />Magento</li>
-            <li><img src="assets/brand/prestashop.svg" alt="" width="48" height="48" loading="lazy" />PrestaShop</li>
-            <li><img src="assets/brand/opencart.svg" alt="" width="48" height="48" loading="lazy" />OpenCart</li>
-          </ul>
-        </div>
-        <div class="platforms__group">
-          <p class="platforms__label">Powered by</p>
-          <ul class="pcard__tags pcard__tags--center">
-            <li><img src="assets/brand/litespeed.svg" alt="" width="48" height="48" loading="lazy" />LiteSpeed Web Server</li>
-            <li>NVMe SSD storage</li>
-            <li><img src="assets/brand/mariadb.svg" alt="" width="48" height="48" loading="lazy" />MariaDB</li>
-            <li><img src="assets/brand/mysql.svg" alt="" width="48" height="48" loading="lazy" />MySQL</li>
-            <li><img src="assets/brand/softaculous.svg" alt="" width="48" height="48" loading="lazy" />Softaculous Apps Installer</li>
-            <li><img src="assets/brand/google-cloud.svg" alt="" width="48" height="48" loading="lazy" />Google Cloud</li>
-            <li><img src="assets/brand/azure.svg" alt="" width="48" height="48" loading="lazy" />Microsoft Azure</li>
-            <li><img src="assets/brand/aws.svg" alt="" width="64" height="48" loading="lazy" />AWS</li>
-          </ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- Partners — logos in assets/logos/partners/ (same block lives in index.html) -->
-    <section class="partners" id="partners" aria-labelledby="partnersTitle">
-      <div class="container">
-        <p class="eyebrow eyebrow--center">Our partners</p>
-        <h2 class="section-title" id="partnersTitle">Backed by the providers you already trust</h2>
-        <p class="section-sub">We work with leading global technology and cloud providers, so your cloud, email, security and infrastructure sit on proven platforms, with one team to call.</p>
-        <ul class="partners__grid" aria-label="BlacTec technology partners">
-          <li class="partners__item reveal"><img src="assets/logos/partners/zoho.webp" alt="Zoho Value Added Reseller" width="200" height="58" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/zoom-up.webp" alt="Zoom Up Partner Program, Silver Reseller" width="92" height="90" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/google-cloud.webp" alt="Google Cloud Partner" width="190" height="47" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/microsoft.webp" alt="Microsoft" width="170" height="36" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/aws.webp" alt="Amazon Web Services (AWS)" width="100" height="60" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/huawei.webp" alt="Huawei" width="76" height="78" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/hetzner.webp" alt="Hetzner" width="120" height="18" loading="lazy" decoding="async" /></li>
-          <li class="partners__item reveal"><img src="assets/logos/partners/digicert.webp" alt="DigiCert" width="126" height="38" loading="lazy" decoding="async" /></li>
-        </ul>
-      </div>
-    </section>
-
     <!-- FAQ -->
     <section class="faq">
       <div class="container faq__inner">
@@ -719,17 +566,6 @@
             <button class="acc__q" aria-expanded="false">What payment methods do you accept?<span class="acc__chev">+</span></button>
             <div class="acc__a"><div class="acc__a-in"><p>Pay any invoice with Mobile Money (MTN or Airtel): enter your phone number on the invoice and approve the prompt on your phone, and it is confirmed automatically. You can also pay manually with Airtel Money and share your proof of payment with billing@blactec.ug. Need another way to pay? Contact us and we’ll see what we can arrange.</p></div></div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Final CTA -->
-    <section class="cta-band">
-      <div class="container cta-band__inner reveal">
-        <h2>Ready to put your site on the right infrastructure?</h2>
-        <p>Tell us what you're running today and where it's headed. We'll recommend the plan that fits, not the one that's easiest to sell.</p>
-        <div class="cta-band__actions">
-          <a class="btn btn--white" href="#contact">Get a Quote</a>
         </div>
       </div>
     </section>
@@ -846,7 +682,6 @@
           <li><a href="/#hero-search">Domain search</a></li>
           <li><a href="/web-design">Website design</a></li>
           <li><a href="/web-design#redesign">Website redesign</a></li>
-          <li><a href="/web-design#compare">Design packages</a></li>
           <li><a href="/#portfolio">Portfolio</a></li>
         </ul>
       </div>
@@ -855,9 +690,7 @@
         <h3 class="footer__h">Cloud</h3>
         <ul>
           <li><a href="/hosting#tab-hosting">Shared cloud</a></li>
-          <li><a href="/hosting#tab-vps">VPS cloud</a></li>
-          <li><a href="/hosting#tab-dedicated">Dedicated servers</a></li>
-          <li><a href="/hosting#tab-reseller">Reseller cloud</a></li>
+          <li><a href="/hosting#tab-vps">VPS &amp; dedicated</a></li>
           <li><a href="/hosting#tab-security">SSL &amp; backup</a></li>
           <li><a href="/hosting#control">Firewall &amp; malware scan</a></li>
         </ul>
@@ -869,7 +702,6 @@
           <li><a href="/#managed-it">Managed IT &amp; support</a></li>
           <li><a href="/#security">Security &amp; cybersecurity</a></li>
           <li><a href="/#migration">Backup &amp; continuity</a></li>
-          <li><a href="/#pillars">Multi-cloud</a></li>
           <li><a href="/#contact">Contact us</a></li>
         </ul>
       </div>

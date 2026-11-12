@@ -2000,3 +2000,19 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
     background: radial-gradient(110% 80% at 90% 0%, rgba(51, 115, 224, .14), transparent 62%), linear-gradient(165deg, var(--blue-050), rgba(241, 246, 255, 0) 78%);
   }
 }
+
+/* ============================================================
+   Calmer rhythm (declutter, 2026-11-12): more air between sections, quieter closing
+   ============================================================ */
+:root { --section-y: clamp(4.25rem, 9vw, 7rem); }
+.pillars, .features, .control, .platforms, .partners, .pricing, .migration, .managed, .faq, .quote { padding-top: var(--section-y); padding-bottom: var(--section-y); }
+.quote { background: var(--surface-1); }
+.appsuite { color: inherit; text-decoration: none; }
+.appsuite__logo { width: 48px; height: 48px; object-fit: contain; margin-bottom: .2rem; }
+.appsuites { margin-top: 2rem; }
+.appsuite__logo--wide { width: auto; height: 40px; max-width: 100%; object-position: left center; }
+.svccard__logo[src*="zoho"] { width: auto; height: 30px; max-width: 100%; object-position: left center; }
+/* sticky "On this page" bar: press feedback, and solid fallbacks for users who ask for less transparency or more contrast */
+.subnav__list a:active { transform: scale(.97); transition-duration: .1s; }
+@media (prefers-reduced-transparency: reduce) { .subnav { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } }
+@media (prefers-contrast: more) { .subnav { background: #fff; border-bottom-color: var(--ink-900); } .subnav__list a { color: var(--ink-900); } }
