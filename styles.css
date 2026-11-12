@@ -1995,7 +1995,7 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
   .page-webdesign .hero__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: 3.5rem; }
   .page-webdesign .hero__art::after { display: none; }
   .page-webdesign .hero__art::before {
-    content: ""; position: absolute; inset: -1.6rem -1.2rem -1.6rem -1.2rem; z-index: -1; pointer-events: none;
+    display: none; content: ""; position: absolute; inset: -1.6rem -1.2rem -1.6rem -1.2rem; z-index: -1; pointer-events: none;
     border-radius: 32px; border: 1px solid rgba(51, 115, 224, .12);
     background: radial-gradient(110% 80% at 90% 0%, rgba(51, 115, 224, .14), transparent 62%), linear-gradient(165deg, var(--blue-050), rgba(241, 246, 255, 0) 78%);
   }
@@ -2016,3 +2016,6 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
 .subnav__list a:active { transform: scale(.97); transition-duration: .1s; }
 @media (prefers-reduced-transparency: reduce) { .subnav { background: #fff; -webkit-backdrop-filter: none; backdrop-filter: none; } }
 @media (prefers-contrast: more) { .subnav { background: #fff; border-bottom-color: var(--ink-900); } .subnav__list a { color: var(--ink-900); } }
+
+/* Showcase arrows sit inside the page edge on tablets (they poked 4 px past the viewport) */
+@media (max-width: 1100px) { .showcase__nav--prev, .pillars__nav--prev { left: 6px; } .showcase__nav--next, .pillars__nav--next { right: 6px; } }

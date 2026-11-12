@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.18" />
+  <link rel="stylesheet" href="styles.css?v=1.13.22" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -105,13 +105,6 @@
   <!-- Scroll progress -->
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-  <!-- Announcement bar -->
-  <div class="announce" role="note">
-    <p>Get <strong>1 year of BlacTec Cloud free</strong> with any Business or Premium website package.
-      <a href="#compare" class="announce__link">See packages&nbsp;→</a>
-    </p>
-  </div>
-
   <!-- Header / Navigation -->
   <header class="header" id="header">
     <div class="container header__inner">
@@ -137,13 +130,11 @@
                   <p class="mega__eyebrow">Build</p>
                   <a class="mega__item" href="/web-design"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/></svg></span><span><strong>Website Design &amp; Redesign</strong><em>Conversion-focused corporate sites</em></span></a>
                   <a class="mega__item" href="/#pillars"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m8 9-3 3 3 3"/><path d="m16 9 3 3-3 3"/><path d="M13.5 7l-3 10"/></svg></span><span><strong>Application Development</strong><em>Cloud-native software &amp; portals</em></span></a>
-                  <a class="mega__item" href="#compare"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5.5 8h13l-1 11.5a1 1 0 0 1-1 .9H7.5a1 1 0 0 1-1-.9L5.5 8Z"/><path d="M9 8V7a3 3 0 0 1 6 0v1"/></svg></span><span><strong>E-commerce Platforms</strong><em>Storefronts built to scale</em></span></a>
                 </div>
                 <div class="mega__col">
                   <p class="mega__eyebrow">Identity &amp; Email</p>
                   <a class="mega__item" href="/#hero-search"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.5 2.4 3.8 5.5 3.8 9S14.5 18.6 12 21c-2.5-2.4-3.8-5.5-3.8-9S9.5 5.4 12 3Z"/></svg></span><span><strong>Domains &amp; Transfers</strong><em>.ug, .co.ug, .com &amp; more</em></span></a>
-                  <a class="mega__item" href="/hosting#compare"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg></span><span><strong>Workspace &amp; 365</strong><em>Google, Microsoft, Zoho mail</em></span></a>
-                  <a class="mega__item" href="/#pillars"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/><path d="m9.2 11.7 1.9 1.9 3.7-3.9"/></svg></span><span><strong>Advanced DNS Engineering</strong><em>MX, SPF, DKIM, DMARC</em></span></a>
+                  <a class="mega__item" href="/hosting#email-plans"><span class="mega__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg></span><span><strong>Workspace &amp; 365</strong><em>Google, Microsoft, Zoho mail</em></span></a>
                 </div>
                 <div class="mega__col">
                   <p class="mega__eyebrow">BlacTec Cloud</p>
@@ -250,16 +241,12 @@
         <div class="hero__art">
           <div class="lineup lineup--duo">
           <figure class="device device--main" aria-hidden="true">
-            <div class="device__bar"><i></i><i></i><i></i><span class="device__url">goldenmarketing.co.ug</span></div>
             <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
           </figure>
           <figure class="device device--side device--left" aria-hidden="true">
-            <div class="device__bar"><i></i><i></i><i></i><span class="device__url">kanizapartments.co.ug</span></div>
             <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
           </figure>
           </div>
-          <span class="chip chip--float chip--a" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/></svg>Mobile-first</span>
-          <span class="chip chip--float chip--c" aria-hidden="true"><svg class="chip__ic" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>SEO ready</span>
         </div>
       </div>
     </section>
@@ -697,41 +684,6 @@
           <button class="pricing__nav pricing__nav--next" id="pricingNext" type="button" aria-label="Scroll plans right">
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
           </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- What's included -->
-    <section class="features">
-      <div class="container">
-        <p class="eyebrow eyebrow--center">Every package, at every tier</p>
-        <h2 class="section-title">What's included, no matter which you pick</h2>
-
-        <div class="feature-grid">
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2.5"/><path d="M11 18h2"/></svg></div>
-            <div><p class="feature__title">Mobile-first responsive design</p><p>Every page is designed to look and work perfectly on phones first, then scaled up to tablet and desktop.</p></div>
-          </div>
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
-            <div><p class="feature__title">Free SSL &amp; on-page SEO</p><p>Every build ships with HTTPS encryption and the on-page SEO basics search engines look for from day one.</p></div>
-          </div>
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.5 14.4c-.3-.15-1.73-.85-2-.95s-.46-.15-.65.15-.74.94-.9 1.13-.33.22-.61.08a8.15 8.15 0 0 1-2.4-1.48 9 9 0 0 1-1.66-2.06c-.17-.3 0-.45.13-.6s.3-.35.44-.52a2 2 0 0 0 .3-.5.55.55 0 0 0-.02-.52c-.08-.15-.65-1.57-.9-2.15s-.48-.49-.65-.5h-.56a1.07 1.07 0 0 0-.77.36 3.26 3.26 0 0 0-1.02 2.42 5.65 5.65 0 0 0 1.19 3 12.9 12.9 0 0 0 4.94 4.36c.69.3 1.23.48 1.65.61a4 4 0 0 0 1.82.11 2.98 2.98 0 0 0 1.95-1.37 2.43 2.43 0 0 0 .17-1.38c-.07-.12-.26-.2-.56-.34zM12 2.2a9.8 9.8 0 0 0-8.42 14.76L2.2 21.8l4.95-1.3A9.8 9.8 0 1 0 12 2.2z"/></svg></div>
-            <div><p class="feature__title">WhatsApp click-to-chat</p><p>A floating WhatsApp button so visitors can message you directly from any page, no extra clicks.</p></div>
-          </div>
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
-            <div><p class="feature__title">Analytics &amp; Search Console</p><p>Google Analytics and Search Console set up before launch, so you can see who's visiting from day one.</p></div>
-          </div>
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4" width="18" height="16" rx="2.5"/><path d="M3 9h18"/><path d="M6 6.5h.01"/><path d="M8.5 6.5h.01"/></svg></div>
-            <div><p class="feature__title">Free monthly updates</p><p>A set number of text, image and content updates included every month, so your site stays current without extra cost or technical hassle.</p></div>
-          </div>
-          <div class="feature reveal">
-            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/><path d="M19.5 20a3.5 3.5 0 0 1-3.5 3H13"/></svg></div>
-            <div><p class="feature__title">Post-launch support</p><p>Bug fixes after go-live and 24/7 engineer-led support for anything cloud or infrastructure related.</p></div>
-          </div>
         </div>
       </div>
     </section>
