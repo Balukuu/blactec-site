@@ -2019,3 +2019,10 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
 
 /* Showcase arrows sit inside the page edge on tablets (they poked 4 px past the viewport) */
 @media (max-width: 1100px) { .showcase__nav--prev, .pillars__nav--prev { left: 6px; } .showcase__nav--next, .pillars__nav--next { right: 6px; } }
+
+/* Compact dropdowns (Business Apps, Products): a card under the trigger, not the full-width panel */
+.nav__item.has-mega--compact { position: relative; }
+.mega--compact { left: 0; right: auto; width: 392px; top: 100%; padding-top: .55rem; background: transparent; border: 0; box-shadow: none; }
+.mega__card { display: grid; gap: .1rem; padding: .6rem .6rem .8rem; background: #fff; border: 1px solid rgba(14, 15, 19, .08); border-radius: 18px; box-shadow: 0 24px 48px rgba(29, 30, 32, .14); }
+.mega--compact .mega__cta { margin: .35rem .3rem 0; padding: .7rem .3rem 0; border-top: 1px solid var(--border); }
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) { .mega__card { border-color: var(--ink-900); } }

@@ -1854,10 +1854,7 @@ function bootstrap() {
         new StickyHeader(header, progress, toTop);
     }
     qsa('.accordion').forEach((accordion, group) => new Accordion(accordion, group));
-    const megaItem = qs('.has-mega');
-    if (megaItem) {
-        new MegaMenu(megaItem);
-    }
+    qsa('.has-mega').forEach((item) => new MegaMenu(item));
     const mobileMenu = document.getElementById('mobileMenu');
     const hamburger = document.getElementById('hamburger');
     const mobileClose = document.getElementById('mobileClose');

@@ -2119,10 +2119,7 @@ function bootstrap(): void {
 
   qsa<HTMLElement>('.accordion').forEach((accordion, group) => new Accordion(accordion, group));
 
-  const megaItem = qs<HTMLElement>('.has-mega');
-  if (megaItem) {
-    new MegaMenu(megaItem);
-  }
+  qsa<HTMLElement>('.has-mega').forEach((item) => new MegaMenu(item));
 
   const mobileMenu = document.getElementById('mobileMenu');
   const hamburger = document.getElementById('hamburger');
