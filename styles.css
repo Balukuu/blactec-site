@@ -683,6 +683,12 @@ a.alt__add { display: inline-flex; align-items: center; }
 .apptiles--2 .apptile:nth-child(even) { margin-top: 1.6rem; animation-delay: -3s; }
 .apptiles--3 .apptile:nth-child(3n+2) { margin-top: 1.6rem; animation-delay: -3s; }
 .apptiles--3 .apptile:nth-child(3n) { animation-delay: -1.5s; }
+/* Zoho ships wide product logos (icon + name), so they get wide tiles and no extra label */
+.apptiles--logos { grid-template-columns: repeat(2, 1fr); max-width: 370px; gap: 1.3rem 1.2rem; justify-items: stretch; }
+.apptiles--logos .apptile__ic { width: 100%; height: 84px; border-radius: 20px; }
+.apptiles--logos .apptile__ic img { width: auto; height: 36px; max-width: 86%; }
+.apptiles--logos .apptile em { display: none; }
+.apptiles--logos .apptile:nth-child(even) { margin-top: 1.4rem; }
 @keyframes tileFloat { 0%, 100% { translate: 0 0; } 50% { translate: 0 -9px; } }
 @media (prefers-reduced-motion: reduce) { .apptile { animation: none; } }
 @media (max-width: 480px) { .apptile__ic { width: 78px; height: 78px; border-radius: 22px; } .apptile__ic img { width: 44px; height: 44px; } .apptiles--3 { gap: 1.2rem .9rem; } }
