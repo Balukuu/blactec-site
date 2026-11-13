@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.26" />
+  <link rel="stylesheet" href="styles.css?v=1.13.28" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -480,74 +480,84 @@
     </section>
 
     <!-- Control & protection: client area as a phone app, firewall, malware scan -->
-    <section class="control" id="control" aria-labelledby="controlTitle">
-      <div class="container control__inner">
-        <div class="control__copy reveal">
-          <p class="eyebrow">Control &amp; protection</p>
-          <h2 class="section-title section-title--left" id="controlTitle">Run your cloud from your phone. Protect it your way.</h2>
-          <p class="control__lead">Open the BlacTec client area on your phone like an app. Business Hosting and Professional Hosting add a built-in firewall and malware scan to keep your website safe.</p>
-
-          <ul class="control__list">
-            <li class="feature">
-              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
-              <div><p class="feature__title">Your control panel, on your phone</p><p>Add the client area to your home screen and it opens like an app, with no app store. Check your services, pay invoices with Mobile Money and reach support from anywhere.</p></div>
-            </li>
-            <li class="feature">
-              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg></div>
-              <div><p class="feature__title">A firewall for each website</p><p>Block or allow visitors by IP address or by whole country. Rules apply within seconds, and the tool warns you before you lock yourself out.</p></div>
-            </li>
-            <li class="feature">
-              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
-              <div><p class="feature__title">HTTPS-only and login protection</p><p>Send every visitor to the secure version of your site with one switch, and limit repeated attempts on WordPress, Joomla and other common login pages.</p></div>
-            </li>
-            <li class="feature">
-              <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
-              <div><p class="feature__title">Malware scan on demand</p><p>Scan your website files whenever you like and see which ones match known malware. The scan only reports; it never changes or deletes your files.</p></div>
-            </li>
-          </ul>
-
-          <div class="control__actions">
-            <a class="btn btn--primary" href="#compare">Compare shared cloud plans
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
+    <section class="control control--cloud" id="control" aria-labelledby="controlTitle">
+      <div class="container">
+        <div class="control__inner">
+          <div class="control__copy reveal">
+            <p class="eyebrow">Control &amp; protection</p>
+            <h2 class="section-title section-title--left" id="controlTitle">Run your cloud from your phone. Protect it your way.</h2>
+            <p class="control__lead">Open the BlacTec client area on your phone like an app. Business Hosting and Professional Hosting add a built-in firewall and malware scan to keep your website safe.</p>
+            <div class="control__actions">
+              <a class="btn btn--primary" href="#compare">Compare shared cloud plans
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </a>
+            </div>
           </div>
-          <p class="control__note">Firewall and malware scan are included with Business Hosting and Professional Hosting. Country rules use where an address block is registered, so a visitor on a VPN can appear in another country.</p>
-        </div>
 
-        <!-- Decorative phone: the hosting tools screen of the client area -->
-        <div class="control__art reveal" aria-hidden="true">
-          <div class="phone">
-            <div class="phone__screen">
-              <div class="phone__head">
-                <span class="phone__title">Cloud tools</span>
-                <span class="phone__domain">yourbusiness.ug</span>
-              </div>
-              <div class="phone__tiles">
-                <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
-                <span class="phone__tile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg>Email</span>
-                <span class="phone__tile"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>Databases</span>
-                <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg>Backups</span>
-                <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg>Firewall</span>
-                <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Malware scan</span>
-              </div>
-              <div class="phone__status">
-                <i class="phone__dot"></i>
-                <span><strong>Firewall active</strong><small>HTTPS-only is on</small></span>
-              </div>
-              <div class="phone__status">
-                <i class="phone__dot"></i>
-                <span><strong>No known malware found</strong><small>Last scan: today</small></span>
-              </div>
-              <div class="phone__bar">
-                <svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-8Z"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/></svg>
-                <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>
-                <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/></svg>
+          <!-- Decorative phone: the cloud tools screen of the client area -->
+          <div class="control__art reveal" aria-hidden="true">
+            <div class="phone">
+              <div class="phone__screen">
+                <i class="phone__island"></i>
+                <div class="phone__sys">
+                  <span>9:41</span>
+                  <span class="phone__sys-ic">
+                    <svg viewBox="0 0 18 12"><rect x="0" y="8" width="3" height="4" rx=".8"/><rect x="5" y="5.5" width="3" height="6.5" rx=".8"/><rect x="10" y="3" width="3" height="9" rx=".8"/><rect x="15" y="0" width="3" height="12" rx=".8"/></svg>
+                    <svg viewBox="0 0 26 12"><rect x=".5" y=".5" width="22" height="11" rx="3.2" fill="none" stroke="currentColor" opacity=".45"/><rect x="2.2" y="2.2" width="16" height="7.6" rx="1.8"/><rect x="24" y="4" width="1.8" height="4" rx=".9" opacity=".45"/></svg>
+                  </span>
+                </div>
+                <div class="phone__head">
+                  <span class="phone__title">Cloud tools</span>
+                  <span class="phone__domain">yourbusiness.ug</span>
+                </div>
+                <div class="phone__tiles">
+                  <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Z"/></svg>Files</span>
+                  <span class="phone__tile"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="m4 7.5 8 5.5 8-5.5"/></svg>Email</span>
+                  <span class="phone__tile"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="7" ry="3"/><path d="M5 6v6c0 1.7 3.1 3 7 3s7-1.3 7-3V6"/><path d="M5 12v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>Databases</span>
+                  <span class="phone__tile"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="m8 10 4 4 4-4"/><path d="M5 19h14"/></svg>Backups</span>
+                  <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg>Firewall</span>
+                  <span class="phone__tile phone__tile--new"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>Malware scan</span>
+                </div>
+                <div class="phone__status">
+                  <i class="phone__dot"></i>
+                  <span><strong>Firewall active</strong><small>HTTPS-only is on</small></span>
+                </div>
+                <div class="phone__status">
+                  <i class="phone__dot"></i>
+                  <span><strong>No known malware found</strong><small>Last scan: today</small></span>
+                </div>
+                <div class="phone__bar">
+                  <svg viewBox="0 0 24 24"><path d="M4 11 12 4l8 7v8a1 1 0 0 1-1 1h-4v-6H9v6H5a1 1 0 0 1-1-1v-8Z"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+                  <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/></svg>
+                  <svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18"/></svg>
+                  <svg viewBox="0 0 24 24"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="2.5" y="13.5" width="4.5" height="6.5" rx="1.8"/><rect x="17" y="13.5" width="4.5" height="6.5" rx="1.8"/></svg>
+                </div>
               </div>
             </div>
           </div>
         </div>
+
+        <ul class="control__list">
+          <li class="feature reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.5" width="10" height="19" rx="2.5"/><path d="M11 18.5h2"/></svg></div>
+            <div><p class="feature__title">Your control panel, on your phone</p><p>Add the client area to your home screen and it opens like an app, with no app store. Check services, pay invoices with Mobile Money and reach support.</p></div>
+          </li>
+          <li class="feature reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l7 2.7V11c0 4.5-3 7.8-7 9.3-4-1.5-7-4.8-7-9.3V5.7L12 3Z"/></svg></div>
+            <div><p class="feature__title">A firewall for each website</p><p>Block or allow visitors by IP address or by whole country. Rules apply within seconds, and a warning stops you locking yourself out.</p></div>
+          </li>
+          <li class="feature reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg></div>
+            <div><p class="feature__title">HTTPS-only and login protection</p><p>One switch sends every visitor to the secure version of your site, and limits repeated attempts on WordPress, Joomla and other login pages.</p></div>
+          </li>
+          <li class="feature reveal">
+            <div class="pcard__ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg></div>
+            <div><p class="feature__title">Malware scan on demand</p><p>Scan your website files whenever you like and see which ones match known malware. It only reports; it never changes or deletes your files.</p></div>
+          </li>
+        </ul>
+
+        <p class="control__note">Firewall and malware scan are included with Business Hosting and Professional Hosting. Country rules use where an address block is registered, so a visitor on a VPN can appear in another country.</p>
       </div>
     </section>
 

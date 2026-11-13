@@ -640,8 +640,12 @@ a.alt__add { display: inline-flex; align-items: center; }
 .control__art { display: grid; place-items: center; }
 
 /* Decorative phone showing the Hosting tools screen */
-.phone { width: min(100%, 290px); padding: 10px; border-radius: 40px; background: var(--ink-900); box-shadow: var(--shadow-hover); }
-.phone__screen { display: flex; flex-direction: column; gap: .8rem; min-height: 440px; padding: 1.3rem 1rem .8rem; border-radius: 31px; background: #fff; }
+.phone { width: min(100%, 300px); padding: 10px; border-radius: 40px; background: var(--ink-900); box-shadow: var(--shadow-hover); }
+.phone__screen { position: relative; display: flex; flex-direction: column; gap: .8rem; min-height: 456px; padding: .9rem 1rem .8rem; border-radius: 31px; background: #fff; }
+.phone__island { position: absolute; top: .9rem; left: 50%; width: 78px; height: 22px; border-radius: 999px; background: var(--ink-900); transform: translateX(-50%); }
+.phone__sys { display: flex; align-items: center; justify-content: space-between; height: 22px; padding: 0 .45rem; font-size: .72rem; font-weight: 700; letter-spacing: .01em; color: var(--ink-900); }
+.phone__sys-ic { display: inline-flex; align-items: center; gap: .35rem; }
+.phone__sys-ic svg { height: 10px; width: auto; fill: currentColor; }
 .phone__head { display: flex; align-items: baseline; justify-content: space-between; gap: .6rem; }
 .phone__title { font-size: 1.05rem; font-weight: 700; color: var(--ink-900); letter-spacing: -.01em; }
 .phone__domain { font-size: .68rem; font-weight: 600; color: var(--ink-500); }
@@ -664,6 +668,33 @@ a.alt__add { display: inline-flex; align-items: center; }
 .phone__bar { display: flex; justify-content: space-around; margin-top: auto; padding-top: .75rem; border-top: 1px solid var(--border); color: var(--ink-500); }
 .phone__bar svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
 .phone__bar svg:first-child { color: var(--ink-900); }
+
+/* Cloud variant (hosting page): heading + phone on top, the four features in one row below.
+   Scoped with .control--cloud because .control is shared with the migration sections of the business-app pages. */
+.control--cloud .control__inner { grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); gap: clamp(2rem, 5vw, 4.5rem); }
+.control--cloud .section-title--left { max-width: 16ch; }
+.control--cloud .control__lead { max-width: 31rem; }
+.control--cloud .control__actions { margin-top: 2.2rem; }
+.control--cloud .control__art {
+  padding: clamp(1.6rem, 3vw, 2.4rem) 1rem; border: 1px solid var(--blue-100); border-radius: 32px;
+  background: radial-gradient(90% 65% at 50% 0%, #fff 0%, rgba(255, 255, 255, 0) 72%), linear-gradient(180deg, var(--blue-100), var(--blue-050));
+}
+.control--cloud .control__list { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 2rem clamp(1.4rem, 3vw, 2.4rem); margin-top: clamp(2.8rem, 5vw, 4.2rem); }
+.control--cloud .feature { flex-direction: column; gap: 1rem; }
+.control--cloud .feature p:not(.feature__title) { font-size: .92rem; line-height: 1.55; }
+.control--cloud .control__note { max-width: 46rem; margin-top: 2.4rem; text-wrap: pretty; }
+@media (max-width: 1000px) {
+  .control--cloud .control__list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 900px) {
+  .control--cloud .control__inner { grid-template-columns: 1fr; }
+  .control--cloud .control__art { width: 100%; max-width: 460px; margin-inline: auto; }
+}
+@media (max-width: 560px) {
+  .control--cloud .control__list { grid-template-columns: 1fr; gap: 1.6rem; }
+  .control--cloud .feature { flex-direction: row; gap: 1rem; }
+  .control--cloud .control__note { margin-top: 2rem; }
+}
 /* Business-app pages (Google Workspace, Zoho, Microsoft 365) */
 .page-apps main section[id] { scroll-margin-top: 56px; }
 .page-apps .feature-grid .feature { padding: 1.4rem; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 1px 2px rgba(14,15,19,.04), 0 10px 26px rgba(14,15,19,.05); }
