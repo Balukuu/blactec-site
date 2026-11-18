@@ -974,6 +974,11 @@ a.alt__add { display: inline-flex; align-items: center; }
 @media (hover: hover) { .showcase__card:hover { transform: translateY(-6px); box-shadow: var(--shadow-hover); border-color: var(--blue-500); } }
 @media (hover: hover) { .showcase__card:hover::before { opacity: 1; } }
 
+/* A card with no link (client without a live site of its own): nothing to follow, so no lift, no top bar, no zoom */
+.showcase__card--static:active, .showcase__card--static:hover { transform: none; box-shadow: none; border-color: var(--border); }
+.showcase__card--static:hover::before { opacity: 0; }
+.showcase__card--static:hover .showcase__thumb > img { transform: none; }
+
 .showcase__thumb { display: flex; flex-direction: column; background: var(--surface-1); }
 .showcase__thumb > img { position: relative; aspect-ratio: 16 / 10; width: 100%; object-fit: cover; object-position: top; transition: transform .5s cubic-bezier(.4, 0, .2, 1); }
 @media (hover: hover) { .showcase__card:hover .showcase__thumb > img { transform: scale(1.05); } }
