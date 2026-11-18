@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.32" />
+  <link rel="stylesheet" href="styles.css?v=1.13.33" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -97,7 +97,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.13.14"></script>
+  <script defer src="dist/main.js?v=1.13.15"></script>
 </head>
 <body class="page-webdesign">
   <a class="skip-link" href="#top">Skip to content</a>
@@ -257,15 +257,61 @@
           <p class="hero__facts"><span>From UGX 1,200,000</span><span>Live in as little as 10 days</span><span>Mobile Money or card</span></p>
         </div>
 
-        <!-- Right column: one real client site, on a desktop and on a phone -->
+        <!-- Right column: real client sites, each on a desktop and on a phone; rotates, pauses on hover -->
         <div class="hero__art">
-          <div class="lineup lineup--duo lineup--phone">
-            <figure class="device device--main" aria-hidden="true">
-              <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
-            </figure>
-            <figure class="device device--phone" aria-hidden="true">
-              <img src="assets/showcase/golden-mobile.webp" alt="" width="540" height="1038" decoding="async" />
-            </figure>
+          <div class="herocast" data-herocast>
+            <div class="herocast__stage">
+              <div class="lineup lineup--duo lineup--phone herocast__slide is-active" data-name="Golden Marketing" data-url="https://goldenmarketing.co.ug/">
+                <figure class="device device--main" aria-hidden="true">
+                  <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
+                </figure>
+                <figure class="device device--phone" aria-hidden="true">
+                  <img src="assets/showcase/golden-mobile.webp" alt="" width="540" height="1038" decoding="async" />
+                </figure>
+              </div>
+              <div class="lineup lineup--duo lineup--phone herocast__slide" data-name="Kaniz Furnished Apartments" data-url="https://kanizapartments.co.ug/">
+                <figure class="device device--main" aria-hidden="true">
+                  <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="device device--phone" aria-hidden="true">
+                  <img src="assets/showcase/kaniz-mobile.webp" alt="" width="540" height="1038" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+              <div class="lineup lineup--duo lineup--phone herocast__slide" data-name="Normah Agro Farm" data-url="https://normahfarms.co.ug/">
+                <figure class="device device--main" aria-hidden="true">
+                  <img src="assets/showcase/normah-agro-farm.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="device device--phone" aria-hidden="true">
+                  <img src="assets/showcase/normah-mobile.webp" alt="" width="540" height="1038" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+              <div class="lineup lineup--duo lineup--phone herocast__slide" data-name="Public Health Solutions" data-url="https://phs-africa.com/">
+                <figure class="device device--main" aria-hidden="true">
+                  <img src="assets/showcase/phs-africa.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="device device--phone" aria-hidden="true">
+                  <img src="assets/showcase/phs-mobile.webp" alt="" width="540" height="1038" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+              <div class="lineup lineup--duo lineup--phone herocast__slide" data-name="Obuntu Bedside &amp; Nursing Care" data-url="https://obuntubedsidenursing.com/">
+                <figure class="device device--main" aria-hidden="true">
+                  <img src="assets/showcase/obuntu-desktop.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
+                </figure>
+                <figure class="device device--phone" aria-hidden="true">
+                  <img src="assets/showcase/obuntu-mobile.webp" alt="" width="540" height="1038" loading="lazy" decoding="async" />
+                </figure>
+              </div>
+            </div>
+            <div class="herocast__bar">
+              <p class="herocast__now"><span class="herocast__name" data-herocast-name>Golden Marketing</span><a class="herocast__link" data-herocast-link href="https://goldenmarketing.co.ug/" target="_blank" rel="noopener noreferrer">Visit site<svg class="herocast__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></a></p>
+              <div class="herocast__dots" role="group" aria-label="Choose a client site">
+                <button class="herocast__dot is-active" type="button" aria-label="Golden Marketing" aria-current="true"></button>
+                <button class="herocast__dot" type="button" aria-label="Kaniz Furnished Apartments"></button>
+                <button class="herocast__dot" type="button" aria-label="Normah Agro Farm"></button>
+                <button class="herocast__dot" type="button" aria-label="Public Health Solutions"></button>
+                <button class="herocast__dot" type="button" aria-label="Obuntu Bedside &amp; Nursing Care"></button>
+              </div>
+            </div>
           </div>
         </div>
       </div>

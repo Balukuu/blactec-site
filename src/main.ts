@@ -2002,6 +2002,86 @@ class MarqueeControl {
    Hero decorations only move while they are on screen.
    ============================================================ */
 
+/** Web design hero: cycles through real client sites (a desktop + phone pair per slide). Pauses on hover/focus, while off screen and in a hidden tab; no autoplay when the visitor prefers reduced motion. */
+class HeroCast {
+  private readonly slides: HTMLElement[];
+  private readonly dots: HTMLButtonElement[];
+  private readonly nameEl: HTMLElement | null;
+  private readonly linkEl: HTMLAnchorElement | null;
+  private index = 0;
+  private timer: number | undefined;
+  private held = false;
+  private onScreen = true;
+
+  constructor(root: HTMLElement) {
+    this.slides = qsa<HTMLElement>('.herocast__slide', root);
+    this.dots = qsa<HTMLButtonElement>('.herocast__dot', root);
+    this.nameEl = qs<HTMLElement>('[data-herocast-name]', root);
+    this.linkEl = qs<HTMLAnchorElement>('[data-herocast-link]', root);
+    if (this.slides.length < 2) {
+      return;
+    }
+    this.dots.forEach((dot, i) => dot.addEventListener('click', () => {
+      this.show(i);
+      this.restart();
+    }));
+    const hold = (value: boolean): void => {
+      this.held = value;
+      this.restart();
+    };
+    root.addEventListener('pointerenter', () => hold(true));
+    root.addEventListener('pointerleave', () => hold(false));
+    root.addEventListener('focusin', () => hold(true));
+    root.addEventListener('focusout', () => hold(false));
+    document.addEventListener('visibilitychange', () => this.restart());
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver((entries) => {
+        this.onScreen = entries.some((entry) => entry.isIntersecting);
+        this.restart();
+      }).observe(root);
+    }
+    // The other slides' images are lazy in the HTML; fetch them as soon as the page is idle so a slide never shows empty.
+    const preload = (): void => {
+      qsa<HTMLImageElement>('img', root).forEach((img) => {
+        img.loading = 'eager';
+      });
+    };
+    if (document.readyState === 'complete') {
+      preload();
+    } else {
+      window.addEventListener('load', preload, { once: true });
+    }
+    this.restart();
+  }
+
+  private show(next: number): void {
+    this.index = next;
+    this.slides.forEach((slide, i) => slide.classList.toggle('is-active', i === next));
+    this.dots.forEach((dot, i) => {
+      dot.classList.toggle('is-active', i === next);
+      if (i === next) {
+        dot.setAttribute('aria-current', 'true');
+      } else {
+        dot.removeAttribute('aria-current');
+      }
+    });
+    const slide = this.slides[next];
+    if (slide && this.nameEl && this.linkEl) {
+      this.nameEl.textContent = slide.dataset['name'] ?? '';
+      this.linkEl.href = slide.dataset['url'] ?? this.linkEl.href;
+    }
+  }
+
+  private restart(): void {
+    window.clearInterval(this.timer);
+    this.timer = undefined;
+    if (this.held || !this.onScreen || document.hidden || prefersReducedMotion()) {
+      return;
+    }
+    this.timer = window.setInterval(() => this.show((this.index + 1) % this.slides.length), 5200);
+  }
+}
+
 class HeroMotion {
   constructor(stage: HTMLElement) {
     if (!('IntersectionObserver' in window)) {
@@ -2102,6 +2182,7 @@ function bootstrap(): void {
   });
 
   qsa<HTMLElement>('.lineup--side').forEach((el) => new HeroMotion(el));
+  qsa<HTMLElement>('[data-herocast]').forEach((el) => new HeroCast(el));
 
   new RevealOnScroll();
   new StatsCounter();
