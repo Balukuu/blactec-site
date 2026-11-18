@@ -117,6 +117,7 @@ const BILLING_URL = 'https://cloud.blactec.ug';
 
 /** A plan name on this site → the slug of the matching product's order page in the portal. */
 const BILLING_PRODUCTS: Record<string, string> = {
+  'Basic Hosting': 'basic-hosting',
   'Starter Hosting': 'starter-hosting',
   'Business Hosting': 'business-hosting',
   'Enterprise Hosting': 'enterprise-hosting',
@@ -890,29 +891,24 @@ class Tabs {
 const PRICING: Record<PanelKey, PricingPlan[]> = {
   hosting: [
     {
-      name: 'Starter Hosting', desc: 'Perfect for personal websites and small businesses.',
-      currency: 'UGX', price: 100000, unit: 'year',
-      features: ['1 GB SSD storage', '10 GB monthly bandwidth', '1 website', '5 email accounts', '1 MySQL database', 'Free SSL certificate', 'Control panel', 'Standard technical support'],
+      name: 'Basic Hosting', desc: 'A simple, fast website on your own domain.',
+      currency: 'UGX', price: 50000, unit: 'year',
+      features: ['Simple static website (no PHP or database)', '1 website on your own domain', 'Free SSL certificate', 'Set up and published by our team', 'No email accounts (add Zoho Mail if needed)', 'Standard technical support'],
     },
     {
-      name: 'Basic Hosting', desc: 'Ideal for growing business websites.',
-      currency: 'UGX', price: 150000, unit: 'year',
-      features: ['5 GB SSD storage', '50 GB monthly bandwidth', '1 website', '20 email accounts', '5 MySQL databases', 'Free SSL certificate', 'Control panel', 'Standard technical support'],
+      name: 'Starter Hosting', desc: 'Perfect for personal websites and small businesses.',
+      currency: 'UGX', price: 100000, unit: 'year',
+      features: ['5 GB SSD storage', '20 GB monthly bandwidth', '1 website, up to 5 subdomains', '5 email accounts', '2 MySQL databases', 'Free SSL certificate', 'Control panel', 'Standard technical support'],
     },
     {
       name: 'Business Hosting', desc: 'Suitable for business websites with higher resource needs.',
       currency: 'UGX', price: 200000, unit: 'year', popular: true,
-      features: ['10 GB SSD storage', '100 GB monthly bandwidth', '1 website', '50 email accounts', '10 MySQL databases', 'Free SSL certificate', 'Firewall & malware scan tools', 'Control panel', 'Priority technical support'],
-    },
-    {
-      name: 'Professional Hosting', desc: 'Designed for corporate websites and online platforms.',
-      currency: 'UGX', price: 250000, unit: 'year',
-      features: ['15 GB SSD storage', '200 GB monthly bandwidth', '1 website', '100 email accounts', 'Unlimited MySQL databases', 'Free SSL certificate', 'Firewall & malware scan tools', 'Control panel', 'Priority technical support'],
+      features: ['10 GB SSD storage', '100 GB monthly bandwidth', '1 website, up to 20 subdomains', '15 email accounts', '10 MySQL databases', 'Free SSL certificate', 'Firewall & malware scan tools', 'Control panel', 'Priority technical support'],
     },
     {
       name: 'Enterprise Hosting', desc: 'For organizations requiring more resources and reliability.',
       currency: 'UGX', price: 350000, unit: 'year',
-      features: ['20 GB SSD storage', 'Unlimited bandwidth (fair usage policy)', '1 website', 'Unlimited email accounts', 'Unlimited MySQL databases', 'Free .ug domain (first year)', 'Free SSL certificate', 'Control panel', 'Premium technical support'],
+      features: ['20 GB SSD storage', 'Unlimited bandwidth (fair usage policy)', '1 website, up to 50 subdomains', 'Unlimited email accounts', '25 MySQL databases', 'Firewall & malware scan tools', 'Free .ug domain (first year)', 'Free SSL certificate', 'Control panel', 'Premium technical support'],
     },
   ],
   vps: [

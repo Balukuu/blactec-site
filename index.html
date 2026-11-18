@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.30" />
+  <link rel="stylesheet" href="styles.css?v=1.13.31" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -99,7 +99,7 @@
     "@context": "https://schema.org",
     "@type": "FAQPage",
     "mainEntity": [
-      { "@type": "Question", "name": "What's included in BlacTec Cloud plans?", "acceptedAnswer": { "@type": "Answer", "text": "Every BlacTec plan runs on ultrafast NVMe storage with a control panel, a free SSL certificate and 24/7 engineer-led support. Bandwidth, storage, email accounts and MySQL databases scale with each tier, and our Enterprise plan includes unlimited bandwidth under fair usage. Business Hosting and Professional Hosting also include a website firewall and a malware scan in the client area, which you can add to your phone's home screen and open like an app." } },
+      { "@type": "Question", "name": "What's included in BlacTec Cloud plans?", "acceptedAnswer": { "@type": "Answer", "text": "Every BlacTec plan includes a free SSL certificate and 24/7 engineer-led support. Starter, Business and Enterprise run on ultrafast NVMe storage with a control panel, while Basic Hosting is a simple static website that our team sets up and publishes for you, with no email accounts or database. Bandwidth, storage, email accounts and MySQL databases scale with each tier, and our Enterprise plan includes unlimited bandwidth under fair usage. Business Hosting and Enterprise Hosting also include a website firewall and a malware scan in the client area, which you can add to your phone's home screen and open like an app." } },
       { "@type": "Question", "name": "Do you register .ug domains?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside global TLDs like .com, .org and .net, and we handle the full DNS lifecycle for you." } },
       { "@type": "Question", "name": "Can you migrate my existing site or email?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. We perform zero-downtime migrations of websites, live databases and legacy email histories from your old host, with automated backups running from day one." } },
       { "@type": "Question", "name": "Which cloud platforms do you support?", "acceptedAnswer": { "@type": "Answer", "text": "We provision, migrate and manage workloads across Google Cloud Platform, Microsoft Azure and AWS, and integrate Google Workspace, Microsoft 365 and Zoho Mail." } },
@@ -128,7 +128,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.13.13"></script>
+  <script defer src="dist/main.js?v=1.13.14"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -354,12 +354,19 @@
 
         <!-- Hosting -->
         <div class="shelf__panel is-active" role="tabpanel" id="servicePanel-hosting" aria-labelledby="serviceTab-hosting">
-          <div class="shelf__cards">
+          <div class="shelf__cards shelf__cards--four">
+            <article class="svccard">
+              <h3 class="svccard__name">Basic Hosting</h3>
+              <p class="svccard__desc">A simple, fast website on your own domain.</p>
+              <p class="svccard__price"><strong data-plan-price="Basic Hosting">UGX 50,000</strong><span>/ year</span></p>
+              <ul class="svccard__features"><li>Simple static website</li><li>1 website on your own domain</li><li>Free SSL certificate</li></ul>
+              <a class="btn btn--secondary" href="https://cloud.blactec.ug/client/store/configure/basic-hosting?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=home-plans">Order now</a>
+            </article>
             <article class="svccard">
               <h3 class="svccard__name">Starter Hosting</h3>
               <p class="svccard__desc">Perfect for personal websites and small businesses.</p>
               <p class="svccard__price"><strong data-plan-price="Starter Hosting">UGX 100,000</strong><span>/ year</span></p>
-              <ul class="svccard__features"><li>1 GB SSD storage</li><li>5 email accounts</li><li>Free SSL certificate</li></ul>
+              <ul class="svccard__features"><li>5 GB SSD storage</li><li>5 email accounts</li><li>Free SSL certificate</li></ul>
               <a class="btn btn--secondary" href="https://cloud.blactec.ug/client/store/configure/starter-hosting?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=home-plans">Order now</a>
             </article>
             <article class="svccard svccard--popular">
@@ -367,14 +374,14 @@
               <h3 class="svccard__name">Business Hosting</h3>
               <p class="svccard__desc">Suitable for business websites with higher resource needs.</p>
               <p class="svccard__price"><strong data-plan-price="Business Hosting">UGX 200,000</strong><span>/ year</span></p>
-              <ul class="svccard__features"><li>10 GB SSD storage</li><li>50 email accounts</li><li>Priority technical support</li></ul>
+              <ul class="svccard__features"><li>10 GB SSD storage</li><li>15 email accounts</li><li>Firewall &amp; malware scan</li></ul>
               <a class="btn btn--primary" href="https://cloud.blactec.ug/client/store/configure/business-hosting?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=home-plans">Order now</a>
             </article>
             <article class="svccard">
               <h3 class="svccard__name">Enterprise Hosting</h3>
               <p class="svccard__desc">For organizations requiring more resources and reliability.</p>
               <p class="svccard__price"><strong data-plan-price="Enterprise Hosting">UGX 350,000</strong><span>/ year</span></p>
-              <ul class="svccard__features"><li>20 GB SSD storage</li><li>Unlimited bandwidth (fair use)</li><li>Free .ug domain, first year</li></ul>
+              <ul class="svccard__features"><li>20 GB SSD storage</li><li>Unlimited email accounts</li><li>Free .ug domain, first year</li></ul>
               <a class="btn btn--secondary" href="https://cloud.blactec.ug/client/store/configure/enterprise-hosting?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=home-plans">Order now</a>
             </article>
           </div>
@@ -622,7 +629,7 @@
           </div>
         </div>
 
-        <p class="features__note">New with Business and Professional Hosting: a website firewall and malware scan, built into your client area. <a class="link-arrow" href="/hosting#control"><span>See how they work</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
+        <p class="features__note">New with Business and Enterprise Hosting: a website firewall and malware scan, built into your client area. <a class="link-arrow" href="/hosting#control"><span>See how they work</span><svg class="link-arrow__ico" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></p>
 
         <div class="features__cta">
           <a class="btn btn--primary" href="#contact">Talk to a security engineer
@@ -1050,7 +1057,7 @@
         <div class="accordion" id="accordion">
           <div class="acc">
             <button class="acc__q" aria-expanded="false">What's included in BlacTec Cloud plans?<span class="acc__chev">+</span></button>
-            <div class="acc__a"><div class="acc__a-in"><p>Every plan runs on ultrafast NVMe storage with a control panel, a free SSL certificate and 24/7 engineer-led support. Storage, bandwidth, email accounts and MySQL databases all scale with your tier, and Enterprise includes unlimited bandwidth under fair usage. Business Hosting and Professional Hosting also include a website firewall and a malware scan in the client area, which you can add to your phone&rsquo;s home screen and open like an app.</p></div></div>
+            <div class="acc__a"><div class="acc__a-in"><p>Every plan includes a free SSL certificate and 24/7 engineer-led support. Starter, Business and Enterprise run on ultrafast NVMe storage with a control panel, while Basic Hosting is a simple static website that our team sets up and publishes for you, with no email accounts or database. Storage, bandwidth, email accounts and MySQL databases all scale with your tier, and Enterprise includes unlimited bandwidth under fair usage. Business Hosting and Enterprise Hosting also include a website firewall and a malware scan in the client area, which you can add to your phone&rsquo;s home screen and open like an app.</p></div></div>
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">Do you register .ug domains?<span class="acc__chev">+</span></button>

@@ -1587,6 +1587,9 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
 .shelf__panel { display: none; }
 .shelf__panel.is-active { display: block; animation: panelIn .5s var(--ease-out) both; }
 .shelf__cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; max-width: 1080px; margin-inline: auto; padding-top: 14px; }
+/* Cloud shelf holds four plans: 2 x 2 on tablets, one row on wide screens; the phone rule further down still wins */
+.shelf__cards--four { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 760px; }
+@media (min-width: 1180px) { .shelf__cards--four { grid-template-columns: repeat(4, minmax(0, 1fr)); max-width: 1200px; } }
 .shelf__more { text-align: center; margin: 1.8rem 0 0; }
 
 .svccard {
