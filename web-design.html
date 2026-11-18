@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.31" />
+  <link rel="stylesheet" href="styles.css?v=1.13.32" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -240,19 +240,13 @@
 
   <main id="top">
     <!-- HERO -->
-    <section class="hero" id="hero">
+    <section class="hero hero--clean" id="hero">
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="hero__grid-bg" aria-hidden="true"></div>
       <div class="container hero__inner">
         <div class="hero__copy">
           <h1 class="hero__title">Websites that turn visitors <span class="hero__accent">into customers.</span></h1>
-          <p class="hero__sub">Mobile-first, SEO-ready corporate sites, redesigns and online stores, designed, built and launched on BlacTec Cloud for businesses across Africa. Every package ships with a free SSL certificate and a year of BlacTec Cloud.</p>
-
-          <ul class="hero__trust">
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>Launch in as little as 10 days</li>
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>Mobile-first &amp; SEO-ready by default</li>
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>Mobile Money &amp; card payments accepted</li>
-          </ul>
+          <p class="hero__sub">Business websites, redesigns and online stores, designed, built and launched for you. Every package includes a free SSL certificate and a year of BlacTec Cloud.</p>
 
           <div class="migration__cta hero__actions">
             <a class="btn btn--primary" href="#compare">See packages &amp; pricing
@@ -260,21 +254,18 @@
             </a>
             <a class="btn btn--secondary" href="#showcase">See our work</a>
           </div>
-
-          <div class="hero__proof">
-            <p class="hero__proof-text"><strong>9+ websites built</strong> and launched by BlacTec<span class="hero__stars" aria-label="rated 4.9 out of 5">★★★★★ <em>4.9</em></span></p>
-          </div>
+          <p class="hero__facts"><span>From UGX 1,200,000</span><span>Live in as little as 10 days</span><span>Mobile Money or card</span></p>
         </div>
 
-        <!-- Right column illustration -->
+        <!-- Right column: one real client site, on a desktop and on a phone -->
         <div class="hero__art">
-          <div class="lineup lineup--duo">
-          <figure class="device device--main" aria-hidden="true">
-            <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
-          </figure>
-          <figure class="device device--side device--left" aria-hidden="true">
-            <img src="assets/showcase/kaniz-apartments.webp" alt="" width="960" height="534" loading="lazy" decoding="async" />
-          </figure>
+          <div class="lineup lineup--duo lineup--phone">
+            <figure class="device device--main" aria-hidden="true">
+              <img src="assets/showcase/golden-marketing.webp" alt="" width="960" height="534" fetchpriority="high" decoding="async" />
+            </figure>
+            <figure class="device device--phone" aria-hidden="true">
+              <img src="assets/showcase/golden-mobile.webp" alt="" width="540" height="1038" decoding="async" />
+            </figure>
           </div>
         </div>
       </div>

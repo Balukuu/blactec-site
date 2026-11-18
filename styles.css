@@ -2051,3 +2051,37 @@ body.fab-away .wa-fab, body.fab-away .to-top.is-visible {
 p { text-wrap: pretty; }
 .hero__sub, .hero2__sub, .hero2__fine, .section-sub, .managed__lead, .promo-band__text, .mega__help-text, .quote__note, .plan__desc { text-wrap: balance; }
 .pcard__price, .mstat__num, .step__kicker, .plan__features li, .svccard__features li, table th, table td { font-variant-numeric: tabular-nums; }
+
+/* ---- Hero, clean variant (hosting + web design): one headline, one sentence, two buttons, one plain line of facts ---- */
+.hero--clean .hero__sub { max-width: 40ch; }
+.hero--clean .hero__actions { margin-top: 1.9rem; }
+.hero__facts { display: flex; flex-wrap: wrap; margin: 1.5rem 0 0; font-size: .92rem; color: var(--ink-500); }
+.hero__facts span + span::before { content: "\00b7"; margin: 0 .6rem; opacity: .65; }
+@media (max-width: 560px) { .hero__facts { flex-direction: column; gap: .25rem; } .hero__facts span + span::before { display: none; } }
+
+/* Hosting hero: the four shared plans with their real prices (replaces the drawn rack) */
+.planlist {
+  max-width: 440px; margin-inline: auto; overflow: hidden; background: #fff; border-radius: 22px;
+  box-shadow: 0 0 0 1px rgba(14, 15, 19, .08), 0 2px 4px rgba(14, 15, 19, .05), 0 34px 70px -26px rgba(14, 15, 19, .32);
+}
+.planlist__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin: 0; padding: 1.1rem 1.5rem; font-size: .95rem; font-weight: 700; color: var(--ink-900); border-bottom: 1px solid var(--border); }
+.planlist__head span { font-size: .82rem; font-weight: 500; color: var(--ink-500); }
+.planlist__rows { list-style: none; margin: 0; padding: 0; }
+.planlist__row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.05rem 1.5rem; }
+.planlist__row + .planlist__row { border-top: 1px solid var(--border); }
+.planlist__row.is-popular { background: rgba(51, 115, 224, .06); }
+.planlist__plan { display: flex; flex-direction: column; gap: .18rem; min-width: 0; }
+.planlist__name { display: flex; align-items: baseline; gap: .6rem; flex-wrap: wrap; }
+.planlist__name strong { font-size: 1.04rem; color: var(--ink-900); }
+.planlist__tag { font-size: .74rem; font-weight: 700; color: var(--blue-700); }
+.planlist__plan small { font-size: .82rem; color: var(--ink-500); }
+.planlist__price { flex: none; text-align: right; font-variant-numeric: tabular-nums; }
+.planlist__price strong { font-size: 1.05rem; color: var(--ink-900); }
+
+/* Web design hero: the same client site on a desktop and on a phone */
+.lineup--phone .device--phone {
+  position: absolute; z-index: 3; right: 0; bottom: 0; width: 25%; padding: 5px; border-radius: 24px; background: #0e0f13;
+  box-shadow: 0 0 0 1px rgba(14, 15, 19, .25), 0 30px 60px -20px rgba(14, 15, 19, .5);
+}
+.lineup--phone .device--phone img { aspect-ratio: 540 / 1038; border-radius: 19px; }
+@media (min-width: 761px) { .lineup--phone .device--main { width: 88%; margin: 0; } }

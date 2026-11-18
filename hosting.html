@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.31" />
+  <link rel="stylesheet" href="styles.css?v=1.13.32" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -245,19 +245,13 @@
 
   <main id="top">
     <!-- HERO -->
-    <section class="hero" id="hero">
+    <section class="hero hero--clean" id="hero">
       <div class="hero__glow" aria-hidden="true"></div>
       <div class="hero__grid-bg" aria-hidden="true"></div>
       <div class="container hero__inner">
         <div class="hero__copy">
-          <h1 class="hero__title">Cloud infrastructure <span class="hero__accent">that scales with you.</span></h1>
-          <p class="hero__sub">NVMe-backed shared cloud, root-access VPS and fully managed dedicated servers, secure by design and supported 24/7 across Africa, for sites that start small and outgrow anything.</p>
-
-          <ul class="hero__trust">
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>99.9% uptime SLA</li>
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>Free .ug domain on Enterprise Hosting</li>
-            <li><span class="hero__check"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 13 4 4L19 7"/></svg></span>Mobile Money accepted</li>
-          </ul>
+          <h1 class="hero__title">Cloud hosting <span class="hero__accent">that grows with your business.</span></h1>
+          <p class="hero__sub">Shared cloud, VPS and dedicated servers, managed by our engineers and supported 24/7. Plans start at UGX 50,000 a year.</p>
 
           <div class="migration__cta hero__actions">
             <a class="btn btn--primary" href="#compare">Compare all plans
@@ -265,31 +259,31 @@
             </a>
             <a class="btn btn--secondary" href="#contact">Talk to an engineer</a>
           </div>
-
-          <div class="hero__proof">
-            <p class="hero__proof-text"><strong>200+ businesses across Africa</strong> run online with BlacTec<span class="hero__stars" aria-label="rated 4.9 out of 5">★★★★★ <em>4.9</em></span></p>
-          </div>
+          <p class="hero__facts"><span>99.9% uptime SLA</span><span>Free SSL on every plan</span><span>Pay with MTN or Airtel Money</span></p>
         </div>
 
-        <!-- Right column: product carousel -->
+        <!-- Right column: the four shared plans with their real prices -->
         <div class="hero__art">
-          <div class="hero__stack-card">
-            <!-- Slide 1: Hosting -->
-            <div class="hero__stack-slide is-active">
-              <div class="rackmock" aria-hidden="true">
-                <div class="rackmock__body">
-                  <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Shared &amp; Reseller Cloud</span></div>
-                  <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Root-Access VPS</span></div>
-                  <div class="rackmock__unit"><span class="rackmock__lights"><i></i><i></i><i></i></span><span class="rackmock__label">Dedicated Servers</span></div>
-                  <div class="rackmock__stats">
-                    <span class="rackmock__stat"><strong>99.9%</strong><small>Uptime</small></span>
-                    <span class="rackmock__stat"><strong>NVMe</strong><small>Storage</small></span>
-                  </div>
-                </div>
-              </div>
-              <span class="hero__stack-price"><small>Starting at</small><strong>UGX 50,000</strong><span>/ year</span></span>
-            </div>
-
+          <div class="planlist">
+            <p class="planlist__head">Shared cloud plans <span>billed yearly</span></p>
+            <ul class="planlist__rows">
+              <li class="planlist__row">
+                <span class="planlist__plan"><span class="planlist__name"><strong>Basic</strong></span><small>A simple website</small></span>
+                <span class="planlist__price"><strong data-plan-price="Basic Hosting">UGX 50,000</strong></span>
+              </li>
+              <li class="planlist__row">
+                <span class="planlist__plan"><span class="planlist__name"><strong>Starter</strong></span><small>5 GB &middot; 5 email accounts</small></span>
+                <span class="planlist__price"><strong data-plan-price="Starter Hosting">UGX 100,000</strong></span>
+              </li>
+              <li class="planlist__row is-popular">
+                <span class="planlist__plan"><span class="planlist__name"><strong>Business</strong><span class="planlist__tag">Most popular</span></span><small>10 GB &middot; 15 email accounts &middot; Firewall</small></span>
+                <span class="planlist__price"><strong data-plan-price="Business Hosting">UGX 200,000</strong></span>
+              </li>
+              <li class="planlist__row">
+                <span class="planlist__plan"><span class="planlist__name"><strong>Enterprise</strong></span><small>20 GB &middot; Unlimited email</small></span>
+                <span class="planlist__price"><strong data-plan-price="Enterprise Hosting">UGX 350,000</strong></span>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
