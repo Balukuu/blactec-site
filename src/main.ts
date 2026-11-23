@@ -21,6 +21,8 @@ interface TldOption {
   tld: string;
   priceUsd: number;
   mode: TldMode;
+  /** Offered as an "available alternative" when the searched name is taken (only the original extensions, to keep it to a handful of lookups). */
+  alt: boolean;
 }
 
 interface DomainResult {
@@ -183,10 +185,12 @@ function planOrderUrl(planName: string, placement: string): string | null {
 /** Extensions the portal has prices for. .org.ug and .ac.ug are not among them, so those stay a request. */
 const PORTAL_GLOBAL_TLDS = ['.com', '.net', '.org'];
 const PORTAL_UG_TLDS = ['.ug', '.co.ug'];
+/** Other extensions whose availability the portal's own search can check, so an order can start there (checked against registered names, 2026-11-23). */
+const PORTAL_CHECKED_TLDS = ['.tv', '.co.uk', '.org.uk', '.uk', '.ca', '.club', '.me', '.io', '.de', '.sc.ug', '.edu.ug'];
 
 /** Whether the portal can take an order for this domain extension right now. */
 function portalSellsTld(tld: string): boolean {
-  return PORTAL_GLOBAL_TLDS.includes(tld) || (PORTAL_REGISTERS_UG && PORTAL_UG_TLDS.includes(tld));
+  return PORTAL_GLOBAL_TLDS.includes(tld) || PORTAL_CHECKED_TLDS.includes(tld) || (PORTAL_REGISTERS_UG && PORTAL_UG_TLDS.includes(tld));
 }
 
 /* ============================================================
@@ -487,9 +491,11 @@ class QuoteForm {
 /* ============================================================
    Domain availability — live lookups
    ============================================================
-   .com / .org / .net (and any other gTLD) run RDAP over HTTP, so we can query
+   .com / .org / .net (and the other extensions marked live in the dropdown, each
+   checked against a made-up and a registered name) run RDAP over HTTP, so we can query
    the public rdap.org bootstrap directly from the browser — it responds with
-   CORS enabled. Uganda's registry has no public API reachable from a browser,
+   CORS enabled. Extensions with no RDAP server reachable from a browser (.me, .io,
+   .co.ke ...) are not looked up here: see data-mode on the dropdown options. Uganda's registry has no public API reachable from a browser,
    so .ug/.co.ug/.org.ug/.ac.ug go through a small Cloudflare Worker that relays
    the registrar portal's own domain-search endpoint server-side.
    See cloudflare-worker/README.md for how it works. */
@@ -570,6 +576,7 @@ class DomainChecker {
       tld: opt.value,
       priceUsd: Number(opt.dataset['price'] ?? '0'),
       mode: opt.dataset['mode'] === 'portal' || opt.dataset['mode'] === 'ask' ? opt.dataset['mode'] : 'live',
+      alt: opt.dataset['alt'] === '1',
     }));
     this.tldButtons = qsa<HTMLButtonElement>('.domain__eg');
     this.bind();
@@ -620,9 +627,9 @@ class DomainChecker {
     return formatMoney(usdTo(priceUsd, currencyStore.value), currencyStore.value);
   }
 
-  /** Checks the other live-checked TLDs in parallel and keeps up to 3 that came back available. */
+  /** Checks the other alternative TLDs in parallel and keeps up to 3 that came back available. */
   private async findAvailableAlternatives(domain: string, excludeTld: string, signal: AbortSignal): Promise<TldOption[]> {
-    const candidates = this.tlds.filter((t) => t.mode === 'live' && t.tld !== excludeTld);
+    const candidates = this.tlds.filter((t) => t.mode === 'live' && t.alt && t.tld !== excludeTld);
     const settled = await Promise.allSettled(
       candidates.map(async (t) => ({ t, available: await checkAvailability(domain, t.tld, signal) })),
     );
