@@ -126,8 +126,13 @@ function planOrderUrl(planName, placement) {
 /** Extensions the portal has prices for. .org.ug and .ac.ug are not among them, so those stay a request. */
 const PORTAL_GLOBAL_TLDS = ['.com', '.net', '.org'];
 const PORTAL_UG_TLDS = ['.ug', '.co.ug'];
-/** Other extensions whose availability the portal's own search can check, so an order can start there (checked against registered names, 2026-11-23). */
-const PORTAL_CHECKED_TLDS = ['.tv', '.co.uk', '.org.uk', '.uk', '.ca', '.club', '.me', '.io', '.de', '.sc.ug', '.edu.ug'];
+/** Other extensions whose availability the portal's own search can check (WHOIS or the registry's RDAP, tested against registered names, 2026-11-23), so an order can start there. */
+const PORTAL_CHECKED_TLDS = [
+    '.tv', '.co.uk', '.org.uk', '.uk', '.ca', '.club', '.me', '.io', '.de', '.sc.ug', '.edu.ug',
+    '.info', '.africa', '.store', '.tech', '.graphics', '.photography', '.technology', '.agency', '.archi', '.tours',
+    '.app', '.travel', '.online', '.coffee', '.earth', '.attorney', '.co.ke', '.network', '.mobi', '.ac.ke', '.academy',
+    '.rw', '.space', '.co.tz', '.vip', '.tips', '.church', '.autos',
+];
 /** Whether the portal can take an order for this domain extension right now. */
 function portalSellsTld(tld) {
     return PORTAL_GLOBAL_TLDS.includes(tld) || PORTAL_CHECKED_TLDS.includes(tld) || (PORTAL_REGISTERS_UG && PORTAL_UG_TLDS.includes(tld));
