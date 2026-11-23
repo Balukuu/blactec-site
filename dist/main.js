@@ -410,6 +410,11 @@ function timedFetch(url, init, ms, parent) {
 async function checkGtldAvailability(fullDomain, signal) {
     const res = await timedFetch(`https://rdap.org/domain/${encodeURIComponent(fullDomain)}`, { headers: { Accept: 'application/rdap+json' } }, 8000, signal);
     if (res.status === 404) {
+        // rdap.org also answers 404 when no registry publishes RDAP for the extension; that is not "available".
+        const body = await res.text().catch(() => '');
+        if (/no rdap (service|server)/i.test(body)) {
+            throw new Error('rdap_unsupported_tld');
+        }
         return true;
     }
     if (res.ok) {
@@ -440,6 +445,7 @@ class DomainChecker {
         this.tlds = qsa('option', this.select).map((opt) => ({
             tld: opt.value,
             priceUsd: Number(opt.dataset['price'] ?? '0'),
+            mode: opt.dataset['mode'] === 'portal' || opt.dataset['mode'] === 'ask' ? opt.dataset['mode'] : 'live',
         }));
         this.tldButtons = qsa('.domain__eg');
         this.bind();
@@ -483,9 +489,9 @@ class DomainChecker {
     money(priceUsd) {
         return formatMoney(usdTo(priceUsd, currencyStore.value), currencyStore.value);
     }
-    /** Checks the other listed TLDs in parallel and keeps up to 3 that came back available. */
+    /** Checks the other live-checked TLDs in parallel and keeps up to 3 that came back available. */
     async findAvailableAlternatives(domain, excludeTld, signal) {
-        const candidates = this.tlds.filter((t) => t.tld !== excludeTld);
+        const candidates = this.tlds.filter((t) => t.mode === 'live' && t.tld !== excludeTld);
         const settled = await Promise.allSettled(candidates.map(async (t) => ({ t, available: await checkAvailability(domain, t.tld, signal) })));
         const available = [];
         for (const outcome of settled) {
@@ -508,6 +514,13 @@ class DomainChecker {
         const id = ++this.runId;
         if (this.controller) {
             this.controller.abort();
+        }
+        // Extensions we cannot verify from the browser: no lookup, so no made-up answer either.
+        const option = this.tlds.find((t) => t.tld === tld);
+        if (option && option.mode !== 'live') {
+            this.controller = null;
+            this.renderUnchecked(domain, option);
+            return;
         }
         const controller = new AbortController();
         this.controller = controller;
@@ -533,6 +546,34 @@ class DomainChecker {
             }
             this.renderCheckError(domain + tld, err);
         }
+    }
+    /** An extension the site cannot look up live: say so, show the price, and hand over to the ordering page or to us. */
+    renderUnchecked(domain, option) {
+        const full = `${domain}${option.tld}`;
+        const price = `<span class="result-card__price"><span data-usd="${formatPrice(option.priceUsd)}">${this.money(option.priceUsd)}</span> <small>/ year</small></span>`;
+        let note;
+        let action;
+        if (option.mode === 'portal') {
+            note = 'We check this extension on our ordering page. See if it is free there and register it in a few clicks.';
+            const href = billingUrl('/client/domain-search', 'hero-search', { domain, tld: option.tld });
+            action = `<a class="btn btn--primary" href="${escapeHtml(href)}">Check and register</a>`;
+        }
+        else {
+            note = 'Send us the name and we will confirm it is free, then register it for you.';
+            const context = escapeHtml(`I'd like to register ${full} (${this.money(option.priceUsd)}/yr). Please confirm it is available.`);
+            action = `<button class="btn btn--primary" data-lead data-lead-context="${context}" type="button">Request this domain</button>`;
+        }
+        this.result.innerHTML = `
+      <div class="result-card result-card--ask">
+        <div class="result-card__top">
+          <span class="result-card__name">${escapeHtml(full)}</span>
+        </div>
+        <p class="result-card__note">${note}</p>
+        <div class="result-card__top">
+          ${price}
+          ${action}
+        </div>
+      </div>`;
     }
     renderError(message) {
         this.result.innerHTML = `<div class="result-card result-card--taken"><p class="result-card__name">${escapeHtml(message)}</p></div>`;

@@ -42,7 +42,7 @@
   <!-- Fonts: DM Sans, self-hosted (variable: weight + optical size); the @font-face rules are in styles.css -->
   <link rel="preload" href="/assets/fonts/dm-sans-latin.woff2" as="font" type="font/woff2" crossorigin />
 
-  <link rel="stylesheet" href="styles.css?v=1.13.33" />
+  <link rel="stylesheet" href="styles.css?v=1.13.34" />
 
   <!-- Structured data -->
   <script type="application/ld+json">
@@ -100,7 +100,7 @@
     "@type": "FAQPage",
     "mainEntity": [
       { "@type": "Question", "name": "What's included in BlacTec Cloud plans?", "acceptedAnswer": { "@type": "Answer", "text": "Every BlacTec plan includes a free SSL certificate and 24/7 engineer-led support. Starter, Business and Enterprise run on ultrafast NVMe storage with a control panel, while Basic Hosting is a simple static website that our team sets up and publishes for you, with no email accounts or database. Bandwidth, storage, email accounts and MySQL databases scale with each tier, and our Enterprise plan includes unlimited bandwidth under fair usage. Business Hosting and Enterprise Hosting also include a website firewall and a malware scan in the client area, which you can add to your phone's home screen and open like an app." } },
-      { "@type": "Question", "name": "Do you register .ug domains?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside global TLDs like .com, .org and .net, and we handle the full DNS lifecycle for you." } },
+      { "@type": "Question", "name": "Do you register .ug domains?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. We register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside more than fifty global and regional extensions such as .com, .org, .net, .africa and .co.ke, and we handle the full DNS lifecycle for you." } },
       { "@type": "Question", "name": "Can you migrate my existing site or email?", "acceptedAnswer": { "@type": "Answer", "text": "Absolutely. We perform zero-downtime migrations of websites, live databases and legacy email histories from your old host, with automated backups running from day one." } },
       { "@type": "Question", "name": "Which cloud platforms do you support?", "acceptedAnswer": { "@type": "Answer", "text": "We provision, migrate and manage workloads across Google Cloud Platform, Microsoft Azure and AWS, and integrate Google Workspace, Microsoft 365 and Zoho Mail." } },
       { "@type": "Question", "name": "How does support work?", "acceptedAnswer": { "@type": "Answer", "text": "You get 24/7 engineer-led support by phone, WhatsApp and ticket, plus proactive monitoring. Managed IT clients also receive remote and on-site helpdesk coverage." } },
@@ -128,7 +128,7 @@
   }
   </script>
 
-  <script defer src="dist/main.js?v=1.13.15"></script>
+  <script defer src="dist/main.js?v=1.13.16"></script>
 </head>
 <body>
   <a class="skip-link" href="#top">Skip to content</a>
@@ -284,13 +284,72 @@
                      aria-label="Domain name to search" autocomplete="off" autocapitalize="none" spellcheck="false" />
               <span class="dsearch__sel">
                 <select id="tldSelect" aria-label="Domain extension">
-                  <option value=".ug" data-price="24.3902">.ug</option>
-                  <option value=".co.ug" data-price="24.3902">.co.ug</option>
-                  <option value=".org.ug" data-price="24.3902">.org.ug</option>
-                  <option value=".ac.ug" data-price="24.3902">.ac.ug</option>
-                  <option value=".com" data-price="19.5122">.com</option>
-                  <option value=".org" data-price="19.5122">.org</option>
-                  <option value=".net" data-price="17.75">.net</option>
+                  <optgroup label="Uganda">
+                    <option value=".ug" data-price="24.3902">.ug</option>
+                    <option value=".co.ug" data-price="24.3902">.co.ug</option>
+                    <option value=".org.ug" data-price="24.3902">.org.ug</option>
+                    <option value=".ac.ug" data-price="24.3902">.ac.ug</option>
+                    <option value=".sc.ug" data-price="31.7073" data-mode="portal">.sc.ug</option>
+                    <option value=".edu.ug" data-price="31.7073" data-mode="portal">.edu.ug</option>
+                  </optgroup>
+                  <optgroup label="Popular">
+                    <option value=".com" data-price="19.5122">.com</option>
+                    <option value=".org" data-price="19.5122">.org</option>
+                    <option value=".net" data-price="17.75">.net</option>
+                    <option value=".info" data-price="28.5366" data-mode="ask">.info</option>
+                    <option value=".online" data-price="38.0488" data-mode="ask">.online</option>
+                    <option value=".shop" data-price="38.0488" data-mode="ask">.shop</option>
+                    <option value=".store" data-price="63.4146" data-mode="ask">.store</option>
+                    <option value=".tech" data-price="63.4146" data-mode="ask">.tech</option>
+                    <option value=".app" data-price="15.8537" data-mode="ask">.app</option>
+                    <option value=".club" data-price="12.6829" data-mode="portal">.club</option>
+                  </optgroup>
+                  <optgroup label="Africa">
+                    <option value=".africa" data-price="25.3659" data-mode="ask">.africa</option>
+                    <option value=".co.ke" data-price="31.7073" data-mode="ask">.co.ke</option>
+                    <option value=".ac.ke" data-price="47.5610" data-mode="ask">.ac.ke</option>
+                    <option value=".co.tz" data-price="47.5610" data-mode="ask">.co.tz</option>
+                    <option value=".rw" data-price="22.1951" data-mode="ask">.rw</option>
+                    <option value=".co.za" data-price="12.6829" data-mode="ask">.co.za</option>
+                    <option value=".bi" data-price="72.9268" data-mode="ask">.bi</option>
+                    <option value=".gm" data-price="101.4634" data-mode="ask">.gm</option>
+                  </optgroup>
+                  <optgroup label="Countries and regions">
+                    <option value=".uk" data-price="15.8537" data-mode="portal">.uk</option>
+                    <option value=".co.uk" data-price="15.8537" data-mode="portal">.co.uk</option>
+                    <option value=".org.uk" data-price="15.8537" data-mode="portal">.org.uk</option>
+                    <option value=".ca" data-price="12.6829" data-mode="portal">.ca</option>
+                    <option value=".be" data-price="15.8537" data-mode="ask">.be</option>
+                    <option value=".de" data-price="9.5122" data-mode="portal">.de</option>
+                    <option value=".ae" data-price="57.0732" data-mode="ask">.ae</option>
+                    <option value=".me" data-price="19.0244" data-mode="portal">.me</option>
+                    <option value=".tv" data-price="34.8780" data-mode="portal">.tv</option>
+                    <option value=".io" data-price="47.5610" data-mode="portal">.io</option>
+                    <option value=".co" data-price="31.7073" data-mode="ask">.co</option>
+                    <option value=".ac" data-price="44.3902" data-mode="ask">.ac</option>
+                    <option value=".vc" data-price="44.3902" data-mode="ask">.vc</option>
+                  </optgroup>
+                  <optgroup label="More">
+                    <option value=".agency" data-price="25.3659" data-mode="ask">.agency</option>
+                    <option value=".graphics" data-price="25.3659" data-mode="ask">.graphics</option>
+                    <option value=".photography" data-price="25.3659" data-mode="ask">.photography</option>
+                    <option value=".technology" data-price="25.3659" data-mode="ask">.technology</option>
+                    <option value=".archi" data-price="88.7805" data-mode="ask">.archi</option>
+                    <option value=".tours" data-price="57.0732" data-mode="ask">.tours</option>
+                    <option value=".travel" data-price="31.7073" data-mode="ask">.travel</option>
+                    <option value=".consultancy" data-price="31.7073" data-mode="ask">.consultancy</option>
+                    <option value=".coffee" data-price="15.8537" data-mode="ask">.coffee</option>
+                    <option value=".earth" data-price="31.7073" data-mode="ask">.earth</option>
+                    <option value=".attorney" data-price="57.0732" data-mode="ask">.attorney</option>
+                    <option value=".network" data-price="47.5610" data-mode="ask">.network</option>
+                    <option value=".mobi" data-price="38.0488" data-mode="ask">.mobi</option>
+                    <option value=".academy" data-price="38.0488" data-mode="ask">.academy</option>
+                    <option value=".space" data-price="28.5366" data-mode="ask">.space</option>
+                    <option value=".vip" data-price="12.6829" data-mode="ask">.vip</option>
+                    <option value=".tips" data-price="31.7073" data-mode="ask">.tips</option>
+                    <option value=".church" data-price="12.6829" data-mode="ask">.church</option>
+                    <option value=".autos" data-price="22.1951" data-mode="ask">.autos</option>
+                  </optgroup>
                 </select>
               </span>
               <button class="dsearch__btn" type="submit"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg><span>Search</span></button>
@@ -302,6 +361,92 @@
               <li><button type="button" class="dsearch__tld domain__eg" data-tld=".net" aria-pressed="false">.net <small data-usd="17.75">UGX 72,775</small></button></li>
               <li><button type="button" class="dsearch__tld domain__eg" data-tld=".org" aria-pressed="false">.org <small data-usd="19.5122">UGX 80,000</small></button></li>
             </ul>
+            <details class="tldmore">
+              <summary>See all 56 extensions and prices</summary>
+              <div class="tldmore__groups">
+                <section class="tldmore__group" aria-label="Uganda extensions">
+                  <h3>Uganda</h3>
+                  <ul>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ug" aria-pressed="false"><span>.ug</span><small data-usd="24.3902">UGX 100,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co.ug" aria-pressed="false"><span>.co.ug</span><small data-usd="24.3902">UGX 100,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".org.ug" aria-pressed="false"><span>.org.ug</span><small data-usd="24.3902">UGX 100,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ac.ug" aria-pressed="false"><span>.ac.ug</span><small data-usd="24.3902">UGX 100,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".sc.ug" aria-pressed="false"><span>.sc.ug</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".edu.ug" aria-pressed="false"><span>.edu.ug</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                  </ul>
+                </section>
+                <section class="tldmore__group" aria-label="Popular extensions">
+                  <h3>Popular</h3>
+                  <ul>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".com" aria-pressed="false"><span>.com</span><small data-usd="19.5122">UGX 80,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".org" aria-pressed="false"><span>.org</span><small data-usd="19.5122">UGX 80,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".net" aria-pressed="false"><span>.net</span><small data-usd="17.75">UGX 72,775</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".info" aria-pressed="false"><span>.info</span><small data-usd="28.5366">UGX 117,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".online" aria-pressed="false"><span>.online</span><small data-usd="38.0488">UGX 156,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".shop" aria-pressed="false"><span>.shop</span><small data-usd="38.0488">UGX 156,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".store" aria-pressed="false"><span>.store</span><small data-usd="63.4146">UGX 260,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".tech" aria-pressed="false"><span>.tech</span><small data-usd="63.4146">UGX 260,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".app" aria-pressed="false"><span>.app</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".club" aria-pressed="false"><span>.club</span><small data-usd="12.6829">UGX 52,000</small></button></li>
+                  </ul>
+                </section>
+                <section class="tldmore__group" aria-label="Africa extensions">
+                  <h3>Africa</h3>
+                  <ul>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".africa" aria-pressed="false"><span>.africa</span><small data-usd="25.3659">UGX 104,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co.ke" aria-pressed="false"><span>.co.ke</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ac.ke" aria-pressed="false"><span>.ac.ke</span><small data-usd="47.5610">UGX 195,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co.tz" aria-pressed="false"><span>.co.tz</span><small data-usd="47.5610">UGX 195,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".rw" aria-pressed="false"><span>.rw</span><small data-usd="22.1951">UGX 91,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co.za" aria-pressed="false"><span>.co.za</span><small data-usd="12.6829">UGX 52,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".bi" aria-pressed="false"><span>.bi</span><small data-usd="72.9268">UGX 299,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".gm" aria-pressed="false"><span>.gm</span><small data-usd="101.4634">UGX 416,000</small></button></li>
+                  </ul>
+                </section>
+                <section class="tldmore__group" aria-label="Countries and regions extensions">
+                  <h3>Countries and regions</h3>
+                  <ul>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".uk" aria-pressed="false"><span>.uk</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co.uk" aria-pressed="false"><span>.co.uk</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".org.uk" aria-pressed="false"><span>.org.uk</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ca" aria-pressed="false"><span>.ca</span><small data-usd="12.6829">UGX 52,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".be" aria-pressed="false"><span>.be</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".de" aria-pressed="false"><span>.de</span><small data-usd="9.5122">UGX 39,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ae" aria-pressed="false"><span>.ae</span><small data-usd="57.0732">UGX 234,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".me" aria-pressed="false"><span>.me</span><small data-usd="19.0244">UGX 78,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".tv" aria-pressed="false"><span>.tv</span><small data-usd="34.8780">UGX 143,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".io" aria-pressed="false"><span>.io</span><small data-usd="47.5610">UGX 195,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".co" aria-pressed="false"><span>.co</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".ac" aria-pressed="false"><span>.ac</span><small data-usd="44.3902">UGX 182,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".vc" aria-pressed="false"><span>.vc</span><small data-usd="44.3902">UGX 182,000</small></button></li>
+                  </ul>
+                </section>
+                <section class="tldmore__group" aria-label="More extensions">
+                  <h3>More</h3>
+                  <ul>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".agency" aria-pressed="false"><span>.agency</span><small data-usd="25.3659">UGX 104,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".graphics" aria-pressed="false"><span>.graphics</span><small data-usd="25.3659">UGX 104,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".photography" aria-pressed="false"><span>.photography</span><small data-usd="25.3659">UGX 104,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".technology" aria-pressed="false"><span>.technology</span><small data-usd="25.3659">UGX 104,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".archi" aria-pressed="false"><span>.archi</span><small data-usd="88.7805">UGX 364,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".tours" aria-pressed="false"><span>.tours</span><small data-usd="57.0732">UGX 234,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".travel" aria-pressed="false"><span>.travel</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".consultancy" aria-pressed="false"><span>.consultancy</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".coffee" aria-pressed="false"><span>.coffee</span><small data-usd="15.8537">UGX 65,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".earth" aria-pressed="false"><span>.earth</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".attorney" aria-pressed="false"><span>.attorney</span><small data-usd="57.0732">UGX 234,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".network" aria-pressed="false"><span>.network</span><small data-usd="47.5610">UGX 195,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".mobi" aria-pressed="false"><span>.mobi</span><small data-usd="38.0488">UGX 156,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".academy" aria-pressed="false"><span>.academy</span><small data-usd="38.0488">UGX 156,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".space" aria-pressed="false"><span>.space</span><small data-usd="28.5366">UGX 117,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".vip" aria-pressed="false"><span>.vip</span><small data-usd="12.6829">UGX 52,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".tips" aria-pressed="false"><span>.tips</span><small data-usd="31.7073">UGX 130,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".church" aria-pressed="false"><span>.church</span><small data-usd="12.6829">UGX 52,000</small></button></li>
+                    <li><button type="button" class="tldmore__item domain__eg" data-tld=".autos" aria-pressed="false"><span>.autos</span><small data-usd="22.1951">UGX 91,000</small></button></li>
+                  </ul>
+                </section>
+              </div>
+            </details>
             <p class="hero2__fine">Searching is free and needs no account. <a href="https://cloud.blactec.ug/client/register?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=hero-search">Create an account</a> to order, and pay with MTN or Airtel Money. Already a customer? <a href="https://cloud.blactec.ug/client/login?utm_source=blactec.ug&amp;utm_medium=website&amp;utm_campaign=hero-search">Log in</a>.</p>
           </div>
         </div>
@@ -1061,7 +1206,7 @@
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">Do you register .ug domains?<span class="acc__chev">+</span></button>
-            <div class="acc__a"><div class="acc__a-in"><p>Yes, we register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside global TLDs like .com, .org and .net, and we handle the full DNS lifecycle so you never touch a registrar dashboard.</p></div></div>
+            <div class="acc__a"><div class="acc__a-in"><p>Yes, we register and manage .ug, .co.ug, .org.ug and .ac.ug domains alongside more than fifty global and regional extensions such as .com, .org, .net, .africa and .co.ke, and we handle the full DNS lifecycle so you never touch a registrar dashboard.</p></div></div>
           </div>
           <div class="acc">
             <button class="acc__q" aria-expanded="false">Can you migrate my existing site or email?<span class="acc__chev">+</span></button>

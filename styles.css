@@ -2127,3 +2127,33 @@ p { text-wrap: pretty; }
   .planlist__rows > li { animation: none; }
   .herocast__slide, .herocast__slide .device--phone { transition: none; transform: none; }
 }
+
+/* Domain search — every extension and its price, tucked under the popular chips */
+.result-card--ask { background: var(--surface-1); border: 1px solid var(--border); }
+.tldmore { margin: .9rem 0 0; }
+.tldmore > summary {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; cursor: pointer; list-style: none;
+  font-size: .95rem; font-weight: 600; color: var(--ink-900);
+}
+.tldmore > summary::-webkit-details-marker { display: none; }
+.tldmore > summary::after {
+  content: ""; width: 8px; height: 8px; margin-top: -3px; border: solid currentColor; border-width: 0 2px 2px 0;
+  transform: rotate(45deg); transition: transform .25s var(--ease-out);
+}
+.tldmore[open] > summary::after { transform: rotate(225deg); margin-top: 3px; }
+.tldmore > summary:focus-visible { outline: 2px solid var(--blue-500); outline-offset: 3px; border-radius: 6px; }
+@media (hover: hover) { .tldmore > summary:hover { text-decoration: underline; text-underline-offset: 3px; } }
+.tldmore__groups { text-align: left; }
+.tldmore__group h3 { margin: 1.1rem 0 .35rem; padding-inline: .75rem; font-size: .9rem; font-weight: 600; letter-spacing: 0; color: var(--ink-500); }
+.tldmore__group ul { display: grid; grid-template-columns: repeat(auto-fill, minmax(8.5rem, 1fr)); gap: .25rem; margin: 0; padding: 0; list-style: none; }
+.tldmore__item {
+  display: grid; justify-items: start; gap: .05rem; width: 100%; min-height: 44px; padding: .5rem .75rem; text-align: left;
+  border-radius: 12px; color: var(--ink-900); transition: var(--transition);
+}
+.tldmore__item span { font-weight: 600; font-size: .95rem; }
+.tldmore__item small { font-size: .84rem; font-weight: 500; color: var(--ink-500); font-variant-numeric: tabular-nums; }
+.tldmore__item[aria-pressed="true"] { background: var(--ink-900); color: #fff; }
+.tldmore__item[aria-pressed="true"] small { color: rgba(255, 255, 255, .72); }
+.tldmore__item:active { transform: scale(.97); transition-duration: .1s; }
+@media (hover: hover) { .tldmore__item[aria-pressed="false"]:hover { background: rgba(14, 15, 19, .06); } }
+@media (prefers-reduced-motion: reduce) { .tldmore > summary::after, .tldmore__item { transition: none; } }
